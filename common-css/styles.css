@@ -94,6 +94,11 @@ b.max-bold{ font-weight: 700; }
 .margin-b-30{ margin-bottom: 30px; }
 .margin-b-50{ margin-bottom: 50px; }
 .margin-r-30{margin-right:   30px; }
+.margin-loaders{
+	margin-right: 20px;
+	margin-left: 10px;
+	margin-bottom: 30px;
+}
 
 .margin-tb-30{ margin-top: 30px; margin-bottom: 30px; }
 
