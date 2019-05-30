@@ -132,7 +132,7 @@ function enableLineProgress(){
 			strokeWidth: 1,
 			easing: 'easeInOut',
 			duration: 1400,
-			color: '#FEAE01',
+			color: '#00ff00',
 			trailColor: '#eee',
 			trailWidth: 1,
 			svgStyle: {width: '100%', height: '100%'},
