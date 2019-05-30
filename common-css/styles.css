@@ -54,7 +54,7 @@ a, button{ display: inline-block; text-decoration: none; color: inherit; line-he
 
 a:focus, a:active, a:hover,
 button:focus, button:active, button:hover,
-a b.light-color:hover{ text-decoration: none; color: #ffad01; }
+a b.light-color:hover{ text-decoration: none; color: #DBA159; }
 
 b{ font-weight: 600; }
 
@@ -72,8 +72,6 @@ button{ outline: 0; border: 0; background: none; cursor: pointer; }
 
 b.max-bold{ font-weight: 700; }
 
-.font-purple{color: #28023D;}
-
 
 
 /* ---------------------------------
@@ -86,7 +84,7 @@ b.max-bold{ font-weight: 700; }
                    margin-top: 5px;}
 
 .section .heading:before{ content:''; height: 10px; width: 50px; border-radius: 5px;
-	margin-bottom: 20px; display: block; background: #ffad01; }
+	margin-bottom: 20px; display: block; background: #DBA159; }
 
 .margin-t-10{ margin-top: 10px; }
 
@@ -102,7 +100,7 @@ b.max-bold{ font-weight: 700; }
 
 .margin-tb-30{ margin-top: 30px; margin-bottom: 30px; }
 
-.font-yellow{ color: #ffad01; }
+.font-yellow{ color: #DBA159; }
 
 .font-semi-white{ color: #ddd; }
 
@@ -115,7 +113,7 @@ b.max-bold{ font-weight: 700; }
 
 header{ position: absolute; top: 30px; left: 0; right: 0; z-index: 100; }
 
-header .heading-wrapper{ border-radius: 5px; padding: 30px 40px 20px; background: #ffad01; color: #fff; }
+header .heading-wrapper{ border-radius: 5px; padding: 30px 40px 20px; background: #DBA159; color: #fff; }
 
 header .info{ margin-bottom: 10px; }
 
@@ -124,7 +122,7 @@ header .info .icon{ float: left; font-size: 30px; }
 header .info .right-area{ margin-left: 45px; }
 
 header .downlad-btn{ padding: 15px 30px; border-radius: 4px; float: right; margin-top: 30px;
-	box-shadow: inset 0 0px 4px rgba(0,0,0,.3); background: #ffad01; color: #fff;
+	box-shadow: inset 0 0px 4px rgba(0,0,0,.3); background: #DBA159; color: #fff;
 	-webkit-transition: all .2s ease; transition: all .2s ease; }
 
 header .downlad-btn:hover{ -webkit-transform: translateY(-4px); transform: translateY(-4px); }
@@ -151,10 +149,10 @@ header .downlad-btn:hover{ -webkit-transform: translateY(-4px); transform: trans
 .intro .information > li{ display: block; margin: 5px 0; }
 
 .intro .social-icons > li > a{ height: 35px; line-height: 35px; width: 35px; border-radius: 20px;
-	overflow: hidden; z-index: 1; position: relative; margin: 0 5px 5px; background: #9161A8; color: #fff; }
+	overflow: hidden; z-index: 1; position: relative; margin: 0 5px 5px; background: #012959; color: #fff; }
 
 .intro .social-icons > li > a:after{ content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-	top: 0; z-index: -1; border-radius: 20px; background: #ffad01;
+	top: 0; z-index: -1; border-radius: 20px; background: #DBA159; color: #012959;
 	-webkit-transition: all .2s ease; transition: all .2s ease;
 	-webkit-transform: scale(0); transform: scale(0); }
 
@@ -171,7 +169,7 @@ header .downlad-btn:hover{ -webkit-transform: translateY(-4px); transform: trans
 
 .portfolio-section .portfolioFilter a{ margin: 10px 10px 0 0; }
 
-.portfolio-section .portfolioFilter a.current{  color: #ffad01; }
+.portfolio-section .portfolioFilter a.current{  color: #DBA159; }
 
 .portfolio-section .portfolioContainer{ margin-left: -15px; margin-right: -15px; }
 
@@ -211,7 +209,7 @@ header .downlad-btn:hover{ -webkit-transform: translateY(-4px); transform: trans
 }
 
 .text {
-  background-color: #ffad01;
+  background-color: #DBA159;
   color: white;
   font-size: 16px;
   padding: 20px 30px;
@@ -221,7 +219,7 @@ header .downlad-btn:hover{ -webkit-transform: translateY(-4px); transform: trans
 6. COLORED SECTION
 --------------------------------- */
 
-.colored-section{ background: #28023D; color: #fff; }
+.colored-section{ background: #012959; color: #fff; }
 
 .colored .list > li{ display: block; position: relative; margin-bottom: 10px; padding-left: 20px; }
 
@@ -241,14 +239,14 @@ header .downlad-btn:hover{ -webkit-transform: translateY(-4px); transform: trans
 
 .education-wrapper .education:after{ content:''; position: absolute; top: 8px; left: -58px; width: 16px;
 	height: 16px; border-radius: 10px; z-index: 1;
-	box-shadow: 0 0 0 8px rgba(255,171,0, .4); background: #ffad01; }
+	box-shadow: 0 0 0 8px rgba(255,171,0, .4); background: #DBA159; }
 
 
 /* ---------------------------------
 8. ACCORDIANS
 --------------------------------- */
 .accordion {
-  background-color: #FFAD01;
+  background-color: #DBA159;
   color: #fff;
   cursor: pointer;
   padding: 12px 20px;
