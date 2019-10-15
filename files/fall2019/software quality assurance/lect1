@@ -1,0 +1,29 @@
+COMP 3053 - SOFTWARE QUALITY ASSURANCE
+DAVE
+
+60% - exam, 40% - coursework
+
+kaizen - continuous improvement
+refactoring - not changing the functionality, tiding up the code
+re-engineering - changing the functionality
+
+lect2
+
+software project failing, not completed on time, completed on time but too expensive
+quality is what delights the customer
+v model, srs turns into acceptance tests.
+requirements should be measured
+
+
+lecture 3
+partition testing
+sampling
+SUT - system (software) under test
+PRNG - Pseudo Random Number Generator
+RT vs PT
+F measure - how many test cases you need to execute before you find a failure
+Oracle problem
+Metamorphic testing
+
+lecture 4
+look at slides
