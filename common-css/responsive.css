@@ -149,7 +149,7 @@
 	4. INTRO SECTION
 	--------------------------------- */
 
-	.intro .profile-img{ width: 80%; height: auto; top: 0; margin-bottom: 10px; }
+	.intro .profile-img{ width: 80%; height: auto; top: 0; margin-top: 100px; }
 
 	.intro{ padding: 20px 10px 0; margin-right: -15px; margin-left: -15px; }
 
