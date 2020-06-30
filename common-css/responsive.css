@@ -136,25 +136,8 @@
 
 	.intro{ padding: 20px 10px 0; margin-right: -15px; margin-left: -15px; top: 50px }
 
-	.dot {
-		height: 1px;
-		width: 1px;
-		background-color: #ff0000;
-		border-radius: 50%;
-		display: inline-block;
-	}
-
-	.dot-empty {
-		height: 1px;
-		width: 1px;
-		background-color: #c0c0c0;
-		border-radius: 50%;
-		display: inline-block;
-	}
-
-	.p-skills{
-		font-size: 1px;
-		margin-bottom: 30px;
+	.skills{
+		background: #ff0000;
 	}
 
 }
