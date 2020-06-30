@@ -141,7 +141,7 @@
 		width: 5px;
 		background-color: #ff0000;
 		border-radius: 50%;
-		display: inline;
+		display: inline-block;
 	}
 
 	.dot-empty {
@@ -149,7 +149,7 @@
 		width: 5px;
 		background-color: #c0c0c0;
 		border-radius: 50%;
-		display: inline;
+		display: inline-block;
 	}
 
 	.p-skills{
