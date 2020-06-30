@@ -294,6 +294,7 @@ header .downlad-btn:hover{ -webkit-transform: translateY(-4px); transform: trans
 }
 
 .dot {
+	float: right;
   height: 25px;
   width: 25px;
   background-color: #012959;
@@ -302,6 +303,7 @@ header .downlad-btn:hover{ -webkit-transform: translateY(-4px); transform: trans
 }
 
 .dot-empty {
+	float: right;
   height: 25px;
   width: 25px;
   background-color: #c0c0c0;
@@ -310,6 +312,5 @@ header .downlad-btn:hover{ -webkit-transform: translateY(-4px); transform: trans
 }
 
 .p-skills{
-	font-size: 20px;
-	margin-bottom: 30px;
+	margin-bottom: 10px;
 }

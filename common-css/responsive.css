@@ -136,10 +136,6 @@
 
 	.intro{ padding: 20px 10px 0; margin-right: -15px; margin-left: -15px; top: 50px }
 
-	.skills{
-		background: #ff0000;
-	}
-
 }
 
 /* Screens Resolution : 359px
@@ -162,7 +158,7 @@
 -------------------------------------------------------------------------- */
 @media only screen and (max-width: 290px) {
 
-
+	
 }
 
 /* Screens Resolution : 290px
