@@ -137,16 +137,16 @@
 	.intro{ padding: 20px 10px 0; margin-right: -15px; margin-left: -15px; top: 50px }
 
 	.dot {
-		height: 8px;
-		width: 8px;
+		height: 5px;
+		width: 5px;
 		background-color: #00ff00;
 		border-radius: 50%;
 		display: inline-block;
 	}
 
 	.dot-empty {
-		height: 8px;
-		width: 8px;
+		height: 5px;
+		width: 5px;
 		background-color: #c0c0c0;
 		border-radius: 50%;
 		display: inline-block;
