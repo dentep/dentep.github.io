@@ -99,6 +99,27 @@
 
 	.portfolio-section .p-item{ width: 100%; }
 
+	.dot {
+	  height: 20px;
+	  width: 20px;
+	  background-color: #012959;
+	  border-radius: 50%;
+	  display: inline-block;
+	}
+
+	.dot-empty {
+	  height: 20px;
+	  width: 20px;
+	  background-color: #c0c0c0;
+	  border-radius: 50%;
+	  display: inline-block;
+	}
+
+	.p-skills{
+		font-size: 15px;
+		margin-bottom: 30px;
+	}
+
 }
 
 /* Screens Resolution : 479px
