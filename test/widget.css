@@ -17,14 +17,13 @@ div {
     color: red;
 }
 
+
 .btnItem {
-    font-family: "Century Gothic", "Century Gothic", sans-serif !important
-    /*background-color: #E5E4E2;*/
-    background-color: rgba(255, 0, 0);
     border: 2px #E5E4E2;
+    background-color: #E5E4E2;
     color: black;
-    margin-top: 0;
-    margin-bottom: 0;
+    margin-top: 10;
+    margin-bottom: 10;
     padding-top: 20px;
     padding-bottom: 20px;
     text-align: center;
