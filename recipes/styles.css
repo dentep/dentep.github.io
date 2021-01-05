@@ -83,7 +83,7 @@ div.gallery img {
 div.desc {
   font-weight: bold;
   padding: 15px;
-  font-size: 20px;
+  font-size: 15px;
   text-align: center;
 }
 
@@ -98,4 +98,29 @@ div.desc {
   .responsive {
     width: 100%;
   }
+}
+
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.collapsible {
+  background-color: #fff;
+  color: white;
+  cursor: pointer;
+  padding: inherit;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: 15px;
+}
+
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
 }

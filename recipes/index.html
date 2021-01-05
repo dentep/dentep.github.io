@@ -15,7 +15,7 @@
     <div id="myBtnContainer">
       <button class="btn active" onclick="filterSelection('all')"> Все Меню</button>
       <button class="btn" onclick="filterSelection('food')"> Рецепты</button>
-      <button class="btn" onclick="filterSelection('drinks')"> Коктейли</button>
+      <button class="btn" onclick="filterSelection('drinks')"> Напитки</button>
     </div>
 
     <!-- Portfolio Gallery Grid -->
@@ -103,10 +103,89 @@
 
       <div class="responsive drinks">
         <div class="gallery">
-          <a target="_blank" href="https://dentep.github.io/recipes/files/hawaiiChicken.pdf">
-            <img src="images/hawaiiChicken.jpg" alt="Курица по гавайски" width="240" height="240">
-          </a>
-          <div class="desc">Курица по-Гавайски</div>
+          <img class="collapsible" src="images/bols_blue.jpg" alt="Blue Hawaii" width="240" height="240">
+          <div class="content">
+            <section id="ingred">
+            <h2>Indgridients</h2>
+            <table style="width:100%">
+              <tr>
+                <td>Bols Blue Curacao</td>
+                <td>30 ML</td>
+              </tr>
+              <tr>
+                <td>Vodka</td>
+                <td>30 ML</td>
+              </tr>
+              <tr>
+                <td>Fresh Lime Juice</td>
+                <td>15 ML</td>
+              </tr>
+              <tr>
+                <td>Sugar Syrup</td>
+                <td>10 ML</td>
+              </tr>
+              <tr>
+                <td>Pineapple Juice</td>
+                <td>90 ML</td>
+              </tr>
+            </table>
+            </section>
+
+            <section id="steps">
+            <h2>Instructions</h2>
+            <table style="width:100%">
+              <tr>
+                <td>Mix all ingridients in a shaker filled with ice</td>
+              </tr>
+              <tr>
+                <td>Shake and pour in a glass filled with ice</td>
+              </tr>
+            </table>
+            </section>
+          </div>
+          <div class="desc">Blue Hawaii</div>
+        </div>
+      </div>
+
+      <div class="responsive drinks">
+        <div class="gallery">
+          <img class="collapsible" src="images/banana_daiquiri.jpg" alt="Banana Daiquiri" width="240" height="240">
+            <div class="content">
+              <section id="ingred">
+              <h2>Indgridients</h2>
+              <table style="width:100%">
+                <tr>
+                  <td>Bols Banana</td>
+                  <td>25 ML</td>
+                </tr>
+                <tr>
+                  <td>White Rum</td>
+                  <td>45 ML</td>
+                </tr>
+                <tr>
+                  <td>Fresh Lime Juice</td>
+                  <td>25 ML</td>
+                </tr>
+                <tr>
+                  <td>Sugar Syrup</td>
+                  <td>10 ML</td>
+                </tr>
+              </table>
+              </section>
+
+              <section id="steps">
+              <h2>Instructions</h2>
+              <table style="width:100%">
+                <tr>
+                  <td>Mix all ingridients in a shaker filled with ice</td>
+                </tr>
+                <tr>
+                  <td>Shake and pour in a martinini or coupe glass</td>
+                </tr>
+              </table>
+              </section>
+            </div>
+          <div class="desc">Banana Daiquiri</div>
         </div>
       </div>
     <!-- END GRID -->
