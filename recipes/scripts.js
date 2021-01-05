@@ -1,7 +1,7 @@
 filterSelection("all")
 function filterSelection(c) {
   var x, i;
-  x = document.getElementsByClassName("column");
+  x = document.getElementsByClassName("responsive");
   if (c == "all") c = "";
   for (i = 0; i < x.length; i++) {
     w3RemoveClass(x[i], "show");

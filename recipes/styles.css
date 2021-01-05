@@ -10,9 +10,8 @@ body {
 
 /* Center website */
 .main {
-  align-content: center;
   max-width: 100%;
-  margin: 10px;
+  margin: auto;
 }
 
 h1 {
@@ -21,7 +20,7 @@ h1 {
 }
 
 .row {
-  margin: 10px -16px;
+  margin: 10px -12px;
 }
 
 /* Add padding BETWEEN each column */
@@ -30,11 +29,25 @@ h1 {
   padding: 8px;
 }
 
-/* Create three equal columns that floats next to each other */
-.column {
+.responsive {
+  padding: 0 6px;
   float: left;
-  width: 25 %;
-  display: none; /* Hide all elements by default */
+  width: 24.99999%;
+  margin-bottom: 30px;
+  display: none;
+}
+
+div.gallery {
+  border: 1px solid #ccc;
+}
+
+div.gallery:hover {
+  border: 1px solid #777;
+}
+
+div.gallery img {
+  width: 100%;
+  height: auto;
 }
 
 /* Clear floats after rows */
@@ -42,12 +55,6 @@ h1 {
   content: "";
   display: table;
   clear: both;
-}
-
-/* Content */
-.content {
-  background-color: white;
-  padding: 10px;
 }
 
 /* The "show" class is added to the filtered elements */
@@ -78,4 +85,17 @@ div.desc {
   padding: 15px;
   font-size: 20px;
   text-align: center;
+}
+
+@media only screen and (max-width: 700px) {
+  .responsive {
+    width: 49.99999%;
+    margin: 6px 0;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .responsive {
+    width: 100%;
+  }
 }
