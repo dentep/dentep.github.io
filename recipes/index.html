@@ -1,140 +1,119 @@
 <!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <title>Рецепты</title>
+<html>
+<head>
+    <title>Страшно, просто страшно</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="Content-Language" content="ru">
-    <style>
-    div.gallery {
-      border: 1px solid #ccc;
-    }
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- MAIN (Center website) -->
+  <div class="main">
+    <h1>Меню</h1><hr>
 
-    div.gallery:hover {
-      border: 1px solid #777;
-    }
-
-    div.gallery img {
-      width: 100%;
-      height: auto;
-    }
-
-    div.desc {
-      padding: 15px;
-      text-align: center;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    .responsive {
-      padding: 0 6px;
-      float: left;
-      width: 24.99999%;
-      margin-bottom: 30px;
-    }
-
-    @media only screen and (max-width: 700px) {
-      .responsive {
-        width: 49.99999%;
-        margin: 6px 0;
-      }
-    }
-
-    @media only screen and (max-width: 500px) {
-      .responsive {
-        width: 100%;
-      }
-    }
-
-    .clearfix:after {
-      content: "";
-      display: table;
-      clear: both;
-    }
-    </style>
-  </head>
-
-  <body>
-    <div class="responsive">
-      <div class="gallery">
-        <a target="_blank" href="https://dentep.github.io/recipes/files/chickenAlfredo.pdf">
-          <img src="images/chickenalfredo.jpg" alt="Курица Альфредо" width="500" height="500">
-        </a>
-        <div class="desc">Курица Альфредо</div>
-      </div>
+    <div id="myBtnContainer">
+      <button class="btn active" onclick="filterSelection('all')"> Все Меню</button>
+      <button class="btn" onclick="filterSelection('food')"> Рецепты</button>
+      <button class="btn" onclick="filterSelection('drinks')"> Коктейли</button>
     </div>
 
-    <div class="responsive">
-      <div class="gallery">
-        <a target="_blank" href="https://dentep.github.io/recipes/files/kungpaochicken.pdf">
-          <img src="images/kungpao.jpg" alt="Кунг Пао" width="500" height="500">
-        </a>
-        <div class="desc">Курица Кунг Пао</div>
+    <!-- Portfolio Gallery Grid -->
+    <div class="row">
+      <div class="column food">
+        <div class="content">
+          <a target="_blank" href="https://dentep.github.io/recipes/files/chickenAlfredo.pdf">
+            <img src="images/chickenalfredo.jpg" alt="Курица Альфредо"  width="240" height="240">
+          </a>
+          <div class="desc">Курица Альфредо</div>
+        </div>
       </div>
-    </div>
 
-    <div class="responsive">
-      <div class="gallery">
-        <a target="_blank" href="https://dentep.github.io/recipes/files/hawaiiChicken.pdf">
-          <img src="images/hawaiiChicken.jpg" alt="Курица по гавайски" width="500" height="500">
-        </a>
-        <div class="desc">Курица по-Гавайски</div>
+      <div class="column food">
+        <div class="content">
+          <a target="_blank" href="https://dentep.github.io/recipes/files/kungpaochicken.pdf">
+            <img src="images/kungpao.jpg" alt="Кунг Пао" width="240" height="240">
+          </a>
+          <div class="desc">Курица Кунг Пао</div>
+        </div>
       </div>
-    </div>
 
-    <div class="responsive">
-      <div class="gallery">
-        <a target="_blank" href="https://dentep.github.io/recipes/files/orangechicken.pdf">
-          <img src="images/orangeChicken.jpg" alt="Оранжевая Курица" width="500" height="500">
-        </a>
-        <div class="desc">Оранжевая Курица</div>
+      <div class="column food">
+        <div class="content">
+          <a target="_blank" href="https://dentep.github.io/recipes/files/hawaiiChicken.pdf">
+            <img src="images/hawaiiChicken.jpg" alt="Курица по гавайски" width="240" height="240">
+          </a>
+          <div class="desc">Курица по-Гавайски</div>
+        </div>
       </div>
-    </div>
 
-    <div class="responsive">
-      <div class="gallery">
-        <a target="_blank" href="https://dentep.github.io/recipes/files/beijingbeef.pdf">
-          <img src="images/beijingBeef.jpg" alt="пекинская говядина" width="500" height="500">
-        </a>
-        <div class="desc">Пекинская Говядина</div>
+      <div class="column food">
+        <div class="content">
+          <a target="_blank" href="https://dentep.github.io/recipes/files/orangechicken.pdf">
+            <img src="images/orangeChicken.jpg" alt="Оранжевая Курица"  width="240" height="240">
+          </a>
+          <div class="desc">Оранжевая Курица</div>
+        </div>
       </div>
-    </div>
 
-    <div class="responsive">
-      <div class="gallery">
-        <a target="_blank" href="https://dentep.github.io/recipes/files/mushroomchicken.pdf">
-          <img src="images/mushroomChicken.jpg" alt="Курица с Грибами" width="500" height="500">
-        </a>
-        <div class="desc">Курица с Грибами</div>
+      <div class="column food">
+        <div class="content">
+          <a target="_blank" href="https://dentep.github.io/recipes/files/beijingbeef.pdf">
+            <img src="images/beijingBeef.jpg" alt="пекинская говядина" width="240" height="240">
+          </a>
+          <div class="desc">Пекинская Говядина</div>
+        </div>
       </div>
-    </div>
 
-    <div class="responsive">
-      <div class="gallery">
-        <a target="_blank" href="https://dentep.github.io/recipes/files/cannelloni.pdf">
-          <img src="images/canneloni.jpg" alt="Канелонни" width="500" height="500">
-        </a>
-        <div class="desc">Канелонни</div>
+      <div class="column food">
+        <div class="content">
+          <a target="_blank" href="https://dentep.github.io/recipes/files/mushroomchicken.pdf">
+            <img src="images/mushroomChicken.jpg" alt="Курица с Грибами" width="240" height="240">
+          </a>
+          <div class="desc">Курица с Грибами</div>
+        </div>
       </div>
-    </div>
 
-    <div class="responsive">
-      <div class="gallery">
-        <a target="_blank" href="https://dentep.github.io/recipes/files/stewedvegetables.pdf">
-          <img src="images/stewedVegetables.jpg" alt="Тушеные Овощи" width="500" height="500">
-        </a>
-        <div class="desc">Тушеные Овощи</div>
+      <div class="column food">
+        <div class="content">
+          <a target="_blank" href="https://dentep.github.io/recipes/files/cannelloni.pdf">
+            <img src="images/canneloni.jpg" alt="Канелонни" width="240" height="240">
+          </a>
+          <div class="desc">Канелонни</div>
+        </div>
       </div>
-    </div>
 
-    <div class="responsive">
-      <div class="gallery">
-        <a target="_blank" href="https://dentep.github.io/recipes/files/cinnabon.pdf">
-          <img src="images/cinamonRoll.jpg" alt="Синнабон" width="500" height="500">
-        </a>
-        <div class="desc">Синнабон</div>
+      <div class="column food">
+        <div class="content">
+          <a target="_blank" href="https://dentep.github.io/recipes/files/stewedvegetables.pdf">
+            <img src="images/stewedVegetables.jpg" alt="Тушеные Овощи" width="240" height="240">
+          </a>
+          <div class="desc">Тушеные Овощи</div>
+        </div>
       </div>
+
+      <div class="column food">
+        <div class="content">
+          <a target="_blank" href="https://dentep.github.io/recipes/files/cinnabon.pdf">
+            <img src="images/cinamonRoll.jpg" alt="Синнабон" width="240" height="240">
+          </a>
+          <div class="desc">Синнабон</div>
+        </div>
+      </div>
+
+      <div class="column drinks">
+        <div class="content">
+          <a target="_blank" href="https://dentep.github.io/recipes/files/hawaiiChicken.pdf">
+            <img src="images/hawaiiChicken.jpg" alt="Курица по гавайски" width="240" height="240">
+          </a>
+          <div class="desc">Курица по-Гавайски</div>
+        </div>
+      </div>
+    <!-- END GRID -->
     </div>
-  </body>
+  <!-- END MAIN -->
+  </div>
+
+<script src="scripts.js"></script>
+</body>
 </html>
