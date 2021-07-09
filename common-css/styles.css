@@ -302,9 +302,9 @@ header .downlad-btn:hover{ -webkit-transform: translateY(-4px); transform: trans
   display: inline-block;
 }
 
-.skillsNumber {
-	height: 25px;
+.p-skillsNumber {
 	float: right;
+	background-color: #c0c0c0;
 }
 
 .dot-empty {
