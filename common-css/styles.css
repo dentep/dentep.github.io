@@ -302,6 +302,11 @@ header .downlad-btn:hover{ -webkit-transform: translateY(-4px); transform: trans
   display: inline-block;
 }
 
+.skillsNumber {
+	float: right;
+  display: inline-block;
+}
+
 .dot-empty {
 	float: right;
   height: 25px;
