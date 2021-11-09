@@ -27,6 +27,11 @@
 1. PRIMARY STYLES
 --------------------------------- */
 
+@font-face {
+    font-family: 'Geometria'; /*a name to be used later*/
+    src: url('../fonts/geometria.ttf'); /*URL to font*/
+}
+
 html{ font-size: 100%; height: 100%; overflow-x: hidden; margin: 0px;  padding: 0px; touch-action: manipulation; }
 
 
@@ -192,6 +197,25 @@ header .downlad-btn:hover{ -webkit-transform: translateY(-4px); transform: trans
   height: auto;
   transition: .5s ease;
   backface-visibility: hidden;
+}
+
+.container-in-image {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	white-space: nowrap;
+}
+.text-in-image {
+	font-size: 60px;
+	background: #121FCF;
+	font-family: 'Geometria';
+	background: #CFE7FA;
+	background: -webkit-linear-gradient(to bottom, #CFE7FA 24%, #6393C1 100%);
+	background: -moz-linear-gradient(to bottom, #CFE7FA 24%, #6393C1 100%);
+	background: linear-gradient(to bottom, #CFE7FA 24%, #6393C1 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
 
 .middle {
