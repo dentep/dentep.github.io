@@ -1,0 +1,167 @@
+% =============================================================================
+% Denis Stepanov — CV (Russian)
+% Layout: sidebar on the LEFT (education, achievements, publications,
+% languages); main column on the RIGHT (experiences with bullets).
+% Built on AltaCV (LianTze Lim, v1.1.5). Compile with: tectonic resume_ru.tex
+% =============================================================================
+
+\documentclass[10pt,a4paper,ragged2e]{altacv}
+
+% ─── Page layout ──────────────────────────────────────────────────────────────
+% Sidebar lives in the LEFT margin (left=10cm reserves space for it).
+\geometry{
+  left=10cm, right=2cm,
+  marginparwidth=6.8cm, marginparsep=1.2cm,
+  top=0.6cm, bottom=1.25cm
+}
+
+% Put \marginpar content on the LEFT instead of the default right.
+\reversemarginpar
+
+% ─── Packages ─────────────────────────────────────────────────────────────────
+\usepackage[super]{nth}
+\usepackage{float}
+\usepackage{changepage}  % already loaded by altacv but re-declaring for clarity
+% Note: altacv.cls has been locally patched to load biblatex with backend=bibtex
+% (this CV doesn't print a bibliography, so biber doesn't need to run).
+
+% Redefine \fullwidth so it extends LEFT into the sidebar gutter instead of
+% right (matches the mirrored layout). AltaCV's original definition extends
+% the right side; we extend the left.
+\renewenvironment{fullwidth}{%
+  \begin{adjustwidth}{\dimexpr-\marginparwidth-\marginparsep\relax}{}}%
+  {\end{adjustwidth}}
+
+% ─── Fonts & language ─────────────────────────────────────────────────────────
+% Tectonic uses XeTeX, so the xetex branch is the active one.
+\ifxetexorluatex
+  \usepackage{fontspec}
+  \usepackage[english,russian]{babel}
+  \setmainfont{Carlito}[Script=Cyrillic]
+\else
+  \usepackage[utf8]{inputenc}
+  \usepackage[T2A,T1]{fontenc}
+  \usepackage[russian]{babel}
+  \usepackage[default]{lato}
+\fi
+
+% ─── Theme colors ─────────────────────────────────────────────────────────────
+\definecolor{VividPurple}{HTML}{195e84}  % accent / headings
+\definecolor{SlateGrey}{HTML}{2E2E2E}    % body
+\colorlet{heading}{VividPurple}
+\colorlet{accent}{VividPurple}
+\colorlet{emphasis}{SlateGrey}
+\colorlet{body}{SlateGrey}
+
+% ─── Bullets ──────────────────────────────────────────────────────────────────
+\renewcommand{\itemmarker}{{\small\textbullet}}
+\renewcommand{\ratingmarker}{\faCircle}
+
+% Slightly smaller font inside \begin{itemize}.
+\AtBeginEnvironment{itemize}{\small}
+
+% Custom contact field for Telegram (AltaCV has no built-in one).
+\newcommand{\telegram}[1]{\printinfo{\faPaperPlane}{#1}}
+
+
+\begin{document}
+
+% =============================================================================
+% HEADER
+% =============================================================================
+\name{Денис Степанов}
+\tagline{Mobile \& Frontend Developer}
+\photo{3.3cm}{profile.jpg}
+\personalinfo{
+  \email{dentep78@gmail.com}
+  \phone{+79933518359}
+  \telegram{t.me/denistepp}
+  \location{Дананг, Вьетнам (GMT+7)}
+  \homepage{dentep.github.io/}
+  \github{https://github.com/dentep}
+}
+
+\begin{fullwidth}
+  \makecvheader
+\end{fullwidth}
+
+\vspace{0.4cm}
+\begin{fullwidth}
+\small Разработчик мобильных приложений с 5+ годами опыта в React Native.
+Веду проекты от прототипа до релиза в App Store и Google Play.
+Открыт к удалённой работе и релокации.
+\end{fullwidth}
+\vspace{0.2cm}
+
+
+% =============================================================================
+% MAIN COLUMN (right) — Опыт работы
+% Sidebar content lives in page1sidebar.tex (Образование, Достижения,
+% Публикации, Языки), attached to the first \cvsection below.
+% =============================================================================
+
+\cvsection[page1sidebar]{Опыт работы (7+ лет)}
+
+% ─── MD Audit ────────────────────────────────────────────────────────────────
+\cvevent
+  {Frontend Разработчик (Vue)}
+  {MD Audit}
+  {Май 2025 -- Сейчас}
+  {Удалённо}
+\begin{itemize}
+  \item Разработка веб-интерфейсов на Vue для внутренних аудиторских сервисов.
+\end{itemize}
+\divider
+
+% ─── Softline AG ─────────────────────────────────────────────────────────────
+\cvevent
+  {Mobile Dev Lead}
+  {Softline AG}
+  {Июнь 2022 -- Май 2025}
+  {Удалённо}
+\begin{itemize}
+  \item Возглавлял команду мобильной разработки, выпустил 100+ релизов в production.
+  \item Снизил частоту крашей и улучшил стабильность приложений на 94\% за 3 года.
+  \item Внедрил процессы код-ревью, CI/CD и автотестирования.
+  \item Участвовал в найме и менторинге младших разработчиков.
+\end{itemize}
+\divider
+
+% ─── Briskly ─────────────────────────────────────────────────────────────────
+\cvevent
+  {Тимлид Разработки Мобильных Приложений}
+  {Briskly}
+  {Март 2021 -- Июль 2022}
+  {Москва, Россия}
+\begin{itemize}
+  \item Руководил разработкой B2C приложения B-PAY (300 000+ загрузок).
+  \item Выпустил CRM-приложение Briskly Business для продавцов розничной сети.
+  \item Координировал работу команды из 4 разработчиков.
+\end{itemize}
+\divider
+
+% ─── Sycret ──────────────────────────────────────────────────────────────────
+\cvevent
+  {Senior Разработчик Мобильных Приложений}
+  {Sycret}
+  {Май 2020 -- Апрель 2021}
+  {Москва, Россия}
+\begin{itemize}
+  \item Мигрировал CRM-приложение с C\#/Xamarin на React Native.
+  \item Поддерживал линейку из 22 white-label приложений на iOS и Android.
+  \item Реализовал интеграции с REST API, push-уведомлениями и аналитикой.
+\end{itemize}
+\divider
+
+% ─── UNNC ────────────────────────────────────────────────────────────────────
+\cvevent
+  {Дизайнер Виртуальной Среды (VE)}
+  {University of Nottingham Ningbo China}
+  {Июнь 2019 -- Май 2020}
+  {Нинбо, Китай}
+\begin{itemize}
+  \item Создал 4D VR-окружение для обучения студентов гражданскому строительству.
+  \item Результаты работы опубликованы в материалах конференций IEEE.
+\end{itemize}
+
+\end{document}

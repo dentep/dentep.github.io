@@ -1,0 +1,160 @@
+% =============================================================================
+% Denis Stepanov — CV (English)
+% Layout: sidebar on the LEFT (education, skills, achievements, publications,
+% languages); main column on the RIGHT (experiences with bullets).
+% Built on AltaCV (LianTze Lim, v1.1.5). Compile with: tectonic mmayer.tex
+% =============================================================================
+
+\documentclass[10pt,a4paper,ragged2e]{altacv}
+
+% ─── Page layout ──────────────────────────────────────────────────────────────
+% Sidebar lives in the LEFT margin (left=10cm reserves space for it).
+\geometry{
+  left=10cm, right=2cm,
+  marginparwidth=6.8cm, marginparsep=1.2cm,
+  top=0.6cm, bottom=1.25cm
+}
+
+% Put \marginpar content on the LEFT instead of the default right.
+\reversemarginpar
+
+% ─── Packages ─────────────────────────────────────────────────────────────────
+\usepackage[super]{nth}
+\usepackage{float}
+\usepackage{changepage}  % already loaded by altacv but re-declaring for clarity
+% Note: altacv.cls has been locally patched to load biblatex with backend=bibtex
+% (this CV doesn't print a bibliography, so biber doesn't need to run).
+
+% Redefine \fullwidth so it extends LEFT into the sidebar gutter instead of
+% right (matches the mirrored layout).
+\renewenvironment{fullwidth}{%
+  \begin{adjustwidth}{\dimexpr-\marginparwidth-\marginparsep\relax}{}}%
+  {\end{adjustwidth}}
+
+% ─── Font ─────────────────────────────────────────────────────────────────────
+\ifxetexorluatex
+  \usepackage{fontspec}
+  \setmainfont{Carlito}
+\else
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage[default]{lato}
+\fi
+
+% ─── Theme colors ─────────────────────────────────────────────────────────────
+\definecolor{VividPurple}{HTML}{195e84}
+\definecolor{SlateGrey}{HTML}{2E2E2E}
+\colorlet{heading}{VividPurple}
+\colorlet{accent}{VividPurple}
+\colorlet{emphasis}{SlateGrey}
+\colorlet{body}{SlateGrey}
+
+% ─── Bullets ──────────────────────────────────────────────────────────────────
+\renewcommand{\itemmarker}{{\small\textbullet}}
+\renewcommand{\ratingmarker}{\faCircle}
+\AtBeginEnvironment{itemize}{\small}
+
+% Custom contact field for Telegram (AltaCV has no built-in one).
+\newcommand{\telegram}[1]{\printinfo{\faPaperPlane}{#1}}
+
+
+\begin{document}
+
+% =============================================================================
+% HEADER
+% =============================================================================
+\name{Denis Stepanov}
+\tagline{Mobile \& Frontend Developer}
+\photo{3.3cm}{profile.jpg}
+\personalinfo{
+  \email{dentep78@gmail.com}
+  \phone{+79933518359}
+  \telegram{t.me/denistepp}
+  \location{Da Nang, Vietnam (GMT+7)}
+  \homepage{dentep.github.io/}
+  \github{https://github.com/dentep}
+}
+
+\begin{fullwidth}
+  \makecvheader
+\end{fullwidth}
+
+\vspace{0.4cm}
+\begin{fullwidth}
+\small Mobile application developer with 5+ years of experience in React Native.
+I lead projects from prototype to release on the App Store and Google Play.
+Open to remote work and relocation.
+\end{fullwidth}
+\vspace{0.2cm}
+
+
+% =============================================================================
+% MAIN COLUMN (right) — Experiences
+% Sidebar content lives in page1sidebar.tex.
+% =============================================================================
+
+\cvsection[page1sidebar]{Experiences (7+ years)}
+
+% ─── MD Audit ────────────────────────────────────────────────────────────────
+\cvevent
+  {Frontend Developer (Vue)}
+  {MD Audit}
+  {May 2025 -- Now}
+  {Remote}
+\begin{itemize}
+  \item Building Vue-based web interfaces for internal audit tooling.
+\end{itemize}
+\divider
+
+% ─── Softline AG ─────────────────────────────────────────────────────────────
+\cvevent
+  {Mobile Dev Lead}
+  {Softline AG}
+  {June 2022 -- May 2025}
+  {Remote}
+\begin{itemize}
+  \item Led the mobile development team and shipped 100+ production releases.
+  \item Reduced crash rate and improved app stability by 94\% over 3 years.
+  \item Introduced code review, CI/CD and automated testing processes.
+  \item Participated in hiring and mentoring of junior developers.
+\end{itemize}
+\divider
+
+% ─── Briskly ─────────────────────────────────────────────────────────────────
+\cvevent
+  {Mobile Application Development Team Lead}
+  {Briskly}
+  {March 2021 -- July 2022}
+  {Moscow, Russia}
+\begin{itemize}
+  \item Led the development of the B2C app B-PAY (300,000+ downloads).
+  \item Released the Briskly Business CRM app for retail merchants.
+  \item Coordinated a team of 4 developers.
+\end{itemize}
+\divider
+
+% ─── Sycret ──────────────────────────────────────────────────────────────────
+\cvevent
+  {Senior Mobile Application Developer}
+  {Sycret}
+  {May 2020 -- April 2021}
+  {Moscow, Russia}
+\begin{itemize}
+  \item Migrated the CRM application from C\#/Xamarin to React Native.
+  \item Maintained a portfolio of 22 white-label apps on iOS and Android.
+  \item Implemented integrations with REST APIs, push notifications and analytics.
+\end{itemize}
+\divider
+
+% ─── UNNC ────────────────────────────────────────────────────────────────────
+\cvevent
+  {Virtual Environment (VE) Designer}
+  {University of Nottingham Ningbo China}
+  {June 2019 -- May 2020}
+  {Ningbo, China}
+\begin{itemize}
+  \item Built a 4D VR environment for teaching civil engineering students.
+  \item Results were published in IEEE conference proceedings.
+\end{itemize}
+
+\end{document}

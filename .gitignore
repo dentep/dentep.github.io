@@ -21,3 +21,17 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# LaTeX build artifacts (ResumeRU)
+ResumeRU/build/
+ResumeRU/*.aux
+ResumeRU/*.bbl
+ResumeRU/*.bcf
+ResumeRU/*.blg
+ResumeRU/*.log
+ResumeRU/*.out
+ResumeRU/*.run.xml
+ResumeRU/*.toc
+ResumeRU/*.fls
+ResumeRU/*.fdb_latexmk
+ResumeRU/*.synctex.gz
