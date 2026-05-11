@@ -62,12 +62,18 @@
       "Bash(pdfinfo CV_RU.pdf)",
       "Bash(pdfinfo CV_EN.pdf)",
       "Bash(pdftoppm -r 200 -png CV_RU.pdf /tmp/cv_preview/ru)",
-      "Bash(pdftoppm -r 200 -png CV_EN.pdf /tmp/cv_preview/en)"
+      "Bash(pdftoppm -r 200 -png CV_EN.pdf /tmp/cv_preview/en)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:8765/index.html)",
+      "Bash(python3 -m http.server 8765 > /tmp/serverlog 2>&1 & *)",
+      "Bash(curl -s http://localhost:8765/index.html)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:8765/CV_EN.pdf)",
+      "Bash(kill 76057)"
     ],
     "additionalDirectories": [
       "/Users/denisstepanov/.claude/projects/-Users-denisstepanov-Documents-GitHub-dentep-github-io",
       "/private/tmp/cv_preview",
-      "/tmp/cv_preview"
+      "/tmp/cv_preview",
+      "/tmp"
     ]
   }
 }

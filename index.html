@@ -62,6 +62,37 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
+      /* Language switcher — pinned to the far right, on its own row directly
+         above the other navbar buttons. */
+      .navbar-right,
+      .navbar-small-right {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        align-items: flex-end;
+      }
+      .lang-switcher {
+        display: flex;
+        flex-basis: 100%;
+        justify-content: flex-end;
+        gap: 0.75rem;
+        margin-bottom: 0.4rem;
+        order: -1;  /* render first within the flex container = appears on top row */
+      }
+      /* Active language: solid underline visible. Inactive: dimmed. */
+      a[data-lang] .button-text-line { opacity: 0; transition: opacity 0.2s ease; }
+      a[data-lang].active .button-text-line { opacity: 1; }
+      a[data-lang]:not(.active) { opacity: 0.55; transition: opacity 0.2s ease; }
+      a[data-lang]:not(.active):hover { opacity: 0.85; }
+
+      /* Override Webflow's "Section Hide [75%]" scroll interaction on the
+         services section. Without this, when the user scrolls past the last
+         project (B-Pay) the section fades to opacity 0 + scales down, which
+         looks like the page is tinting/disappearing. We force the section to
+         stay fully visible regardless of scroll progress. */
+      .section-home-services {
+        opacity: 1 !important;
+        transform: none !important;
+      }
     </style>
   </head>
   <body class="body">
@@ -88,7 +119,7 @@
                 href="work.html"
                 class="navbar-menu-item w-inline-block"
               >
-                <div class="navbar-menu-item-text">Work</div>
+                <div class="navbar-menu-item-text" data-i18n="nav.work">Work</div>
                 <div class="navbar-item-line"></div>
               </a>
               <a
@@ -96,7 +127,7 @@
                 href="service.html"
                 class="navbar-menu-item w-inline-block"
               >
-                <div class="navbar-menu-item-text">Service</div>
+                <div class="navbar-menu-item-text" data-i18n="nav.service">Service</div>
                 <div class="navbar-item-line"></div>
               </a>
               <a
@@ -104,7 +135,7 @@
                 href="about.html"
                 class="navbar-menu-item w-inline-block"
               >
-                <div class="navbar-menu-item-text">About</div>
+                <div class="navbar-menu-item-text" data-i18n="nav.about">About</div>
                 <div class="navbar-item-line"></div>
               </a>
               <a
@@ -112,7 +143,7 @@
                 href="blog.html"
                 class="navbar-menu-item w-inline-block"
               >
-                <div class="navbar-menu-item-text">Blog</div>
+                <div class="navbar-menu-item-text" data-i18n="nav.blog">Blog</div>
                 <div class="navbar-item-line"></div>
               </a>
             </nav>
@@ -125,22 +156,36 @@
                 class="button-text w-inline-block"
               >
                 <div class="button-text-inner">
-                  <div class="button-text-text">Let&#x27;s Talk</div>
+                  <div class="button-text-text" data-i18n="nav.talk">Let's Talk</div>
                   <div class="button-text-line"></div>
                 </div>
               </a>
               <a href="CV_EN.pdf" class="button-text w-inline-block">
                 <div class="button-text-inner">
-                  <div class="button-text-text">View CV (EN)</div>
+                  <div class="button-text-text" data-i18n="nav.cv_en">View CV (EN)</div>
                   <div class="button-text-line"></div>
                 </div>
               </a>
               <a href="CV_RU.pdf" class="button-text w-inline-block">
                 <div class="button-text-inner">
-                  <div class="button-text-text">View CV (RU)</div>
+                  <div class="button-text-text" data-i18n="nav.cv_ru">View CV (RU)</div>
                   <div class="button-text-line"></div>
                 </div>
               </a>
+              <div class="lang-switcher">
+                <a href="#" class="button-text w-inline-block" data-lang="en">
+                  <div class="button-text-inner">
+                    <div class="button-text-text">EN</div>
+                    <div class="button-text-line"></div>
+                  </div>
+                </a>
+                <a href="#" class="button-text w-inline-block" data-lang="ru">
+                  <div class="button-text-inner">
+                    <div class="button-text-text">RU</div>
+                    <div class="button-text-line"></div>
+                  </div>
+                </a>
+              </div>
             </div>
           </header>
         </header>
@@ -153,13 +198,13 @@
           >
             <a href="CV_EN.pdf" class="button-text w-inline-block">
               <div class="button-text-inner">
-                <div class="button-text-text">View CV (EN)</div>
+                <div class="button-text-text" data-i18n="nav.cv_en">View CV (EN)</div>
                 <div class="button-text-line"></div>
               </div>
             </a>
             <a href="CV_RU.pdf" class="button-text w-inline-block">
               <div class="button-text-inner">
-                <div class="button-text-text">View CV (RU)</div>
+                <div class="button-text-text" data-i18n="nav.cv_ru">View CV (RU)</div>
                 <div class="button-text-line"></div>
               </div>
             </a>
@@ -168,10 +213,24 @@
               class="button-text w-inline-block"
             >
               <div class="button-text-inner">
-                <div class="button-text-text">Let&#x27;s Talk</div>
+                <div class="button-text-text" data-i18n="nav.talk">Let's Talk</div>
                 <div class="button-text-line"></div>
               </div>
             </a>
+            <div class="lang-switcher">
+              <a href="#" class="button-text w-inline-block" data-lang="en">
+                <div class="button-text-inner">
+                  <div class="button-text-text">EN</div>
+                  <div class="button-text-line"></div>
+                </div>
+              </a>
+              <a href="#" class="button-text w-inline-block" data-lang="ru">
+                <div class="button-text-inner">
+                  <div class="button-text-text">RU</div>
+                  <div class="button-text-line"></div>
+                </div>
+              </a>
+            </div>
           </div>
         </header>
       </header>
@@ -261,7 +320,7 @@
                       "
                       class="text-meta text-color-muted"
                     >
-                      (Based in Da Nang, Vietnam)
+                      <span data-i18n="hero.location">(Based in Da Nang, Vietnam)</span>
                     </div>
                   </div>
                   <div class="max-width-large">
@@ -281,8 +340,7 @@
                       "
                       class="heading-alt-h2"
                     >
-                      Turning ideas into engaging mobile development products
-                      delivered at scale
+                      <span data-i18n="hero.lead">Turning ideas into engaging mobile development products delivered at scale</span>
                     </p>
                   </div>
                 </div>
@@ -305,7 +363,7 @@
                     "
                     class="text-meta text-color-muted"
                   >
-                    (About Me)
+                    <span data-i18n="meta.about">(About Me)</span>
                   </div>
                 </div>
                 <div class="margin-bottom margin-medium">
@@ -328,7 +386,7 @@
                         "
                         class="heading-style-h2"
                       >
-                        Clean
+                        <span data-i18n="about.h1">Clean</span>
                       </h2>
                     </div>
                   </div>
@@ -351,7 +409,7 @@
                         "
                         class="heading-style-h2"
                       >
-                        code.
+                        <span data-i18n="about.h2">code.</span>
                       </h2>
                     </div>
                   </div>
@@ -374,7 +432,7 @@
                         "
                         class="heading-style-h2"
                       >
-                        bold
+                        <span data-i18n="about.h3">bold</span>
                       </h2>
                     </div>
                   </div>
@@ -394,7 +452,7 @@
                       "
                       class="heading-style-h2"
                     >
-                      results.
+                      <span data-i18n="about.h4">results.</span>
                     </h2>
                   </div>
                 </div>
@@ -416,23 +474,7 @@
                       "
                       class="text-color-muted"
                     >
-                      I build mobile experiences that scale — from sleek MVPs to
-                      apps serving over a million users. I started coding when I
-                      was 14, driven by curiosity and a love for turning ideas
-                      into something real. Over the years, I evolved from native
-                      Android development to mastering React Native, publishing
-                      20+ apps on both the App Store and Google Play. Whether
-                      solo or leading a team of eight, I take products from
-                      concept to production with attention to detail and a
-                      passion for performance.<br /><br />With a global
-                      perspective shaped by traveling to over 80 countries, I
-                      bring adaptability, clarity, and empathy to every project.
-                      My work has been featured in IEEE publications, and I
-                      approach every app not just as a piece of software, but as
-                      a user experience that should feel intuitive, delightful,
-                      and reliable. If you&#x27;re looking for someone who can
-                      think like a developer, a product owner, and a user —
-                      let’s build something together.
+                      <span data-i18n-html="about.long">I build mobile experiences that scale — from sleek MVPs to apps serving over a million users. I started coding when I was 14, driven by curiosity and a love for turning ideas into something real. Over the years, I evolved from native Android development to mastering React Native, publishing 20+ apps on both the App Store and Google Play. Whether solo or leading a team of eight, I take products from concept to production with attention to detail and a passion for performance.<br /><br />With a global perspective shaped by traveling to over 80 countries, I bring adaptability, clarity, and empathy to every project. My work has been featured in IEEE publications, and I approach every app not just as a piece of software, but as a user experience that should feel intuitive, delightful, and reliable. If you&#x27;re looking for someone who can think like a developer, a product owner, and a user — let’s build something together.</span>
                     </p>
                   </div>
                 </div>
@@ -453,7 +495,7 @@
                     "
                     class="text-meta text-color-muted"
                   >
-                    (Project companies)
+                    <span data-i18n="meta.companies">(Project companies)</span>
                   </div>
                 </div>
                 <div class="light-mode">
@@ -613,7 +655,7 @@
         >
           <div class="section-top">
             <div class="section-top-heading">
-              <div class="text-meta text-color-muted">(Fresh Apps)</div>
+              <div class="text-meta text-color-muted" data-i18n="meta.fresh">(Fresh Apps)</div>
               <div class="text-meta text-color-muted">(02)</div>
             </div>
             <div>
@@ -634,7 +676,7 @@
                     "
                     class="heading-style-xxlarge"
                   >
-                    Projects
+                    <span data-i18n="projects.title">Projects</span>
                   </h2>
                 </div>
               </div>
@@ -654,8 +696,7 @@
                   "
                   class="heading-alt-small"
                 >
-                  My focus is simple: clean code, fast delivery, and products
-                  that users actually enjoy.
+                  <span data-i18n="projects.lead">My focus is simple: clean code, fast delivery, and products that users actually enjoy.</span>
                 </p>
               </div>
             </div>
@@ -719,10 +760,9 @@
                     "
                     class="heading-alt-h3"
                   >
-                    WorkCircle.jp is a platform built to connect individuals
-                    with careers in Japan — fast, intuitive, and people-focused.
+                    <span data-i18n="proj.workcircle.desc">WorkCircle.jp is a platform built to connect individuals with careers in Japan — fast, intuitive, and people-focused.</span>
                   </p>
-                  <div class="text-meta text-color-muted">(Tech Stack)</div>
+                  <div class="text-meta text-color-muted" data-i18n="tech.label">(Tech Stack)</div>
                   <p class="heading-alt-h5">
                     React Native, Ruby on Rails, Typescript, MagicBell,
                     MixPanel, Firebase, Expo (ejected)
@@ -743,14 +783,14 @@
                     "
                   >
                     <div class="margin-bottom margin-medium">
-                      <div class="text-meta text-color-muted">(Notices)</div>
+                      <div class="text-meta text-color-muted" data-i18n="notices.label">(Notices)</div>
                     </div>
                     <div class="max-width-large"></div>
                     <div class="home-services-list">
-                      <p class="heading-alt-h5">Fast growing MAU</p>
-                      <p class="heading-alt-h5">Anonymity</p>
-                      <p class="heading-alt-h5">100% Stritcly typed</p>
-                      <p class="heading-alt-h5">Multilingual support</p>
+                      <p class="heading-alt-h5" data-i18n="proj.workcircle.n1">Fast growing MAU</p>
+                      <p class="heading-alt-h5" data-i18n="proj.workcircle.n2">Anonymity</p>
+                      <p class="heading-alt-h5" data-i18n="proj.workcircle.n3">100% Stritcly typed</p>
+                      <p class="heading-alt-h5" data-i18n="proj.workcircle.n4">Multilingual support</p>
                     </div>
                   </div>
                 </div>
@@ -759,7 +799,7 @@
                 href="https://workcircle.jp"
                 class="button primary w-inline-block"
               >
-                <div class="button-inner-text">Visit product page</div>
+                <div class="button-inner-text" data-i18n="btn.visit">Visit product page</div>
               </a>
             </div>
           </div>
@@ -807,12 +847,10 @@
                     "
                     class="heading-alt-h3"
                   >
-                    Online education platform helping students, parents, and
-                    teachers succeed through interactive courses and expert-led
-                    lessons.
+                    <span data-i18n="proj.foxford.desc">Online education platform helping students, parents, and teachers succeed through interactive courses and expert-led lessons.</span>
                   </p>
                 </div>
-                <div class="text-meta text-color-muted">(Tech Stack)</div>
+                <div class="text-meta text-color-muted" data-i18n="tech.label">(Tech Stack)</div>
                 <p class="heading-alt-h5">
                   React Native, Typescript, Yandex AppMetrica, Firebase,
                   Reanimated
@@ -832,14 +870,14 @@
                   "
                 >
                   <div class="margin-bottom margin-medium">
-                    <div class="text-meta text-color-muted">(Notices)</div>
+                    <div class="text-meta text-color-muted" data-i18n="notices.label">(Notices)</div>
                   </div>
                   <div class="max-width-large"></div>
                   <div class="home-services-list">
-                    <p class="heading-alt-h5">High MAU (1M+)</p>
-                    <p class="heading-alt-h5">Smooth Animations</p>
-                    <p class="heading-alt-h5">All Age Friendly UI</p>
-                    <p class="heading-alt-h5">Adaptive Layout</p>
+                    <p class="heading-alt-h5" data-i18n="proj.foxford.n1">High MAU (1M+)</p>
+                    <p class="heading-alt-h5" data-i18n="proj.foxford.n2">Smooth Animations</p>
+                    <p class="heading-alt-h5" data-i18n="proj.foxford.n3">All Age Friendly UI</p>
+                    <p class="heading-alt-h5" data-i18n="proj.foxford.n4">Adaptive Layout</p>
                   </div>
                 </div>
               </div>
@@ -847,7 +885,7 @@
                 href="https://foxford.ru"
                 class="button primary w-inline-block"
               >
-                <div class="button-inner-text">Visit product page</div>
+                <div class="button-inner-text" data-i18n="btn.visit">Visit product page</div>
               </a>
             </div>
             <div class="home-services-item-image">
@@ -922,10 +960,9 @@
                     "
                     class="heading-alt-h3"
                   >
-                    Social racing platform that brings runners together through
-                    real-time challenges, leaderboards, and global events.
+                    <span data-i18n="proj.urace.desc">Social racing platform that brings runners together through real-time challenges, leaderboards, and global events.</span>
                   </p>
-                  <div class="text-meta text-color-muted">(Tech Stack)</div>
+                  <div class="text-meta text-color-muted" data-i18n="tech.label">(Tech Stack)</div>
                   <p class="heading-alt-h5">
                     React Native, Typescript, Firebase, OneSignal, SVG
                     Animations
@@ -948,7 +985,7 @@
                 </div>
               </div>
               <a href="https://urace.me" class="button primary w-inline-block">
-                <div class="button-inner-text">Visit product page</div>
+                <div class="button-inner-text" data-i18n="btn.visit">Visit product page</div>
               </a>
             </div>
           </div>
@@ -996,12 +1033,10 @@
                     "
                     class="heading-alt-h3"
                   >
-                    Briskly is a cashierless retail platform powering smart
-                    micromarkets and autonomous shopping through scan-and-go
-                    tech — no lines, no limits.
+                    <span data-i18n="proj.bpay.desc">Briskly is a cashierless retail platform powering smart micromarkets and autonomous shopping through scan-and-go tech — no lines, no limits.</span>
                   </p>
                 </div>
-                <div class="text-meta text-color-muted">(Tech Stack)</div>
+                <div class="text-meta text-color-muted" data-i18n="tech.label">(Tech Stack)</div>
                 <p class="heading-alt-h5">
                   React Native, Typescript,  Firebase, Sockets
                 </p>
@@ -1020,14 +1055,14 @@
                   "
                 >
                   <div class="margin-bottom margin-medium">
-                    <div class="text-meta text-color-muted">(Notices)</div>
+                    <div class="text-meta text-color-muted" data-i18n="notices.label">(Notices)</div>
                   </div>
                   <div class="max-width-large"></div>
                   <div class="home-services-list">
-                    <p class="heading-alt-h5">High MAU</p>
-                    <p class="heading-alt-h5">Foodtech innovation</p>
-                    <p class="heading-alt-h5">Scanning Features</p>
-                    <p class="heading-alt-h5">Payment reliable</p>
+                    <p class="heading-alt-h5" data-i18n="proj.bpay.n1">High MAU</p>
+                    <p class="heading-alt-h5" data-i18n="proj.bpay.n2">Foodtech innovation</p>
+                    <p class="heading-alt-h5" data-i18n="proj.bpay.n3">Scanning Features</p>
+                    <p class="heading-alt-h5" data-i18n="proj.bpay.n4">Payment reliable</p>
                   </div>
                 </div>
               </div>
@@ -1035,7 +1070,7 @@
                 href="https://briskly.online"
                 class="button primary w-inline-block"
               >
-                <div class="button-inner-text">Visit product page</div>
+                <div class="button-inner-text" data-i18n="btn.visit">Visit product page</div>
               </a>
             </div>
             <div class="home-services-item-image">
@@ -1073,5 +1108,130 @@
       crossorigin="anonymous"
     ></script>
     <script src="js/webflow.js" type="text/javascript"></script>
+    <script>
+      // ─── Translation dictionary ────────────────────────────────────────────
+      // Add a new key here + a [data-i18n="key"] attribute in the markup to
+      // translate a new string. Use [data-i18n-html] when the value contains
+      // HTML (e.g. <br> tags) instead of plain text.
+      const I18N = {
+        en: {
+          "nav.work": "Work",
+          "nav.service": "Service",
+          "nav.about": "About",
+          "nav.blog": "Blog",
+          "nav.talk": "Let's Talk",
+          "nav.cv_en": "View CV (EN)",
+          "nav.cv_ru": "View CV (RU)",
+          "hero.location": "(Based in Da Nang, Vietnam)",
+          "hero.lead": "Turning ideas into engaging mobile development products delivered at scale",
+          "meta.about": "(About Me)",
+          "about.h1": "Clean",
+          "about.h2": "code.",
+          "about.h3": "bold",
+          "about.h4": "results.",
+          "about.long": "I build mobile experiences that scale — from sleek MVPs to apps serving over a million users. I started coding when I was 14, driven by curiosity and a love for turning ideas into something real. Over the years, I evolved from native Android development to mastering React Native, publishing 20+ apps on both the App Store and Google Play. Whether solo or leading a team of eight, I take products from concept to production with attention to detail and a passion for performance.<br><br>With a global perspective shaped by traveling to over 80 countries, I bring adaptability, clarity, and empathy to every project. My work has been featured in IEEE publications, and I approach every app not just as a piece of software, but as a user experience that should feel intuitive, delightful, and reliable. If you're looking for someone who can think like a developer, a product owner, and a user — let's build something together.",
+          "meta.companies": "(Project companies)",
+          "meta.fresh": "(Fresh Apps)",
+          "projects.title": "Projects",
+          "projects.lead": "My focus is simple: clean code, fast delivery, and products that users actually enjoy.",
+          "tech.label": "(Tech Stack)",
+          "notices.label": "(Notices)",
+          "proj.workcircle.desc": "WorkCircle.jp is a platform built to connect individuals with careers in Japan — fast, intuitive, and people-focused.",
+          "proj.workcircle.n1": "Fast growing MAU",
+          "proj.workcircle.n2": "Anonymity",
+          "proj.workcircle.n3": "100% Strictly typed",
+          "proj.workcircle.n4": "Multilingual support",
+          "proj.foxford.desc": "Online education platform helping students, parents, and teachers succeed through interactive courses and expert-led lessons.",
+          "proj.foxford.n1": "High MAU (1M+)",
+          "proj.foxford.n2": "Smooth Animations",
+          "proj.foxford.n3": "All Age Friendly UI",
+          "proj.foxford.n4": "Adaptive Layout",
+          "proj.urace.desc": "Social racing platform that brings runners together through real-time challenges, leaderboards, and global events.",
+          "proj.bpay.desc": "Briskly is a cashierless retail platform powering smart micromarkets and autonomous shopping through scan-and-go tech — no lines, no limits.",
+          "proj.bpay.n1": "High MAU",
+          "proj.bpay.n2": "Foodtech innovation",
+          "proj.bpay.n3": "Scanning Features",
+          "proj.bpay.n4": "Payment reliable",
+          "btn.visit": "Visit product page",
+        },
+        ru: {
+          "nav.work": "Работы",
+          "nav.service": "Услуги",
+          "nav.about": "Обо мне",
+          "nav.blog": "Блог",
+          "nav.talk": "Связаться",
+          "nav.cv_en": "Открыть CV (EN)",
+          "nav.cv_ru": "Открыть CV (RU)",
+          "hero.location": "(Базируюсь в Дананге, Вьетнам)",
+          "hero.lead": "Превращаю идеи в увлекательные мобильные продукты, готовые к масштабированию",
+          "meta.about": "(Обо мне)",
+          "about.h1": "Чистый",
+          "about.h2": "код.",
+          "about.h3": "Смелые",
+          "about.h4": "результаты.",
+          "about.long": "Я создаю мобильные продукты, которые масштабируются — от изящных MVP до приложений с миллионной аудиторией. Я начал писать код в 14 лет: любопытство и желание превращать идеи во что-то реальное привели меня в разработку. За годы я прошёл путь от нативного Android до React Native, выпустив 20+ приложений в App Store и Google Play. И в одиночку, и руководя командой из восьми человек, я довожу продукты от концепта до продакшена — с вниманием к деталям и страстью к производительности.<br><br>Благодаря глобальному кругозору, сформированному путешествиями по более чем 80 странам, я подхожу к каждому проекту с гибкостью, ясностью мышления и эмпатией. Мои работы публиковались в изданиях IEEE, и я рассматриваю каждое приложение не просто как программное обеспечение, а как пользовательский опыт, который должен быть интуитивно понятным, приятным и надежным. Если вы ищете человека, который может мыслить как разработчик, владелец продукта и пользователь — давайте создадим что-то вместе.",
+          "meta.companies": "(Компании проектов)",
+          "meta.fresh": "(Свежие приложения)",
+          "projects.title": "Проекты",
+          "projects.lead": "Мой фокус прост: чистый код, быстрая доставка и продукты, которыми реально пользуются.",
+          "tech.label": "(Стек технологий)",
+          "notices.label": "(Особенности)",
+          "proj.workcircle.desc": "WorkCircle.jp — платформа, связывающая людей с работой в Японии. Быстро, понятно, по-человечески.",
+          "proj.workcircle.n1": "Быстро растущий MAU",
+          "proj.workcircle.n2": "Анонимность",
+          "proj.workcircle.n3": "100% строгая типизация",
+          "proj.workcircle.n4": "Мультиязычность",
+          "proj.foxford.desc": "Платформа онлайн-образования, помогающая ученикам, родителям и учителям через интерактивные курсы и уроки с экспертами.",
+          "proj.foxford.n1": "Высокий MAU (1M+)",
+          "proj.foxford.n2": "Плавные анимации",
+          "proj.foxford.n3": "UI для всех возрастов",
+          "proj.foxford.n4": "Адаптивный layout",
+          "proj.urace.desc": "Социальная платформа для спортсменов: соревнования в реальном времени, рейтинги и глобальные ивенты.",
+          "proj.bpay.desc": "Briskly — платформа автономной торговли: умные микромаркеты и покупки по сканированию без касс и очередей.",
+          "proj.bpay.n1": "Высокий MAU",
+          "proj.bpay.n2": "Foodtech-инновации",
+          "proj.bpay.n3": "Сканирование товаров",
+          "proj.bpay.n4": "Надёжная оплата",
+          "btn.visit": "Открыть страницу продукта",
+        },
+      };
+
+      (function () {
+        const LS_KEY = "site-lang";
+        const supported = ["en", "ru"];
+        const initial = (() => {
+          const stored = localStorage.getItem(LS_KEY);
+          if (supported.includes(stored)) return stored;
+          const browser = (navigator.language || "en").slice(0, 2);
+          return supported.includes(browser) ? browser : "en";
+        })();
+
+        function apply(lang) {
+          const dict = I18N[lang] || I18N.en;
+          document.documentElement.lang = lang;
+          document.querySelectorAll("[data-i18n]").forEach((el) => {
+            const key = el.getAttribute("data-i18n");
+            if (key in dict) el.textContent = dict[key];
+          });
+          document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+            const key = el.getAttribute("data-i18n-html");
+            if (key in dict) el.innerHTML = dict[key];
+          });
+          document.querySelectorAll("[data-lang]").forEach((btn) => {
+            btn.classList.toggle("active", btn.dataset.lang === lang);
+          });
+          localStorage.setItem(LS_KEY, lang);
+        }
+
+        document.querySelectorAll("[data-lang]").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            apply(btn.dataset.lang);
+          });
+        });
+
+        apply(initial);
+      })();
+    </script>
   </body>
 </html>
