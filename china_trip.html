@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Китай · план и бюджет</title>
+<style>
+  :root{
+    --bg:#0f1216; --card:#1a1f27; --card2:#20262f; --line:#2c333d;
+    --ink:#eef1f5; --muted:#9aa5b1; --faint:#6b7684;
+    --fly:#9b6fd4; --hotel:#3f9fd0; --ok:#4faf7d; --todo:#e0b13f; --danger:#e0554f;
+    --accent:#e07a3f;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.45;font-size:15px}
+  .wrap{max-width:none;width:100%;margin:0;padding:18px 20px 80px}
+  h1{font-size:22px;margin:0 0 2px}
+  .subtitle{color:var(--muted);font-size:13px;margin:0 0 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .saved{font-size:12px;color:var(--ok);opacity:0;transition:opacity .3s}
+  .saved.show{opacity:1}
+
+  .summary{position:sticky;top:0;z-index:20;display:grid;gap:10px;
+    grid-template-columns:1.3fr 1fr 1fr 1fr;padding:12px 0;margin-bottom:6px;
+    background:linear-gradient(180deg,var(--bg) 72%,transparent)}
+  @media(max-width:720px){.summary{grid-template-columns:1fr 1fr}}
+  .scard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+  .scard .lbl{font-size:11.5px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px}
+  .scard .val{font-size:23px;font-weight:800;margin-top:4px;font-variant-numeric:tabular-nums;letter-spacing:.3px}
+  .scard.total{border-color:#e07a3f55;background:linear-gradient(135deg,#241c17,var(--card))}
+  .scard.total .val{color:#fff}
+  .scard.fly .val{color:var(--fly)} .scard.hotel .val{color:var(--hotel)}
+  .scard .sub{font-size:11.5px;color:var(--faint);margin-top:3px}
+  .dotm{width:9px;height:9px;border-radius:50%;display:inline-block}
+
+  input,select,textarea{font:inherit;background:#11151b;color:var(--ink);border:1px solid var(--line);
+    border-radius:7px;padding:8px 9px;font-size:13.5px;width:100%}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);background:#141922}
+  input[type=number]{text-align:right;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+  input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  textarea{resize:none;line-height:1.4;min-height:36px;overflow:hidden}
+
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+  table{width:100%;border-collapse:collapse;min-width:1320px}
+  thead th{position:sticky;top:0;background:#161b22;color:var(--muted);font-size:11px;
+    text-transform:uppercase;letter-spacing:.5px;text-align:left;padding:12px 9px;border-bottom:1px solid var(--line);white-space:nowrap}
+  tbody td{padding:13px 9px;border-bottom:1px solid #2b333d;vertical-align:top}
+  tbody tr:hover{background:#1c222b}
+  tbody tr.hasfly{background:#191d26}
+  tbody tr.hasfly:hover{background:#1e242d}
+  td.c-date{width:132px} td.c-move{min-width:250px} td.c-fly{width:118px} td.c-stay{width:150px} td.c-link{width:152px} td.c-hotel{width:118px} td.c-status{width:172px}
+  td.c-note{min-width:250px}
+  td.c-date input{white-space:nowrap}
+  .datecell{display:flex;align-items:center;gap:8px}
+  .leg-badge{width:5px;align-self:stretch;min-height:34px;border-radius:3px;background:#2b333d}
+  tr.hasfly .leg-badge{background:var(--fly)}
+  .restday{display:block;padding:8px 9px;font-size:13px;color:var(--muted);border:1px solid #232a33;border-radius:7px;background:#0e1218;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  select.status{font-size:13px;font-weight:700;padding:9px}
+  tr[data-status=booked] td.c-status select{background:#16261c;border-color:#2f6b45;color:var(--ok)}
+  tr[data-status=todo] td.c-status select{background:#2a2413;border-color:#7a6320;color:var(--todo)}
+
+  .linkcell{display:flex;gap:6px;align-items:center}
+  .linkcell input{min-width:0}
+  .openlink{flex:none;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;
+    font-size:15px;width:34px;height:34px;border:1px solid var(--line);border-radius:7px;background:#11151b;color:var(--hotel)}
+  .openlink[aria-disabled=true]{opacity:.3;pointer-events:none}
+  .openlink:hover{border-color:var(--accent)}
+  a.plink{text-decoration:none;color:var(--hotel);margin-left:4px}
+
+  h2.sec{font-size:12.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--faint);margin:30px 4px 10px;font-weight:700}
+  .panels{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:720px){.panels{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .panel .phead{display:flex;justify-content:space-between;align-items:baseline;padding:13px 15px;border-bottom:1px solid var(--line)}
+  .panel .phead .pt{font-weight:700;font-size:14.5px;display:flex;align-items:center;gap:8px}
+  .panel .phead .psum{font-weight:800;font-variant-numeric:tabular-nums}
+  .panel.fly .psum{color:var(--fly)} .panel.hotel .psum{color:var(--hotel)}
+  .prow{display:flex;justify-content:space-between;gap:10px;padding:10px 15px;border-bottom:1px solid #232a33;font-size:13.5px}
+  .prow:last-child{border-bottom:none}
+  .prow .pl{color:#dbe1e8} .prow .pl small{color:var(--faint);font-size:11.5px}
+  .prow .pr{font-variant-numeric:tabular-nums;white-space:nowrap;color:#fff}
+  .prow.empty{color:var(--faint);justify-content:center}
+  .note{font-size:12px;color:var(--faint);margin:14px 4px 0;line-height:1.6}
+  .hint{background:#1a2027;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:10px 13px;font-size:12.5px;color:var(--muted);margin-bottom:14px}
+  .hint b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>🇨🇳 Китай · план и бюджет</h1>
+  <p class="subtitle">10–26 октября 2026 · редактируй прямо в таблице <span class="saved" id="savedTag">✓ сохранено</span></p>
+
+  <div class="hint">
+    Меняй цены, отели, ссылки, заметки и статусы — всё автоматически сохраняется в этом браузере (localStorage) и подтянется при следующем открытии. <b>Транспорт</b> и <b>отели</b> считаются отдельно и суммируются внизу и наверху.
+  </div>
+
+  <div class="summary">
+    <div class="scard total"><div class="lbl">💰 Итого</div><div class="val" id="s-total">—</div><div class="sub">транспорт + отели</div></div>
+    <div class="scard fly"><div class="lbl"><span class="dotm" style="background:var(--fly)"></span> Транспорт</div><div class="val" id="s-fly">—</div><div class="sub" id="s-fly-sub"></div></div>
+    <div class="scard hotel"><div class="lbl"><span class="dotm" style="background:var(--hotel)"></span> Отели</div><div class="val" id="s-hotel">—</div><div class="sub" id="s-hotel-sub"></div></div>
+    <div class="scard"><div class="lbl">📋 К брони</div><div class="val" id="s-todo" style="color:var(--todo)">—</div><div class="sub">строк «Купить»</div></div>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th>Дата</th>
+        <th>Переезд</th>
+        <th>Транспорт&nbsp;₽</th>
+        <th>Ночь&nbsp;в&nbsp;(город)</th>
+        <th>Ссылка</th>
+        <th>Отель&nbsp;₽</th>
+        <th>Заметка</th>
+        <th>Статус</th>
+      </tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <h2 class="sec">Разбивка по стоимости</h2>
+  <div class="panels">
+    <div class="panel fly">
+      <div class="phead"><div class="pt">✈️ Перелёты и переезды</div><div class="psum" id="flySum">—</div></div>
+      <div id="flyList"></div>
+    </div>
+    <div class="panel hotel">
+      <div class="phead"><div class="pt">🏨 Отели по городам</div><div class="psum" id="hotelSum">—</div></div>
+      <div id="hotelList"></div>
+    </div>
+  </div>
+
+  <p class="note">
+    Чжанцзяцзе: горы «Аватара» (лесопарк) — у посёлка <b>Улинъюань</b>, ~40 мин от города и аэропорта; отель на 20–21.10 бери там, на 22.10 (гора Тяньмэнь) — в городе. Ничего не уходит в интернет: всё хранится локально в браузере.
+  </p>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "chinaTrip_v1";
+  var CUR = "₽";
+
+  var DEFAULT = {
+    rows: [
+      {date:"10.10.2026", transport:"Дананг — Гонконг — Ханчжоу", tcost:42000, stay:"Ханчжоу", hcost:0, link:"", note:"Гонконг: прилёт 13:05, вылет 16:00", status:"booked"},
+      {date:"11.10.2026", transport:"", tcost:0, stay:"Ханчжоу", hcost:0, link:"", note:"", status:""},
+      {date:"12.10.2026", transport:"Ханчжоу — Шанхай", tcost:3000, stay:"Шанхай", hcost:0, link:"", note:"скоростной поезд ~1 ч", status:""},
+      {date:"13.10.2026", transport:"", tcost:0, stay:"Шанхай", hcost:0, link:"", note:"", status:""},
+      {date:"14.10.2026", transport:"", tcost:0, stay:"Шанхай", hcost:0, link:"", note:"🎾 теннис, день 1", status:""},
+      {date:"15.10.2026", transport:"", tcost:0, stay:"Шанхай", hcost:0, link:"", note:"🎾 теннис, день 2", status:""},
+      {date:"16.10.2026", transport:"Шанхай — Нинбо", tcost:4000, stay:"Нинбо", hcost:0, link:"", note:"поезд ~2–2.5 ч", status:""},
+      {date:"17.10.2026", transport:"", tcost:0, stay:"Нинбо", hcost:0, link:"", note:"", status:""},
+      {date:"18.10.2026", transport:"Нинбо — Сиань", tcost:19400, stay:"Сиань", hcost:0, link:"", note:"прямой рейс ~2.5 ч", status:"booked"},
+      {date:"19.10.2026", transport:"", tcost:0, stay:"Сиань", hcost:0, link:"", note:"Терракотовая армия", status:""},
+      {date:"20.10.2026", transport:"Сиань — Чжанцзяцзе", tcost:23200, stay:"Улинъюань", hcost:0, link:"", note:"прямой рейс ~2 ч", status:"booked"},
+      {date:"21.10.2026", transport:"", tcost:0, stay:"Улинъюань", hcost:0, link:"", note:"лесопарк — горы Аватара", status:""},
+      {date:"22.10.2026", transport:"", tcost:0, stay:"Чжанцзяцзе (город)", hcost:0, link:"", note:"гора Тяньмэнь", status:""},
+      {date:"23.10.2026", transport:"Чжанцзяцзе — Чунцин", tcost:6000, stay:"Чунцин", hcost:0, link:"", note:"брать на утро", status:"todo"},
+      {date:"24.10.2026", transport:"", tcost:0, stay:"Чунцин", hcost:0, link:"", note:"", status:""},
+      {date:"25.10.2026", transport:"Чунцин — Хошимин", tcost:32000, stay:"Хошимин", hcost:0, link:"", note:"куплен, вечерний рейс", status:"booked"},
+      {date:"26.10.2026", transport:"Хошимин — Дананг", tcost:6000, stay:"Дома (Дананг)", hcost:0, link:"", note:"", status:"booked"}
+    ]
+  };
+
+  var STATE = load();
+
+  function load(){
+    try{ var raw=localStorage.getItem(KEY); if(raw){ var d=JSON.parse(raw); if(d&&d.rows){ d.rows.forEach(function(r){ if(r.link===undefined)r.link=""; }); return d; } } }catch(e){}
+    return JSON.parse(JSON.stringify(DEFAULT));
+  }
+  var saveTimer=null;
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(STATE)); flashSaved(); }catch(e){} }
+  function scheduleSave(){ clearTimeout(saveTimer); saveTimer=setTimeout(save,350); }
+  function flashSaved(){ var t=document.getElementById('savedTag'); t.classList.add('show'); clearTimeout(flashSaved._t); flashSaved._t=setTimeout(function(){t.classList.remove('show');},1100); }
+  function fmt(n){ return Math.round(n||0).toLocaleString('ru-RU'); }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function normUrl(u){ u=String(u||'').trim(); if(!u)return ''; if(!/^https?:\/\//i.test(u)) u='https://'+u; return u; }
+
+  var tbody=document.getElementById('tbody');
+  function autoGrow(ta){ ta.style.height='auto'; ta.style.height=(ta.scrollHeight+2)+'px'; }
+
+  function makeRow(row){
+    var isLeg=(row.transport||"").trim()!=="";
+    var tr=document.createElement('tr');
+    tr.setAttribute('data-status', row.status||"");
+    if(isLeg) tr.className='hasfly';
+
+    function cell(cls){ var td=document.createElement('td'); if(cls)td.className=cls; tr.appendChild(td); return td; }
+    function bindNum(i,f){ i.addEventListener('input',function(){ row[f]=parseFloat(i.value)||0; recompute(); scheduleSave(); }); }
+    function bindTxt(i,f){ i.addEventListener('input',function(){ row[f]=i.value; recompute(); scheduleSave(); }); }
+
+    var d=cell('c-date'); var dw=document.createElement('div'); dw.className='datecell';
+    var badge=document.createElement('span'); badge.className='leg-badge'; dw.appendChild(badge);
+    var di=document.createElement('input'); di.type='text'; di.value=row.date; di.placeholder='дата'; bindTxt(di,'date'); dw.appendChild(di);
+    d.appendChild(dw);
+
+    var restSpan=null;
+    var t=cell('c-move');
+    if(isLeg){ var ti=document.createElement('input'); ti.type='text'; ti.value=row.transport; bindTxt(ti,'transport'); t.appendChild(ti); }
+    else { restSpan=document.createElement('span'); restSpan.className='restday'; restSpan.textContent='📍 '+(((row.stay||'').trim())||'—'); t.appendChild(restSpan); }
+
+    var tc=cell('c-fly'); var tci=document.createElement('input'); tci.type='number'; tci.min='0'; tci.step='100';
+    tci.value=row.tcost?row.tcost:''; tci.placeholder='0'; if(!isLeg) tci.disabled=true; bindNum(tci,'tcost'); tc.appendChild(tci);
+
+    var st=cell('c-stay'); var si=document.createElement('input'); si.type='text'; si.value=row.stay; si.placeholder='город';
+    si.addEventListener('input',function(){ row.stay=si.value; if(restSpan) restSpan.textContent='📍 '+(((row.stay||'').trim())||'—'); recompute(); scheduleSave(); });
+    st.appendChild(si);
+
+    // Ссылка на отель: компактная кликабельная иконка + скрытое поле URL
+    var lk=cell('c-link'); var lw=document.createElement('div'); lw.className='linkcell';
+    var li=document.createElement('input'); li.type='url'; li.value=row.link||''; li.placeholder='вставь ссылку';
+    var la=document.createElement('a'); la.className='openlink'; la.target='_blank'; la.rel='noopener'; la.title='Открыть ссылку на отель'; la.textContent='🔗';
+    function syncLink(){ var u=normUrl(row.link); if(u){ la.href=u; la.setAttribute('aria-disabled','false'); } else { la.removeAttribute('href'); la.setAttribute('aria-disabled','true'); } }
+    li.addEventListener('input',function(){ row.link=li.value; syncLink(); recompute(); scheduleSave(); });
+    syncLink(); lw.appendChild(li); lw.appendChild(la); lk.appendChild(lw);
+
+    var hc=cell('c-hotel'); var hci=document.createElement('input'); hci.type='number'; hci.min='0'; hci.step='100';
+    hci.value=row.hcost?row.hcost:''; hci.placeholder='0'; bindNum(hci,'hcost'); hc.appendChild(hci);
+
+    var nt=cell('c-note'); var ta=document.createElement('textarea'); ta.value=row.note; ta.placeholder='заметка…'; ta.rows=1;
+    ta.addEventListener('input',function(){ row.note=ta.value; autoGrow(ta); scheduleSave(); }); nt.appendChild(ta);
+
+    var stt=cell('c-status'); var sel=document.createElement('select'); sel.className='status';
+    [['','—'],['booked','Забронировано'],['todo','Купить']].forEach(function(o){
+      var op=document.createElement('option'); op.value=o[0]; op.textContent=o[1]; if((row.status||"")===o[0])op.selected=true; sel.appendChild(op);
+    });
+    sel.addEventListener('change',function(){ row.status=sel.value; tr.setAttribute('data-status',sel.value); recompute(); scheduleSave(); });
+    stt.appendChild(sel);
+
+    return tr;
+  }
+
+  function renderTable(){
+    tbody.innerHTML='';
+    STATE.rows.forEach(function(r){ tbody.appendChild(makeRow(r)); });
+    Array.prototype.forEach.call(tbody.querySelectorAll('textarea'), autoGrow);
+  }
+
+  function recompute(){
+    var flyTotal=0, hotelTotal=0, todo=0, legs=[], hotels={};
+    STATE.rows.forEach(function(r){
+      var tc=parseFloat(r.tcost)||0, hc=parseFloat(r.hcost)||0;
+      flyTotal+=tc; hotelTotal+=hc;
+      if(r.status==='todo') todo++;
+      if((r.transport||"").trim()) legs.push({name:r.transport,date:r.date,cost:tc,status:r.status});
+      if((r.stay||"").trim()){
+        var key=r.stay;
+        if((hc>0)||((r.link||"").trim())){
+          if(!hotels[key]) hotels[key]={nights:0,cost:0,link:""};
+          if(hc>0) hotels[key].nights++;
+          hotels[key].cost+=hc;
+          if(!hotels[key].link && (r.link||"").trim()) hotels[key].link=r.link;
+        }
+      }
+    });
+    document.getElementById('s-total').textContent=fmt(flyTotal+hotelTotal)+' '+CUR;
+    document.getElementById('s-fly').textContent=fmt(flyTotal)+' '+CUR;
+    document.getElementById('s-fly-sub').textContent=legs.length+' переездов';
+    document.getElementById('s-hotel').textContent=fmt(hotelTotal)+' '+CUR;
+    var hc2=Object.keys(hotels).length; document.getElementById('s-hotel-sub').textContent=hc2?hc2+' городов':'заполни цены отелей';
+    document.getElementById('s-todo').textContent=todo;
+
+    var fl=document.getElementById('flyList'); fl.innerHTML='';
+    if(!legs.length){ fl.innerHTML='<div class="prow empty">нет переездов</div>'; }
+    else legs.forEach(function(l){
+      var tag=l.status==='booked'?' · <small style="color:var(--ok)">забронировано</small>':(l.status==='todo'?' · <small style="color:var(--todo)">купить</small>':'');
+      var d=document.createElement('div'); d.className='prow';
+      d.innerHTML='<span class="pl">'+esc(l.name)+' <small>'+esc(l.date)+'</small>'+tag+'</span><span class="pr">'+fmt(l.cost)+' '+CUR+'</span>';
+      fl.appendChild(d);
+    });
+    document.getElementById('flySum').textContent=fmt(flyTotal)+' '+CUR;
+
+    var hl=document.getElementById('hotelList'); hl.innerHTML='';
+    var keys=Object.keys(hotels);
+    if(!keys.length){ hl.innerHTML='<div class="prow empty">впиши цены или ссылки на отели</div>'; }
+    else keys.forEach(function(k){
+      var h=hotels[k]; var d=document.createElement('div'); d.className='prow';
+      var link=h.link?' <a class="plink" href="'+esc(normUrl(h.link))+'" target="_blank" rel="noopener" title="Открыть отель">🔗</a>':'';
+      var nights=h.nights?' <small>'+h.nights+' ноч.</small>':'';
+      d.innerHTML='<span class="pl">'+esc(k)+nights+link+'</span><span class="pr">'+fmt(h.cost)+' '+CUR+'</span>';
+      hl.appendChild(d);
+    });
+    document.getElementById('hotelSum').textContent=fmt(hotelTotal)+' '+CUR;
+  }
+
+  renderTable();
+  recompute();
+})();
+</script>
+</body>
+</html>
