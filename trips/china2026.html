@@ -7,7 +7,16 @@
 <link rel="stylesheet" href="style.css">
 <style>
   .wrap{max-width:1180px;margin:0 auto;padding:18px 20px 80px}
-  h1{font-size:22px;margin:0 0 2px}
+
+  /* кнопка возврата — отдельной строкой слева, над заголовком */
+  .backrow{margin:0 0 12px}
+  .btn.back{text-decoration:none;display:inline-flex;align-items:center;gap:6px;
+    padding:7px 13px;color:var(--muted)}
+  .btn.back:hover{color:var(--ink)}
+
+  /* заголовок и тег пользователя в одной строке */
+  .titlerow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 2px}
+  h1{font-size:22px;margin:0}
   .subtitle{color:var(--muted);font-size:13px;margin:0 0 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
   .saved{font-size:12px;color:var(--ok);opacity:0;transition:opacity .3s}
   .saved.show{opacity:1}
@@ -40,14 +49,25 @@
   textarea{resize:none;line-height:1.4;min-height:34px;overflow:hidden}
 
   /* ---------- маршрут: города и переезды ---------- */
-  .route{display:flex;flex-direction:column;gap:0}
+  .route{display:flex;flex-direction:column;gap:26px}
+  @media(max-width:820px){.route{gap:20px}}
 
-  /* Каждая остановка — секция: переезд + город, с воздухом между секциями.
-     Так соседние города не сливаются в одну простыню. */
-  .stop{display:flex;flex-direction:column;gap:8px;padding:14px 0}
-  .stop + .stop{border-top:1px solid #232a33}
-  .stop:first-child{padding-top:2px}
-  .stop:last-child{padding-bottom:2px}
+  /* Каждая остановка — отдельная карточка: переезд + город.
+     Карточки разнесены по вертикали, поэтому города не сливаются. */
+  .stop{position:relative;background:#141920;border:1px solid #262e39;border-radius:16px;
+    padding:15px 16px 16px;display:flex;flex-direction:column;gap:11px;
+    box-shadow:0 2px 10px rgba(0,0,0,.22)}
+
+  /* номер остановки в углу */
+  .stop .num{position:absolute;top:-11px;left:16px;font-size:10.5px;font-weight:800;
+    letter-spacing:.7px;text-transform:uppercase;color:var(--faint);
+    background:var(--bg);border:1px solid #262e39;border-radius:20px;padding:2px 10px;white-space:nowrap}
+
+  /* тонкая связка между карточками — видно, что маршрут непрерывный */
+  .stop::after{content:'';position:absolute;left:50%;bottom:-26px;width:1px;height:26px;
+    background:linear-gradient(180deg,#2b333d,transparent)}
+  .stop:last-child::after{display:none}
+  @media(max-width:820px){.stop::after{bottom:-20px;height:20px}}
 
   /* переезд между городами */
   .leg{display:grid;grid-template-columns:96px 1fr 116px 150px;gap:10px;align-items:center;
@@ -59,7 +79,7 @@
   .leg .move .ico{flex:none;opacity:.85}
 
   /* блок города */
-  .city{background:var(--card);border:1px solid var(--line);border-radius:13px;overflow:hidden}
+  .city{background:var(--card);border:1px solid var(--line);border-radius:11px;overflow:hidden}
   .city.open{border-color:#3a4453}
   .chead{display:grid;grid-template-columns:22px minmax(230px,1fr) minmax(230px,1.35fr) 122px 156px;
     gap:11px;align-items:center;padding:13px 15px;cursor:pointer}
@@ -169,16 +189,22 @@
 
 <div class="wrap" id="wrap" style="display:none">
 
-  <h1>🇨🇳 Китай · план и бюджет</h1>
+  <div class="backrow">
+    <a href="index.html" class="btn back">← Поездки</a>
+  </div>
+
+  <div class="titlerow">
+    <h1>🇨🇳 Китай · план и бюджет</h1>
+    <span class="who" id="userBox" style="display:none">
+      <span class="chip admin" id="userTag"></span>
+      <button class="btn" id="signOutBtn" type="button">Выйти</button>
+    </span>
+  </div>
+
   <p class="subtitle">
     <span id="subDates">10–26 октября 2026</span>
     <span class="sync" id="syncTag" data-state="init"><span class="dot"></span><span id="syncText">подключение…</span></span>
     <span class="saved" id="savedTag">✓ сохранено</span>
-    <span class="who" id="userBox" style="display:none;margin-left:auto">
-      <a href="index.html" class="btn" style="text-decoration:none">← Поездки</a>
-      <span class="chip admin" id="userTag"></span>
-      <button class="btn" id="signOutBtn" type="button">Выйти</button>
-    </span>
   </p>
 
   <div class="hint" id="setupHint" style="display:none"></div>
@@ -652,22 +678,30 @@ function renderRoute(){
     return;
   }
 
-  var stop=null;
+  var stop=null, stopNo=0;
   function newStop(){
     stop=document.createElement('div');
     stop.className='stop';
+    stopNo++;
+    var num=document.createElement('span');
+    num.className='num';
+    num.textContent='Остановка '+stopNo;
+    stop.appendChild(num);
     box.appendChild(stop);
     return stop;
   }
 
   STATE.segments.forEach(function(seg,i){
     if(seg.kind==='leg'){
-      // переезд открывает новую секцию
+      // переезд открывает новую карточку
       newStop().appendChild(legEl(seg));
     }else{
-      // город прилипает к своему переезду; если его не было — своя секция
+      // город прилипает к своему переезду; если его не было — своя карточка
       if(!stop || stop.querySelector('.city')) newStop();
       stop.appendChild(cityEl(seg,i));
+      // подписываем карточку городом, к которому она ведёт
+      var lbl=stop.querySelector('.num');
+      if(lbl) lbl.textContent=stopNo+' · '+((seg.city||'').trim()||'без города');
     }
   });
 }
