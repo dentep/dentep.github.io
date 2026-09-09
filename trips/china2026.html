@@ -6,24 +6,13 @@
 <title>Китай · план и бюджет</title>
 <link rel="stylesheet" href="style.css">
 <style>
-  :root{
-    --bg:#0f1216; --card:#1a1f27; --card2:#20262f; --line:#2c333d;
-    --ink:#eef1f5; --muted:#9aa5b1; --faint:#6b7684;
-    --fly:#9b6fd4; --hotel:#3f9fd0; --ok:#4faf7d; --todo:#e0b13f; --danger:#e0554f;
-    --accent:#e07a3f;
-  }
-  *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
-  body{margin:0;background:var(--bg);color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    line-height:1.45;font-size:15px}
-  .wrap{max-width:none;width:100%;margin:0;padding:18px 20px 80px}
+  .wrap{max-width:1180px;margin:0 auto;padding:18px 20px 80px}
   h1{font-size:22px;margin:0 0 2px}
   .subtitle{color:var(--muted);font-size:13px;margin:0 0 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
   .saved{font-size:12px;color:var(--ok);opacity:0;transition:opacity .3s}
   .saved.show{opacity:1}
+  .who{display:flex;align-items:center;gap:9px}
 
-  /* индикатор синхронизации */
   .sync{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:3px 9px;border-radius:20px;
     border:1px solid var(--line);background:var(--card);white-space:nowrap}
   .sync .dot{width:7px;height:7px;border-radius:50%;background:var(--faint);flex:none}
@@ -34,9 +23,9 @@
   .sync[data-state=error]{border-color:#6b2f2c;color:#f0a9a5}
 
   .summary{position:sticky;top:0;z-index:20;display:grid;gap:10px;
-    grid-template-columns:1.3fr 1fr 1fr 1fr;padding:12px 0;margin-bottom:6px;
-    background:linear-gradient(180deg,var(--bg) 72%,transparent)}
-  @media(max-width:720px){.summary{grid-template-columns:1fr 1fr}}
+    grid-template-columns:1.3fr 1fr 1fr 1fr;padding:12px 0 14px;margin-bottom:4px;
+    background:linear-gradient(180deg,var(--bg) 78%,transparent)}
+  @media(max-width:760px){.summary{grid-template-columns:1fr 1fr}}
   .scard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
   .scard .lbl{font-size:11.5px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px}
   .scard .val{font-size:23px;font-weight:800;margin-top:4px;font-variant-numeric:tabular-nums;letter-spacing:.3px}
@@ -48,50 +37,61 @@
 
   input[type=number]{text-align:right;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
   input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-  textarea{resize:none;line-height:1.4;min-height:36px;overflow:hidden}
+  textarea{resize:none;line-height:1.4;min-height:34px;overflow:hidden}
 
-  .btn{font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;border-radius:7px;padding:8px 14px;
-    border:1px solid var(--line);background:#11151b;color:var(--ink);width:auto;transition:border-color .15s,background .15s}
-  .btn:hover{border-color:var(--accent)}
-  .btn.primary{background:var(--accent);border-color:var(--accent);color:#1a1206}
-  .btn.primary:hover{background:#eb8b52}
-  .btn.danger{background:#241618;border-color:#6b2f2c;color:#f0a9a5}
-  .btn.danger:hover{background:#31191b;border-color:var(--danger)}
-  .btn:disabled{opacity:.45;cursor:not-allowed}
-  .iconbtn{flex:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
-    font-size:14px;width:34px;height:34px;border:1px solid var(--line);border-radius:7px;background:#11151b;color:var(--muted)}
-  .iconbtn:hover{border-color:var(--danger);color:#f0a9a5}
+  /* ---------- маршрут: города и переезды ---------- */
+  .route{display:flex;flex-direction:column;gap:9px}
 
-  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card)}
-  table{width:100%;border-collapse:collapse;min-width:1320px}
-  thead th{position:sticky;top:0;background:#161b22;color:var(--muted);font-size:11px;
-    text-transform:uppercase;letter-spacing:.5px;text-align:left;padding:12px 9px;border-bottom:1px solid var(--line);white-space:nowrap}
-  tbody td{padding:13px 9px;border-bottom:1px solid #2b333d;vertical-align:top}
-  tbody tr:hover{background:#1c222b}
-  tbody tr.hasfly{background:#191d26}
-  tbody tr.hasfly:hover{background:#1e242d}
-  td.c-date{width:132px} td.c-move{min-width:250px} td.c-fly{width:118px} td.c-stay{width:150px} td.c-link{width:152px} td.c-hotel{width:118px} td.c-status{width:172px}
-  td.c-note{min-width:250px}
-  td.c-date input{white-space:nowrap}
-  .datecell{display:flex;align-items:center;gap:8px}
-  .leg-badge{width:5px;align-self:stretch;min-height:34px;border-radius:3px;background:#2b333d}
-  tr.hasfly .leg-badge{background:var(--fly)}
-  .restday{display:block;padding:8px 9px;font-size:13px;color:var(--muted);border:1px solid #232a33;border-radius:7px;background:#0e1218;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  select.status{font-size:13px;font-weight:700;padding:9px 34px 9px 9px}
-  tr[data-status=booked] td.c-status select{background-color:#16261c;border-color:#2f6b45;color:var(--ok)}
-  tr[data-status=todo] td.c-status select{background-color:#2a2413;border-color:#7a6320;color:var(--todo)}
+  /* переезд между городами */
+  .leg{display:grid;grid-template-columns:96px 1fr 116px 150px;gap:10px;align-items:center;
+    background:#171b23;border:1px solid var(--line);border-left:3px solid var(--fly);
+    border-radius:11px;padding:10px 13px}
+  @media(max-width:820px){.leg{grid-template-columns:1fr 1fr;gap:8px}}
+  .leg .date{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .leg .move{display:flex;align-items:center;gap:8px;min-width:0}
+  .leg .move .ico{flex:none;opacity:.85}
 
-  .linkcell{display:flex;gap:6px;align-items:center}
-  .linkcell input{min-width:0}
+  /* блок города */
+  .city{background:var(--card);border:1px solid var(--line);border-radius:13px;overflow:hidden}
+  .city.open{border-color:#3a4453}
+  .chead{display:grid;grid-template-columns:22px 1fr 150px 128px 158px;gap:11px;align-items:center;
+    padding:12px 14px;cursor:pointer}
+  @media(max-width:820px){.chead{grid-template-columns:22px 1fr;row-gap:9px}
+    .chead .lk,.chead .price,.chead .st{grid-column:2}}
+  .chead:hover{background:#1e242d}
+  .chead .caret{color:var(--faint);font-size:11px;transition:transform .15s;text-align:center}
+  .city.open .chead .caret{transform:rotate(90deg)}
+  .cname{min-width:0}
+  .cname .n{font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .cname .meta{font-size:11.5px;color:var(--faint);margin-top:2px}
+  .nights{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;
+    background:#1d2733;border:1px solid #2f4356;color:#8fc4e4;white-space:nowrap}
+  .chead .lk{display:flex;gap:6px;align-items:center;min-width:0}
+  .chead .price{position:relative}
+  .pernight{position:absolute;right:2px;top:100%;margin-top:2px;font-size:10.5px;color:var(--faint);white-space:nowrap}
+
+  /* дни внутри города */
+  .days{display:none;border-top:1px solid var(--line);background:#151a21;padding:4px 14px 10px}
+  .city.open .days{display:block}
+  .day{display:grid;grid-template-columns:96px 1fr;gap:11px;align-items:start;
+    padding:8px 0;border-bottom:1px solid #232a33}
+  .day:last-child{border-bottom:none}
+  .day .d{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;padding-top:8px;white-space:nowrap}
+
   .openlink{flex:none;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;
     font-size:15px;width:34px;height:34px;border:1px solid var(--line);border-radius:7px;background:#11151b;color:var(--hotel)}
   .openlink[aria-disabled=true]{opacity:.3;pointer-events:none}
   .openlink:hover{border-color:var(--accent)}
   a.plink{text-decoration:none;color:var(--hotel);margin-left:4px}
 
+  /* статусы */
+  select.status{font-size:12.5px;font-weight:700;padding:8px 34px 8px 10px}
+  select.status[data-v=booked]{background-color:#16261c;border-color:#2f6b45;color:var(--ok)}
+  select.status[data-v=todo]{background-color:#2a2413;border-color:#7a6320;color:var(--todo)}
+
   h2.sec{font-size:12.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--faint);margin:30px 4px 10px;font-weight:700}
   .panels{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  @media(max-width:720px){.panels{grid-template-columns:1fr}}
+  @media(max-width:820px){.panels{grid-template-columns:1fr}}
   .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
   .panel .phead{display:flex;justify-content:space-between;align-items:baseline;padding:13px 15px;border-bottom:1px solid var(--line);gap:10px}
   .panel .phead .pt{font-weight:700;font-size:14.5px;display:flex;align-items:center;gap:8px}
@@ -107,7 +107,6 @@
   .hint b{color:var(--ink)}
   .hint.warn{border-left-color:var(--danger)}
 
-  /* формы новых секций */
   .addform{display:grid;gap:9px;padding:13px 15px;border-bottom:1px solid var(--line);
     grid-template-columns:1fr 1.7fr .8fr 1.3fr auto;align-items:center}
   .addform.files{grid-template-columns:1.4fr 2fr auto}
@@ -137,11 +136,10 @@
   .fileitem:last-child{border-bottom:none}
   .fileitem .ic{font-size:19px;flex:none;width:26px;text-align:center}
   .fileitem .body{flex:1;min-width:0}
-  .fileitem a.fname{color:var(--ink);text-decoration:none;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .fileitem a.fname{color:var(--ink);text-decoration:none;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
   .fileitem a.fname:hover{color:var(--hotel);text-decoration:underline}
   .fileitem .meta{font-size:11.5px;color:var(--faint);margin-top:2px}
 
-  /* модалка подтверждения */
   .modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px;
     background:rgba(5,8,11,.72)}
   .modal.on{display:flex}
@@ -153,13 +151,14 @@
 </style>
 </head>
 <body>
+
 <div id="authGate" class="gate" style="display:none"></div>
 
 <div class="wrap" id="wrap" style="display:none">
 
   <h1>🇨🇳 Китай · план и бюджет</h1>
   <p class="subtitle">
-    10–26 октября 2026 · редактируй прямо в таблице
+    <span id="subDates">10–26 октября 2026</span>
     <span class="sync" id="syncTag" data-state="init"><span class="dot"></span><span id="syncText">подключение…</span></span>
     <span class="saved" id="savedTag">✓ сохранено</span>
     <span class="who" id="userBox" style="display:none;margin-left:auto">
@@ -173,38 +172,24 @@
   <div class="hint" id="roBadge" style="display:none">
     👁️ <b>Только просмотр.</b> Данные видны, но менять их может лишь администратор.
   </div>
-
   <div class="hint" id="mainHint">
-    Все правки сохраняются в общей базе и подтягиваются на любом устройстве — открывай эту же ссылку с телефона или ноутбука. <b>Транспорт</b> и <b>отели</b> считаются отдельно и суммируются внизу и наверху.
+    Города сгруппированы: у каждого одна ссылка на отель, цена за всю бронь и свой статус.
+    У переездов — свой статус билетов. Нажми на город, чтобы раскрыть дни и заметки.
   </div>
 
   <div class="summary">
-    <div class="scard total"><div class="lbl">💰 Итого</div><div class="val" id="s-total">—</div><div class="sub">транспорт + отели</div></div>
-    <div class="scard fly"><div class="lbl"><span class="dotm" style="background:var(--fly)"></span> Транспорт</div><div class="val" id="s-fly">—</div><div class="sub" id="s-fly-sub"></div></div>
+    <div class="scard total"><div class="lbl">💰 Итого</div><div class="val" id="s-total">—</div><div class="sub">билеты + отели</div></div>
+    <div class="scard fly"><div class="lbl"><span class="dotm" style="background:var(--fly)"></span> Билеты</div><div class="val" id="s-fly">—</div><div class="sub" id="s-fly-sub"></div></div>
     <div class="scard hotel"><div class="lbl"><span class="dotm" style="background:var(--hotel)"></span> Отели</div><div class="val" id="s-hotel">—</div><div class="sub" id="s-hotel-sub"></div></div>
-    <div class="scard"><div class="lbl">📋 К брони</div><div class="val" id="s-todo" style="color:var(--todo)">—</div><div class="sub">строк «Купить»</div></div>
+    <div class="scard"><div class="lbl">📋 Осталось забронировать</div><div class="val" id="s-todo" style="color:var(--todo)">—</div><div class="sub" id="s-todo-sub"></div></div>
   </div>
 
-  <div class="tablewrap">
-    <table>
-      <thead><tr>
-        <th>Дата</th>
-        <th>Переезд</th>
-        <th>Транспорт&nbsp;₽</th>
-        <th>Ночь&nbsp;в&nbsp;(город)</th>
-        <th>Ссылка</th>
-        <th>Отель&nbsp;₽</th>
-        <th>Заметка</th>
-        <th>Статус</th>
-      </tr></thead>
-      <tbody id="tbody"></tbody>
-    </table>
-  </div>
+  <div class="route" id="route"></div>
 
   <h2 class="sec">Разбивка по стоимости</h2>
   <div class="panels">
     <div class="panel fly">
-      <div class="phead"><div class="pt">✈️ Перелёты и переезды</div><div class="psum" id="flySum">—</div></div>
+      <div class="phead"><div class="pt">✈️ Билеты и переезды</div><div class="psum" id="flySum">—</div></div>
       <div id="flyList"></div>
     </div>
     <div class="panel hotel">
@@ -251,7 +236,8 @@
   </div>
 
   <p class="note">
-    Чжанцзяцзе: горы «Аватара» (лесопарк) — у посёлка <b>Улинъюань</b>, ~40 мин от города и аэропорта; отель на 20–21.10 бери там, на 22.10 (гора Тяньмэнь) — в городе.
+    Чжанцзяцзе: горы «Аватара» (лесопарк) — у посёлка <b>Улинъюань</b>, ~40 мин от города и аэропорта;
+    отель на 20–21.10 бери там, на 22.10 (гора Тяньмэнь) — в городе.
   </p>
 
 </div>
@@ -273,34 +259,40 @@
 import * as AUTH from './auth.js';
 
 /* ============================================================
-   ХРАНИЛИЩЕ
-   Данные лежат в Firestore (документ trips/china2026) и видны
-   на всех устройствах. Файлы тоже: хранятся прямо в базе как
-   base64 (Storage не нужен, карту привязывать не надо).
-   Картинки сжимаются в браузере перед загрузкой.
-   Пока конфиг не заполнен (firebase_config.js), страница
-   работает на локальной копии: читает china2026_seed.json
-   и держит правки в localStorage этого браузера.
+   МОДЕЛЬ ДАННЫХ
+
+   Маршрут — последовательность отрезков (segments):
+
+     {kind:'leg',  date, title, cost, status}          переезд + билет
+     {kind:'city', city, nights:[{date,note}],         остановка в городе
+                   link, cost, status}
+
+   У города: ОДНА ссылка на отель, cost — сумма за всю бронь,
+   status — статус брони отеля. У переезда — свой status (билеты).
+
+   Старый формат (строка = день) читается и конвертируется, см. migrate().
    ============================================================ */
 
 var CUR = "₽";
 var SEED_URL = "china2026_seed.json";
-var LOCAL_KEY = "chinaTrip_v2";
+var LOCAL_KEY = "chinaTrip_v3";
 var DOC_PATH = ["trips", "china2026"];
 
-var READONLY = false;   // true = вошёл читатель, правки запрещены
+var READONLY = false;
 var TRIP_META = { title:"Китай", emoji:"🇨🇳", dates:"10–26 октября 2026" };
-var STATE = { rows: [], candidates: [], files: [] };
-var remote = null;          // { db, ref, setDoc, getDoc, onSnapshot }
-var applyingRemote = false; // подавляет пере-сохранение при входящем снапшоте
-var pendingLocalWrite = false;
+var STATE = { segments: [], candidates: [], files: [] };
+var remote = null;
+var applyingRemote = false;
+var deferred = null;
+var openCities = {};   // какие города раскрыты (по индексу)
 
 /* ---------- утилиты ---------- */
+function $(id){ return document.getElementById(id); }
 function fmt(n){ return Math.round(n||0).toLocaleString('ru-RU'); }
-function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
 function normUrl(u){ u=String(u||'').trim(); if(!u)return ''; if(!/^https?:\/\//i.test(u)) u='https://'+u; return u; }
 function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
-function $(id){ return document.getElementById(id); }
+function num(v){ var n=parseFloat(v); return isFinite(n)?n:0; }
 
 function humanSize(b){
   b=Number(b)||0;
@@ -317,39 +309,149 @@ function fileIcon(name,type){
   if(/zip|rar|7z|archive/.test(t)) return '🗜️';
   return '📎';
 }
+function plural(n,a,b,c){
+  var m=n%100; if(m>=11&&m<=14) return c;
+  var k=n%10; return k===1?a:(k>=2&&k<=4?b:c);
+}
 
-/* ---------- индикатор состояния ---------- */
+/* ---------- индикатор ---------- */
 function setSync(state, text){
-  // читателю нечего "сохранять" — показываем режим, а не статус записи
   if(READONLY && (state==='online'||state==='saving')){ state='online'; text='только просмотр'; }
   var tag=$('syncTag'); tag.setAttribute('data-state',state); $('syncText').textContent=text;
 }
 var flashTimer=null;
 function flashSaved(){
+  if(READONLY) return;
   var t=$('savedTag'); t.classList.add('show');
   clearTimeout(flashTimer); flashTimer=setTimeout(function(){t.classList.remove('show');},1100);
 }
 
-/* ---------- сохранение ---------- */
-var saveTimer=null;
-function scheduleSave(){ clearTimeout(saveTimer); saveTimer=setTimeout(save,400); }
+/* ============================================================
+   МИГРАЦИЯ со старого формата (rows: строка = день)
 
-function saveLocal(){
-  try{ localStorage.setItem(LOCAL_KEY, JSON.stringify(STATE)); }catch(e){}
+   Последовательные дни с одним городом сливаются в один блок.
+   Цена отеля в старом формате стояла в каждой ночи (цена за ночь),
+   поэтому суммируем hcost по всем дням города — итог совпадает
+   с тем, что показывала старая страница.
+   Статус дня переносится: у переезда — в билеты, у города — в отель.
+   ============================================================ */
+function migrate(rows){
+  var segs=[];
+  var cur=null;   // текущий блок города
+
+  function flush(){ if(cur){ segs.push(cur); cur=null; } }
+
+  rows.forEach(function(r){
+    var city=String(r.stay||'').trim();
+    var move=String(r.transport||'').trim();
+
+    // переезд в этот день — отдельный отрезок перед городом
+    if(move){
+      flush();
+      segs.push({
+        kind:'leg', id:uid(), date:r.date||'', title:move,
+        cost:num(r.tcost),
+        status:(r.status==='booked'||r.status==='todo')?r.status:''
+      });
+    }
+
+    if(!city) return;
+
+    if(!cur || cur.city!==city){
+      flush();
+      cur={ kind:'city', id:uid(), city:city, nights:[], link:'', cost:0, status:'' };
+    }
+    cur.nights.push({ date:r.date||'', note:r.note||'' });
+    cur.cost += num(r.hcost);                       // сумма за все ночи
+    if(!cur.link && String(r.link||'').trim()) cur.link=r.link;
+    // статус отеля: booked, если хоть одна ночь помечена и есть цена/ссылка
+    if(r.status==='booked' && !cur.status) cur.status='booked';
+    else if(r.status==='todo' && cur.status!=='booked') cur.status='todo';
+  });
+  flush();
+
+  // у города без цены и ссылки статус не имеет смысла
+  segs.forEach(function(s){
+    if(s.kind==='city' && !s.cost && !String(s.link||'').trim()) s.status='';
+  });
+  return segs;
 }
 
-/* Что уходит в базу: данные + мета поездки (её читает страница списка). */
+/* ---------- нормализация ---------- */
+function normSeg(s){
+  if(s && s.kind==='leg'){
+    return { kind:'leg', id:s.id||uid(), date:s.date||'', title:s.title||'',
+             cost:num(s.cost), status:(s.status==='booked'||s.status==='todo')?s.status:'' };
+  }
+  var nights=Array.isArray(s&&s.nights)?s.nights:[];
+  return {
+    kind:'city', id:(s&&s.id)||uid(), city:(s&&s.city)||'',
+    nights:nights.map(function(n){ return { date:(n&&n.date)||'', note:(n&&n.note)||'' }; }),
+    link:(s&&s.link)||'', cost:num(s&&s.cost),
+    status:(s&&(s.status==='booked'||s.status==='todo'))?s.status:''
+  };
+}
+
+function normalize(d){
+  var out={ segments:[], candidates:[], files:[] };
+  out.title=(d&&d.title)||TRIP_META.title;
+  out.emoji=(d&&d.emoji)||TRIP_META.emoji;
+  out.dates=(d&&d.dates)||TRIP_META.dates;
+
+  if(d && Array.isArray(d.segments) && d.segments.length){
+    out.segments=d.segments.map(normSeg);
+  }else if(d && Array.isArray(d.rows) && d.rows.length){
+    out.segments=migrate(d.rows).map(normSeg);   // старый формат
+  }
+
+  if(d && Array.isArray(d.candidates)) out.candidates=d.candidates.map(function(c){
+    return { id:c.id||uid(), city:c.city||'', link:c.link||'',
+             price:(c.price===''||c.price==null)?null:num(c.price),
+             comment:c.comment||'' };
+  });
+  if(d && Array.isArray(d.files)) out.files=d.files.map(function(f){
+    return { id:f.id||uid(), title:f.title||'', data:f.data||f.url||'',
+             type:f.type||'', size:num(f.size), orig:num(f.orig), added:f.added||'' };
+  });
+  return out;
+}
+
+/* ---------- сохранение ---------- */
 function payload(){
   var d=JSON.parse(JSON.stringify(STATE));
-  d.title = STATE.title || TRIP_META.title;
-  d.emoji = STATE.emoji || TRIP_META.emoji;
-  d.dates = STATE.dates || TRIP_META.dates;
+  d.title=STATE.title||TRIP_META.title;
+  d.emoji=STATE.emoji||TRIP_META.emoji;
+  d.dates=STATE.dates||TRIP_META.dates;
+  d.rows=legacyRows();     // для обратной совместимости и страницы списка
   return d;
 }
 
+/* Плоский вид для страницы списка поездок: она считает по rows. */
+function legacyRows(){
+  var rows=[];
+  STATE.segments.forEach(function(s){
+    if(s.kind==='leg'){
+      rows.push({ date:s.date, transport:s.title, tcost:s.cost, stay:'', hcost:0,
+                  link:'', note:'', status:s.status });
+    }else{
+      var n=s.nights.length||1;
+      var per=s.cost/n;
+      s.nights.forEach(function(g,i){
+        rows.push({ date:g.date, transport:'', tcost:0, stay:s.city,
+                    hcost:per, link:i===0?s.link:'', note:g.note, status:s.status });
+      });
+    }
+  });
+  return rows;
+}
+
+function saveLocal(){ try{ localStorage.setItem(LOCAL_KEY, JSON.stringify(STATE)); }catch(e){} }
+var saveTimer=null;
+function scheduleSave(){ clearTimeout(saveTimer); saveTimer=setTimeout(save,400); }
+
 async function save(){
   if(applyingRemote) return;
-  if(READONLY) return;   // читатель ничего не сохраняет
+  if(READONLY) return;
   saveLocal();
   if(!remote){ flashSaved(); return; }
   try{
@@ -363,162 +465,255 @@ async function save(){
   }
 }
 
-/* ---------- загрузка начальных данных ---------- */
-function normalize(d){
-  var out={ rows:[], candidates:[], files:[] };
-  // мета поездки нужна странице со списком поездок
-  out.title = (d&&d.title) || TRIP_META.title;
-  out.emoji = (d&&d.emoji) || TRIP_META.emoji;
-  out.dates = (d&&d.dates) || TRIP_META.dates;
-  if(d && Array.isArray(d.rows)) out.rows=d.rows.map(function(r){
-    return {
-      date:r.date||'', transport:r.transport||'', tcost:Number(r.tcost)||0,
-      stay:r.stay||'', hcost:Number(r.hcost)||0, link:r.link||'',
-      note:r.note||'', status:r.status||''
-    };
+/* ============================================================
+   ОТРИСОВКА МАРШРУТА
+   ============================================================ */
+var STATUS_OPTS = [['','—'],['booked','Забронировано'],['todo','Купить']];
+var HOTEL_OPTS  = [['','—'],['booked','Забронирован'],['todo','Бронировать']];
+
+function autoGrow(ta){ ta.style.height='auto'; ta.style.height=(ta.scrollHeight+2)+'px'; }
+
+function statusSelect(seg, opts, onChange){
+  var sel=document.createElement('select');
+  sel.className='status';
+  opts.forEach(function(o){
+    var op=document.createElement('option');
+    op.value=o[0]; op.textContent=o[1];
+    if((seg.status||'')===o[0]) op.selected=true;
+    sel.appendChild(op);
   });
-  if(d && Array.isArray(d.candidates)) out.candidates=d.candidates.map(function(c){
-    return { id:c.id||uid(), city:c.city||'', link:c.link||'',
-             price:(c.price===''||c.price==null)?null:(Number(c.price)||0),
-             comment:c.comment||'' };
+  sel.setAttribute('data-v', seg.status||'');
+  sel.addEventListener('change',function(){
+    seg.status=sel.value;
+    sel.setAttribute('data-v',sel.value);
+    onChange && onChange();
+    recompute(); scheduleSave();
   });
-  if(d && Array.isArray(d.files)) out.files=d.files.map(function(f){
-    return { id:f.id||uid(), title:f.title||'', data:f.data||f.url||'',
-             type:f.type||'', size:Number(f.size)||0, orig:Number(f.orig)||0,
-             added:f.added||'' };
-  });
-  return out;
+  return sel;
 }
 
-async function fetchSeed(){
-  var res=await fetch(SEED_URL, {cache:'no-store'});
-  if(!res.ok) throw new Error('seed '+res.status);
-  return normalize(await res.json());
+function linkCell(seg, onChange){
+  var wrap=document.createElement('div'); wrap.className='lk';
+  var inp=document.createElement('input'); inp.type='url';
+  inp.value=seg.link||''; inp.placeholder='ссылка на отель';
+  var a=document.createElement('a'); a.className='openlink'; a.target='_blank'; a.rel='noopener';
+  a.title='Открыть отель'; a.textContent='🔗';
+  function sync(){
+    var u=normUrl(seg.link);
+    if(u){ a.href=u; a.setAttribute('aria-disabled','false'); }
+    else { a.removeAttribute('href'); a.setAttribute('aria-disabled','true'); }
+  }
+  inp.addEventListener('input',function(){ seg.link=inp.value; sync(); onChange&&onChange(); scheduleSave(); });
+  inp.addEventListener('click',function(e){ e.stopPropagation(); });
+  sync(); wrap.appendChild(inp); wrap.appendChild(a);
+  return wrap;
 }
 
-function readLocal(){
-  try{ var raw=localStorage.getItem(LOCAL_KEY); if(raw) return normalize(JSON.parse(raw)); }catch(e){}
-  return null;
+/* ---------- переезд (билеты) ---------- */
+function legEl(seg){
+  var el=document.createElement('div'); el.className='leg';
+
+  var d=document.createElement('div'); d.className='date'; d.textContent=seg.date||'—';
+  el.appendChild(d);
+
+  var mv=document.createElement('div'); mv.className='move';
+  var ico=document.createElement('span'); ico.className='ico'; ico.textContent='✈️';
+  var ti=document.createElement('input'); ti.type='text'; ti.value=seg.title||''; ti.placeholder='откуда — куда';
+  ti.addEventListener('input',function(){ seg.title=ti.value; recompute(); scheduleSave(); });
+  mv.appendChild(ico); mv.appendChild(ti);
+  el.appendChild(mv);
+
+  var ci=document.createElement('input'); ci.type='number'; ci.min='0'; ci.step='100';
+  ci.value=seg.cost?seg.cost:''; ci.placeholder='0'; ci.title='Стоимость билетов';
+  ci.addEventListener('input',function(){ seg.cost=num(ci.value); recompute(); scheduleSave(); });
+  el.appendChild(ci);
+
+  el.appendChild(statusSelect(seg, STATUS_OPTS));
+  return el;
+}
+
+/* ---------- город (отель) ---------- */
+function cityEl(seg, idx){
+  var el=document.createElement('div');
+  el.className='city'+(openCities[seg.id]?' open':'');
+
+  var head=document.createElement('div'); head.className='chead';
+
+  var caret=document.createElement('div'); caret.className='caret'; caret.textContent='▶';
+  head.appendChild(caret);
+
+  var nameBox=document.createElement('div'); nameBox.className='cname';
+  var nRow=document.createElement('div'); nRow.className='n';
+  var ci=document.createElement('input'); ci.type='text'; ci.value=seg.city||'';
+  ci.placeholder='город'; ci.style.maxWidth='220px';
+  ci.addEventListener('input',function(){
+    seg.city=ci.value; renderCityOptions(); recompute(); scheduleSave();
+  });
+  ci.addEventListener('click',function(e){ e.stopPropagation(); });
+  var nb=document.createElement('span'); nb.className='nights';
+  var cnt=seg.nights.length;
+  nb.textContent=cnt+' '+plural(cnt,'ночь','ночи','ночей');
+  nRow.appendChild(ci); nRow.appendChild(nb);
+  nameBox.appendChild(nRow);
+
+  var meta=document.createElement('div'); meta.className='meta';
+  var first=seg.nights[0], last=seg.nights[seg.nights.length-1];
+  var span=(first&&last)?(first.date+(cnt>1?(' — '+last.date):'')):'';
+  var withNotes=seg.nights.filter(function(n){ return (n.note||'').trim(); }).length;
+  meta.textContent=span+(withNotes?(' · заметок: '+withNotes):'');
+  nameBox.appendChild(meta);
+  head.appendChild(nameBox);
+
+  if(isHome(seg)){
+    head.appendChild(document.createElement('div'));   // пустая клетка вместо ссылки
+  }else{
+    head.appendChild(linkCell(seg));
+  }
+
+  var priceBox=document.createElement('div'); priceBox.className='price';
+  var pi=document.createElement('input'); pi.type='number'; pi.min='0'; pi.step='100';
+  pi.value=seg.cost?seg.cost:''; pi.placeholder='0'; pi.title='Стоимость всей брони';
+  var per=document.createElement('span'); per.className='pernight';
+  function syncPer(){
+    var n=seg.nights.length||1;
+    per.textContent=(seg.cost>0)?(fmt(seg.cost/n)+' / ночь'):'';
+  }
+  pi.addEventListener('input',function(){ seg.cost=num(pi.value); syncPer(); recompute(); scheduleSave(); });
+  pi.addEventListener('click',function(e){ e.stopPropagation(); });
+  syncPer();
+  if(!isHome(seg)){ priceBox.appendChild(pi); priceBox.appendChild(per); }
+  head.appendChild(priceBox);
+
+  var stWrap=document.createElement('div'); stWrap.className='st';
+  if(isHome(seg)){
+    // дом не бронируем: вместо статуса — пометка
+    var homeTag=document.createElement('span');
+    homeTag.className='nights';
+    homeTag.style.borderColor='#3a4453'; homeTag.style.background='#1b2028'; homeTag.style.color='var(--muted)';
+    homeTag.textContent='🏠 дом';
+    stWrap.appendChild(homeTag);
+  }else{
+    var sel=statusSelect(seg, HOTEL_OPTS);
+    sel.addEventListener('click',function(e){ e.stopPropagation(); });
+    stWrap.appendChild(sel);
+  }
+  head.appendChild(stWrap);
+
+  // раскрытие по клику на заголовок (кроме полей)
+  head.addEventListener('click',function(){
+    var open=!el.classList.contains('open');
+    el.classList.toggle('open', open);
+    openCities[seg.id]=open;
+  });
+  el.appendChild(head);
+
+  // дни с заметками
+  var days=document.createElement('div'); days.className='days';
+  seg.nights.forEach(function(n){
+    var row=document.createElement('div'); row.className='day';
+    var dd=document.createElement('div'); dd.className='d'; dd.textContent=n.date||'—';
+    var ta=document.createElement('textarea'); ta.value=n.note||''; ta.placeholder='что в этот день…'; ta.rows=1;
+    ta.addEventListener('input',function(){
+      n.note=ta.value; autoGrow(ta);
+      meta.textContent=span+(function(){
+        var w=seg.nights.filter(function(x){return (x.note||'').trim();}).length;
+        return w?(' · заметок: '+w):'';
+      })();
+      scheduleSave();
+    });
+    row.appendChild(dd); row.appendChild(ta);
+    days.appendChild(row);
+    setTimeout(function(){ autoGrow(ta); },0);
+  });
+  el.appendChild(days);
+
+  return el;
+}
+
+function renderRoute(){
+  var box=$('route'); box.innerHTML='';
+  if(!STATE.segments.length){
+    box.innerHTML='<div class="prow empty" style="border:1px solid var(--line);border-radius:12px;background:var(--card)">маршрут пуст</div>';
+    return;
+  }
+  STATE.segments.forEach(function(s,i){
+    box.appendChild(s.kind==='leg' ? legEl(s) : cityEl(s,i));
+  });
 }
 
 /* ============================================================
-   ТАБЛИЦА
+   ПОДСЧЁТ
+   Считаем отдельно билеты и отели, и отдельно — что осталось
+   забронировать по каждой из двух сущностей.
    ============================================================ */
-var tbody=$('tbody');
-function autoGrow(ta){ ta.style.height='auto'; ta.style.height=(ta.scrollHeight+2)+'px'; }
-
-function makeRow(row){
-  var isLeg=(row.transport||"").trim()!=="";
-  var tr=document.createElement('tr');
-  tr.setAttribute('data-status', row.status||"");
-  if(isLeg) tr.className='hasfly';
-
-  function cell(cls){ var td=document.createElement('td'); if(cls)td.className=cls; tr.appendChild(td); return td; }
-  function bindNum(i,f){ i.addEventListener('input',function(){ row[f]=parseFloat(i.value)||0; recompute(); scheduleSave(); }); }
-  function bindTxt(i,f){ i.addEventListener('input',function(){ row[f]=i.value; recompute(); scheduleSave(); }); }
-
-  var d=cell('c-date'); var dw=document.createElement('div'); dw.className='datecell';
-  var badge=document.createElement('span'); badge.className='leg-badge'; dw.appendChild(badge);
-  var di=document.createElement('input'); di.type='text'; di.value=row.date; di.placeholder='дата'; bindTxt(di,'date'); dw.appendChild(di);
-  d.appendChild(dw);
-
-  var restSpan=null;
-  var t=cell('c-move');
-  if(isLeg){ var ti=document.createElement('input'); ti.type='text'; ti.value=row.transport; bindTxt(ti,'transport'); t.appendChild(ti); }
-  else { restSpan=document.createElement('span'); restSpan.className='restday'; restSpan.textContent='📍 '+(((row.stay||'').trim())||'—'); t.appendChild(restSpan); }
-
-  var tc=cell('c-fly'); var tci=document.createElement('input'); tci.type='number'; tci.min='0'; tci.step='100';
-  tci.value=row.tcost?row.tcost:''; tci.placeholder='0'; if(!isLeg) tci.disabled=true; bindNum(tci,'tcost'); tc.appendChild(tci);
-
-  var st=cell('c-stay'); var si=document.createElement('input'); si.type='text'; si.value=row.stay; si.placeholder='город';
-  si.addEventListener('input',function(){
-    row.stay=si.value;
-    if(restSpan) restSpan.textContent='📍 '+(((row.stay||'').trim())||'—');
-    recompute(); renderCityOptions(); scheduleSave();
-  });
-  st.appendChild(si);
-
-  var lk=cell('c-link'); var lw=document.createElement('div'); lw.className='linkcell';
-  var li=document.createElement('input'); li.type='url'; li.value=row.link||''; li.placeholder='вставь ссылку';
-  var la=document.createElement('a'); la.className='openlink'; la.target='_blank'; la.rel='noopener'; la.title='Открыть ссылку на отель'; la.textContent='🔗';
-  function syncLink(){ var u=normUrl(row.link); if(u){ la.href=u; la.setAttribute('aria-disabled','false'); } else { la.removeAttribute('href'); la.setAttribute('aria-disabled','true'); } }
-  li.addEventListener('input',function(){ row.link=li.value; syncLink(); recompute(); scheduleSave(); });
-  syncLink(); lw.appendChild(li); lw.appendChild(la); lk.appendChild(lw);
-
-  var hc=cell('c-hotel'); var hci=document.createElement('input'); hci.type='number'; hci.min='0'; hci.step='100';
-  hci.value=row.hcost?row.hcost:''; hci.placeholder='0'; bindNum(hci,'hcost'); hc.appendChild(hci);
-
-  var nt=cell('c-note'); var ta=document.createElement('textarea'); ta.value=row.note; ta.placeholder='заметка…'; ta.rows=1;
-  ta.addEventListener('input',function(){ row.note=ta.value; autoGrow(ta); scheduleSave(); }); nt.appendChild(ta);
-
-  var stt=cell('c-status'); var sel=document.createElement('select'); sel.className='status';
-  [['','—'],['booked','Забронировано'],['todo','Купить']].forEach(function(o){
-    var op=document.createElement('option'); op.value=o[0]; op.textContent=o[1]; if((row.status||"")===o[0])op.selected=true; sel.appendChild(op);
-  });
-  sel.addEventListener('change',function(){ row.status=sel.value; tr.setAttribute('data-status',sel.value); recompute(); scheduleSave(); });
-  stt.appendChild(sel);
-
-  return tr;
-}
-
-function renderTable(){
-  tbody.innerHTML='';
-  STATE.rows.forEach(function(r){ tbody.appendChild(makeRow(r)); });
-  Array.prototype.forEach.call(tbody.querySelectorAll('textarea'), autoGrow);
-}
-
 function recompute(){
-  var flyTotal=0, hotelTotal=0, todo=0, legs=[], hotels={};
-  STATE.rows.forEach(function(r){
-    var tc=parseFloat(r.tcost)||0, hc=parseFloat(r.hcost)||0;
-    flyTotal+=tc; hotelTotal+=hc;
-    if(r.status==='todo') todo++;
-    if((r.transport||"").trim()) legs.push({name:r.transport,date:r.date,cost:tc,status:r.status});
-    if((r.stay||"").trim()){
-      var key=r.stay;
-      if((hc>0)||((r.link||"").trim())){
-        if(!hotels[key]) hotels[key]={nights:0,cost:0,link:""};
-        if(hc>0) hotels[key].nights++;
-        hotels[key].cost+=hc;
-        if(!hotels[key].link && (r.link||"").trim()) hotels[key].link=r.link;
-      }
+  var ticketTotal=0, hotelTotal=0;
+  var ticketsTodo=0, hotelsTodo=0;
+  var legs=[], hotels=[];
+  var nights=0;
+
+  STATE.segments.forEach(function(s){
+    if(s.kind==='leg'){
+      ticketTotal+=num(s.cost);
+      if(s.status!=='booked') ticketsTodo++;
+      legs.push(s);
+    }else{
+      hotelTotal+=num(s.cost);
+      nights+=s.nights.length;
+      // дом бронировать не нужно — в план броней не попадает
+      if(!isHome(s) && s.status!=='booked') hotelsTodo++;
+      hotels.push(s);
     }
   });
-  $('s-total').textContent=fmt(flyTotal+hotelTotal)+' '+CUR;
-  $('s-fly').textContent=fmt(flyTotal)+' '+CUR;
-  $('s-fly-sub').textContent=legs.length+' переездов';
-  $('s-hotel').textContent=fmt(hotelTotal)+' '+CUR;
-  var hc2=Object.keys(hotels).length; $('s-hotel-sub').textContent=hc2?hc2+' городов':'заполни цены отелей';
-  $('s-todo').textContent=todo;
 
+  $('s-total').textContent=fmt(ticketTotal+hotelTotal)+' '+CUR;
+  $('s-fly').textContent=fmt(ticketTotal)+' '+CUR;
+  $('s-fly-sub').textContent=legs.length+' '+plural(legs.length,'переезд','переезда','переездов');
+  $('s-hotel').textContent=fmt(hotelTotal)+' '+CUR;
+  $('s-hotel-sub').textContent=hotels.length+' '+plural(hotels.length,'город','города','городов')+
+    (nights?(' · '+nights+' '+plural(nights,'ночь','ночи','ночей')):'');
+
+  var todoTotal=ticketsTodo+hotelsTodo;
+  $('s-todo').textContent=todoTotal;
+  $('s-todo-sub').textContent='билетов: '+ticketsTodo+' · отелей: '+hotelsTodo;
+
+  // разбивка: билеты
   var fl=$('flyList'); fl.innerHTML='';
   if(!legs.length){ fl.innerHTML='<div class="prow empty">нет переездов</div>'; }
   else legs.forEach(function(l){
-    var tag=l.status==='booked'?' · <small style="color:var(--ok)">забронировано</small>':(l.status==='todo'?' · <small style="color:var(--todo)">купить</small>':'');
+    var tag = l.status==='booked' ? ' · <small style="color:var(--ok)">куплено</small>'
+            : (l.status==='todo' ? ' · <small style="color:var(--todo)">купить</small>' : '');
     var d=document.createElement('div'); d.className='prow';
-    d.innerHTML='<span class="pl">'+esc(l.name)+' <small>'+esc(l.date)+'</small>'+tag+'</span><span class="pr">'+fmt(l.cost)+' '+CUR+'</span>';
+    d.innerHTML='<span class="pl">'+esc(l.title||'—')+' <small>'+esc(l.date)+'</small>'+tag+
+      '</span><span class="pr">'+fmt(l.cost)+' '+CUR+'</span>';
     fl.appendChild(d);
   });
-  $('flySum').textContent=fmt(flyTotal)+' '+CUR;
+  $('flySum').textContent=fmt(ticketTotal)+' '+CUR;
 
+  // разбивка: отели
   var hl=$('hotelList'); hl.innerHTML='';
-  var keys=Object.keys(hotels);
-  if(!keys.length){ hl.innerHTML='<div class="prow empty">впиши цены или ссылки на отели</div>'; }
-  else keys.forEach(function(k){
-    var h=hotels[k]; var d=document.createElement('div'); d.className='prow';
-    var link=h.link?' <a class="plink" href="'+esc(normUrl(h.link))+'" target="_blank" rel="noopener" title="Открыть отель">🔗</a>':'';
-    var nights=h.nights?' <small>'+h.nights+' ноч.</small>':'';
-    d.innerHTML='<span class="pl">'+esc(k)+nights+link+'</span><span class="pr">'+fmt(h.cost)+' '+CUR+'</span>';
+  var shown=hotels.filter(function(h){ return h.cost>0 || (h.link||'').trim(); });
+  if(!shown.length){ hl.innerHTML='<div class="prow empty">впиши цены или ссылки на отели</div>'; }
+  else shown.forEach(function(h){
+    var n=h.nights.length;
+    var link=(h.link||'').trim()
+      ? ' <a class="plink" href="'+esc(normUrl(h.link))+'" target="_blank" rel="noopener" title="Открыть отель">🔗</a>' : '';
+    var tag = h.status==='booked' ? ' · <small style="color:var(--ok)">забронирован</small>'
+            : (h.status==='todo' ? ' · <small style="color:var(--todo)">бронировать</small>' : '');
+    var d=document.createElement('div'); d.className='prow';
+    d.innerHTML='<span class="pl">'+esc(h.city)+' <small>'+n+' '+plural(n,'ночь','ночи','ночей')+
+      (h.cost>0?(' · '+fmt(h.cost/n)+' / ночь'):'')+'</small>'+link+tag+
+      '</span><span class="pr">'+fmt(h.cost)+' '+CUR+'</span>';
     hl.appendChild(d);
   });
   $('hotelSum').textContent=fmt(hotelTotal)+' '+CUR;
 }
 
 /* ============================================================
-   МОДАЛКА ПОДТВЕРЖДЕНИЯ
+   МОДАЛКА
    ============================================================ */
 var modalResolve=null;
-function confirmDialog(title, text, okLabel){
+function confirmDialog(title,text,okLabel){
   $('modalTitle').textContent=title;
   $('modalText').textContent=text;
   $('modalOk').textContent=okLabel||'Удалить';
@@ -532,21 +727,32 @@ function closeModal(v){
 $('modalCancel').addEventListener('click',function(){ closeModal(false); });
 $('modalOk').addEventListener('click',function(){ closeModal(true); });
 $('modal').addEventListener('click',function(e){ if(e.target===$('modal')) closeModal(false); });
-document.addEventListener('keydown',function(e){ if(e.key==='Escape' && $('modal').classList.contains('on')) closeModal(false); });
+document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&$('modal').classList.contains('on')) closeModal(false); });
 
 /* ============================================================
-   СЕКЦИЯ 1 — ОТЕЛИ НА ПРОСМОТР
-   Города берутся из колонки «Ночь в (город)», кроме Дананга.
-   «Подтвердить» проставляет ссылку и цену во все даты города.
+   ОТЕЛИ НА ПРОСМОТР
+   Города берутся из блоков маршрута, кроме Дананга.
+   Подтверждение ставит ссылку и цену сразу всему городу —
+   теперь это одна запись, а не N ночей.
    ============================================================ */
 function isDaNang(city){ return /дананг/i.test(city||''); }
 
+/* «Дома (Дананг)» — не бронь: ни отеля, ни статуса не требует. */
+function isHome(seg){
+  if(!seg || seg.kind!=='city') return false;
+  if(seg.home===true) return true;
+  // \b в JS работает только по ASCII и после кириллицы не срабатывает,
+  // поэтому границу слова задаём явно
+  return /^\s*дома(\s|$|[(,.\-])/i.test(String(seg.city||'').trim());
+}
+
 function cityList(){
-  var seen=[], out=[];
-  STATE.rows.forEach(function(r){
-    var c=(r.stay||'').trim();
-    if(!c || isDaNang(c)) return;
-    if(seen.indexOf(c)===-1){ seen.push(c); out.push(c); }
+  var out=[];
+  STATE.segments.forEach(function(s){
+    if(s.kind!=='city') return;
+    var c=(s.city||'').trim();
+    if(!c||isDaNang(c)) return;
+    if(out.indexOf(c)===-1) out.push(c);
   });
   return out;
 }
@@ -560,34 +766,33 @@ function renderCityOptions(){
   if(cities.indexOf(cur)!==-1) sel.value=cur;
 }
 
+/* Применяем кандидата к городу: цена за ночь × число ночей. */
 function applyCandidateToCity(cand){
-  var n=0;
-  STATE.rows.forEach(function(r){
-    if((r.stay||'').trim()===cand.city){
-      r.link=cand.link;
-      if(cand.price!=null && cand.price>0) r.hcost=cand.price;
-      n++;
-    }
+  var touched=0;
+  STATE.segments.forEach(function(s){
+    if(s.kind!=='city' || (s.city||'').trim()!==cand.city) return;
+    s.link=cand.link;
+    if(cand.price!=null && cand.price>0) s.cost=cand.price*(s.nights.length||1);
+    touched++;
   });
-  return n;
+  return touched;
 }
 
 function renderCandidates(){
   var wrap=$('candList'); wrap.innerHTML='';
-  $('candCount').textContent = STATE.candidates.length ? STATE.candidates.length+' шт.' : '';
+  $('candCount').textContent=STATE.candidates.length?STATE.candidates.length+' шт.':'';
   if(!STATE.candidates.length){
     wrap.innerHTML='<div class="prow empty">пока пусто — добавь ссылку на отель сверху</div>';
     return;
   }
   STATE.candidates.forEach(function(c){
     var row=document.createElement('div'); row.className='cand';
-
     var body=document.createElement('div'); body.className='body';
+
     var ttl=document.createElement('div'); ttl.className='ttl';
     var tag=document.createElement('span'); tag.className='citytag'; tag.textContent=c.city||'—';
     var a=document.createElement('a'); a.href=normUrl(c.link); a.target='_blank'; a.rel='noopener';
-    a.textContent=c.link.replace(/^https?:\/\//i,'');
-    a.title=c.link;
+    a.textContent=String(c.link||'').replace(/^https?:\/\//i,''); a.title=c.link;
     ttl.appendChild(tag); ttl.appendChild(a);
     body.appendChild(ttl);
 
@@ -596,33 +801,35 @@ function renderCandidates(){
       body.appendChild(cm);
     }
 
-    var nights=STATE.rows.filter(function(r){ return (r.stay||'').trim()===c.city; }).length;
+    var seg=STATE.segments.filter(function(s){ return s.kind==='city'&&(s.city||'').trim()===c.city; })[0];
+    var n=seg?seg.nights.length:0;
     var meta=document.createElement('div'); meta.className='meta';
-    meta.textContent = nights ? ('применяется к '+nights+' ноч. в «'+c.city+'»') : ('в плане нет ночей в «'+c.city+'»');
+    meta.textContent = n
+      ? ('в плане '+n+' '+plural(n,'ночь','ночи','ночей')+' в «'+c.city+'»'+
+         (c.price?(' → '+fmt(c.price*n)+' '+CUR+' за бронь'):''))
+      : ('в плане нет ночей в «'+c.city+'»');
     body.appendChild(meta);
     row.appendChild(body);
 
     var price=document.createElement('span'); price.className='price';
-    price.textContent = (c.price!=null && c.price>0) ? (fmt(c.price)+' '+CUR+' / ночь') : '—';
+    price.textContent=(c.price!=null&&c.price>0)?(fmt(c.price)+' '+CUR+' / ночь'):'—';
     row.appendChild(price);
 
-    var applyBtn=document.createElement('button');
-    applyBtn.className='iconbtn'; applyBtn.type='button'; applyBtn.textContent='✓';
-    applyBtn.title='Проставить этот отель во все даты города';
-    applyBtn.style.color='var(--ok)';
-    applyBtn.addEventListener('click',function(){
-      var n=applyCandidateToCity(c);
-      renderTable(); recompute(); renderCandidates(); save();
-      if(!n) alert('В плане нет ночей в городе «'+c.city+'».');
+    var ok=document.createElement('button');
+    ok.className='iconbtn'; ok.type='button'; ok.textContent='✓';
+    ok.title='Поставить этот отель городу'; ok.style.color='var(--ok)';
+    ok.addEventListener('click',function(){
+      var t=applyCandidateToCity(c);
+      renderRoute(); recompute(); renderCandidates(); save();
+      if(!t) alert('В плане нет города «'+c.city+'».');
     });
-    row.appendChild(applyBtn);
+    row.appendChild(ok);
 
     var del=document.createElement('button');
     del.className='iconbtn'; del.type='button'; del.textContent='🗑'; del.title='Удалить';
     del.addEventListener('click',async function(){
-      var ok=await confirmDialog('Удалить отель из списка?',
-        c.city+' · '+c.link, 'Удалить');
-      if(!ok) return;
+      var yes=await confirmDialog('Удалить отель из списка?', c.city+' · '+c.link, 'Удалить');
+      if(!yes) return;
       STATE.candidates=STATE.candidates.filter(function(x){ return x.id!==c.id; });
       renderCandidates(); save();
     });
@@ -640,31 +847,16 @@ $('candAdd').addEventListener('click',function(){
   var comment=$('candComment').value.trim();
   if(!city){ alert('Выбери город.'); return; }
   if(!link){ alert('Вставь ссылку на отель.'); return; }
-  var price = priceRaw==='' ? null : (parseFloat(priceRaw)||0);
+  var price=priceRaw===''?null:num(priceRaw);
 
   var cand={ id:uid(), city:city, link:normUrl(link), price:price, comment:comment };
   STATE.candidates.push(cand);
-  var n=applyCandidateToCity(cand);
+  var t=applyCandidateToCity(cand);
 
   $('candLink').value=''; $('candPrice').value=''; $('candComment').value='';
-  renderTable(); recompute(); renderCandidates(); save();
-  if(!n) alert('Отель добавлен, но в плане нет ночей в городе «'+city+'».');
+  renderRoute(); recompute(); renderCandidates(); save();
+  if(!t) alert('Отель добавлен, но в плане нет города «'+city+'».');
 });
-
-/* ============================================================
-   СЕКЦИЯ 2 — ПОЛЕЗНЫЕ ФАЙЛЫ
-   ============================================================ */
-var pickedFile=null;
-
-$('filePickBtn').addEventListener('click',function(){ $('filePick').click(); });
-$('filePick').addEventListener('change',function(){
-  pickedFile=$('filePick').files[0]||null;
-  $('filePickName').textContent = pickedFile ? (pickedFile.name+' · '+humanSize(pickedFile.size)) : 'файл не выбран';
-  if(pickedFile && !$('fileTitle').value.trim()){
-    $('fileTitle').value = pickedFile.name.replace(/\.[^.]+$/,'');
-  }
-});
-
 /* base64 -> Blob, чтобы файл открывался во вкладке и в Safari тоже */
 function base64Bytes(dataUrl){
   var i=String(dataUrl||'').indexOf(',');
@@ -854,75 +1046,37 @@ $('fileAdd').addEventListener('click',async function(){
   }
 });
 
+
 /* ============================================================
-   ЗАПУСК
+   РЕЖИМ «ТОЛЬКО ПРОСМОТР»
    ============================================================ */
-var deferred=null;
-
-function isEditing(){
-  var a=document.activeElement;
-  return !!(a && /INPUT|TEXTAREA|SELECT/.test(a.tagName));
-}
-
-function applyRemote(incoming){
-  applyingRemote=true;
-  STATE=incoming;
-  renderAll();
-  applyingRemote=false;
-  saveLocal();
-  setSync('online','обновлено с другого устройства');
-  setTimeout(function(){ setSync('online','синхронизировано'); }, 2500);
-}
-
-// как только поле теряет фокус — доливаем отложенное обновление
-document.addEventListener('focusout', function(){
-  setTimeout(function(){
-    if(!deferred || isEditing()) return;
-    var d=deferred; deferred=null;
-    if(JSON.stringify(d)!==JSON.stringify(STATE)) applyRemote(d);
-    else setSync('online','синхронизировано');
-  }, 120);
-});
-
-/* Режим «только просмотр»: гасим все поля и убираем всё, что меняет данные.
-   Настоящий запрет — в правилах Firestore; здесь просто честный интерфейс. */
 function applyReadonly(){
   if(!READONLY) return;
-  var root=document.getElementById('wrap');
+  var root=$('wrap');
   if(!root) return;
 
-  // поля таблицы и форм — только чтение
   root.querySelectorAll('input, textarea').forEach(function(el){
     if(el.type==='file'){ el.disabled=true; return; }
-    el.readOnly=true;
-    el.tabIndex=-1;
+    el.readOnly=true; el.tabIndex=-1;
   });
   root.querySelectorAll('select').forEach(function(el){ el.disabled=true; });
 
-  // кнопки, которые что-то меняют
   ['candAdd','fileAdd','filePickBtn'].forEach(function(id){
-    var b=document.getElementById(id);
+    var b=$(id);
     if(b){ b.disabled=true; b.title='Доступно только администратору'; }
   });
-  // удаление и «применить к городу»
   root.querySelectorAll('.cand .iconbtn, .fileitem .iconbtn').forEach(function(b){ b.remove(); });
 
-  var badge=document.getElementById('roBadge');
-  if(badge) badge.style.display='';
-
-  // подзаголовок и подсказка не должны обещать редактирование
-  var sub=document.querySelector('.subtitle');
-  if(sub && sub.firstChild && sub.firstChild.nodeType===3){
-    sub.firstChild.nodeValue=sub.firstChild.nodeValue.replace('· редактируй прямо в таблице','');
-  }
-  var mh=document.getElementById('mainHint');
-  if(mh) mh.style.display='none';
-  var saved=document.getElementById('savedTag');
-  if(saved) saved.style.display='none';
+  var badge=$('roBadge'); if(badge) badge.style.display='';
+  var mh=$('mainHint'); if(mh) mh.style.display='none';
+  var saved=$('savedTag'); if(saved) saved.style.display='none';
 }
 
+/* ============================================================
+   ЗАПУСК
+   ============================================================ */
 function renderAll(){
-  renderTable();
+  renderRoute();
   renderCityOptions();
   renderCandidates();
   renderFiles();
@@ -935,8 +1089,7 @@ function showSetupHint(){
   h.className='hint warn';
   h.style.display='';
   h.innerHTML='<b>Синхронизация не настроена.</b> Правки и файлы сейчас сохраняются только в этом браузере. '+
-    'Чтобы данные ходили между устройствами — заполни <b>trips/firebase_config.js</b> ключами Firebase. '+
-    'Пошаговая инструкция лежит рядом: <b>trips/SETUP.md</b>.';
+    'Заполни <b>trips/firebase_config.js</b> ключами Firebase — инструкция в <b>trips/SETUP.md</b>.';
   var mh=$('mainHint'); if(mh) mh.style.display='none';
 }
 
@@ -956,20 +1109,18 @@ async function connectFirebase(){
   return fsMod;
 }
 
-/* Гейт: без админских прав страница не показывает ничего.
-   Настоящая проверка — в правилах Firestore, здесь только UI. */
 function showGate(kind, who){
-  document.getElementById('wrap').style.display='none';
-  var g=document.getElementById('authGate');
+  $('wrap').style.display='none';
+  var g=$('authGate');
   g.style.display='';
   if(kind==='denied'){
     g.innerHTML='<div class="gatebox"><h1>⛔️ Нет доступа</h1>'+
       '<p class="sub">'+esc(who||'')+'</p>'+
-      '<div class="hint warn">План поездки открыт только пользователям с правами администратора.</div>'+
+      '<div class="hint warn">План поездки открыт только пользователям с доступом.</div>'+
       '<div style="margin-top:16px;display:flex;gap:9px">'+
       '<button class="btn" id="gOut" style="flex:1">Выйти</button>'+
       '<a class="btn" href="index.html" style="flex:1;text-align:center;text-decoration:none">К поездкам</a></div></div>';
-    document.getElementById('gOut').addEventListener('click',function(){ AUTH.signOut(); });
+    $('gOut').addEventListener('click',function(){ AUTH.signOut().then(function(){ location.reload(); }); });
   }else{
     g.innerHTML='<div class="gatebox"><h1>🔒 Нужен вход</h1>'+
       '<p class="sub">План поездки доступен только по логину.</p>'+
@@ -977,19 +1128,49 @@ function showGate(kind, who){
   }
 }
 
+function readLocal(){
+  try{ var raw=localStorage.getItem(LOCAL_KEY); if(raw) return normalize(JSON.parse(raw)); }catch(e){}
+  return null;
+}
+async function fetchSeed(){
+  var res=await fetch(SEED_URL,{cache:'no-store'});
+  if(!res.ok) throw new Error('seed '+res.status);
+  return normalize(await res.json());
+}
+
+function isEditing(){
+  var a=document.activeElement;
+  return !!(a && /INPUT|TEXTAREA|SELECT/.test(a.tagName));
+}
+function applyRemote(incoming){
+  applyingRemote=true;
+  STATE=incoming;
+  renderAll();
+  applyingRemote=false;
+  saveLocal();
+  setSync('online','обновлено с другого устройства');
+  setTimeout(function(){ setSync('online','синхронизировано'); },2500);
+}
+document.addEventListener('focusout',function(){
+  setTimeout(function(){
+    if(!deferred||isEditing()) return;
+    var d=deferred; deferred=null;
+    if(JSON.stringify(d)!==JSON.stringify(STATE)) applyRemote(d);
+    else setSync('online','синхронизировано');
+  },120);
+});
+
 async function boot(){
-  // без конфига — совсем локальный режим (демо), данных из облака нет
   if(!configured()){
-    document.getElementById('wrap').style.display='';
-    var local0=readLocal();
-    STATE = (local0 && local0.rows.length) ? local0 : await fetchSeed().catch(function(){ return {rows:[],candidates:[],files:[]}; });
+    $('wrap').style.display='';
+    var l0=readLocal();
+    STATE = (l0&&l0.segments.length) ? l0 : await fetchSeed().catch(function(){ return {segments:[],candidates:[],files:[]}; });
     renderAll();
     setSync('local','только этот браузер');
     showSetupHint();
     return;
   }
 
-  // 1. проверяем вход и права ДО показа данных
   setSync('init','проверка доступа…');
   var profile=null;
   try{ profile=await AUTH.waitForUser(); }
@@ -998,30 +1179,25 @@ async function boot(){
   if(!profile){ showGate('login'); return; }
   if(!profile.canView){ showGate('denied','Ты вошёл как '+profile.name+', но доступа к поездкам нет.'); return; }
 
-  // читатель без прав на правку — включаем режим «только просмотр»
   READONLY = !profile.isAdmin;
-
-  var tagEl=document.getElementById('userTag');
+  var tagEl=$('userTag');
   tagEl.textContent=profile.name;
   if(READONLY){ tagEl.className='chip'; tagEl.title='только просмотр'; }
-  document.getElementById('userBox').style.display='';
-  document.getElementById('wrap').style.display='';
+  $('userBox').style.display='';
+  $('wrap').style.display='';
 
-  // 2. стартовые данные, чтобы страница не была пустой
   var local=readLocal();
-  if(local && local.rows.length){
-    STATE=local;
-  }else{
+  if(local && local.segments.length) STATE=local;
+  else{
     try{ STATE=await fetchSeed(); }
-    catch(e){ console.error('seed load failed', e); STATE={rows:[],candidates:[],files:[]}; }
+    catch(e){ console.error('seed load failed', e); STATE={segments:[],candidates:[],files:[]}; }
   }
   renderAll();
 
   setSync('init','подключение…');
   try{
-    var fsMod=await connectFirebase();
+    await connectFirebase();
 
-    // первый снимок решает: есть ли данные в облаке
     var snap=await remote.getDoc(remote.ref);
     if(snap.exists()){
       applyingRemote=true;
@@ -1029,37 +1205,38 @@ async function boot(){
       applyingRemote=false;
       renderAll();
       saveLocal();
-    }else{
-      // документа ещё нет — заливаем то, что показано сейчас
+      // если в базе был старый формат — сразу перезапишем в новом
+      if(!READONLY && !Array.isArray(snap.data().segments)){
+        console.log('миграция старого формата → segments');
+        await remote.setDoc(remote.ref, payload());
+      }
+    }else if(!READONLY){
       await remote.setDoc(remote.ref, payload());
     }
     setSync('online','синхронизировано');
 
-    // живые обновления с других устройств
-    remote.onSnapshot(remote.ref, function(s){
+    remote.onSnapshot(remote.ref,function(s){
       if(!s.exists()) return;
-      if(s.metadata.hasPendingWrites) return; // это наша же запись
+      if(s.metadata.hasPendingWrites) return;
       var incoming=normalize(s.data());
       if(JSON.stringify(incoming)===JSON.stringify(STATE)) return;
       if(isEditing()){
-        // не выдёргиваем поле из-под рук: запомним и применим, когда отпустишь
         deferred=incoming;
         setSync('online','есть обновление — применится, как закончишь');
         return;
       }
       applyRemote(incoming);
-    }, function(err){
+    },function(err){
       console.error('snapshot error', err);
       setSync('error','нет связи с базой');
     });
-
   }catch(e){
     console.error('firebase init failed', e);
     setSync('error','не удалось подключиться — правки только здесь');
   }
 }
 
-var soBtn=document.getElementById('signOutBtn');
+var soBtn=$('signOutBtn');
 if(soBtn) soBtn.addEventListener('click',function(){ AUTH.signOut().then(function(){ location.reload(); }); });
 
 boot();

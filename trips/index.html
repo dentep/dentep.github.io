@@ -122,7 +122,50 @@ function show(which){
 
 /* ---------- считаем сводку поездки из её же строк ----------
    Ничего не хардкодим: все числа выводятся из rows/candidates/files. */
+/* Новый формат (segments) считаем напрямую; старый (rows) — как раньше. */
+function digestSegments(trip){
+  const segs = trip.segments;
+  let transport=0, hotels=0, ticketsTodo=0, hotelsTodo=0, nights=0, legs=0;
+  const cities=[];
+  const isHome = c => /^\s*дома(\s|$|[(,.\-])/i.test(String(c||'').trim());
+
+  segs.forEach(s => {
+    if(s.kind === 'leg'){
+      transport += Number(s.cost)||0;
+      legs++;
+      if(s.status !== 'booked') ticketsTodo++;
+    }else{
+      hotels += Number(s.cost)||0;
+      const n = Array.isArray(s.nights) ? s.nights.length : 0;
+      nights += n;
+      const c = (s.city||'').trim();
+      if(c && !cities.includes(c)) cities.push(c);
+      if(c && !isHome(c) && s.status !== 'booked') hotelsTodo++;
+    }
+  });
+
+  const dates = [];
+  segs.forEach(s => {
+    if(s.kind === 'leg'){ if(s.date) dates.push(s.date); }
+    else (s.nights||[]).forEach(n => { if(n.date) dates.push(n.date); });
+  });
+  const uniqueDays = [...new Set(dates)];
+
+  return {
+    days: uniqueDays.length,
+    dateFrom: uniqueDays[0] || '',
+    dateTo: uniqueDays[uniqueDays.length-1] || '',
+    cities, legs,
+    transport, hotels, total: transport+hotels,
+    todo: ticketsTodo+hotelsTodo, ticketsTodo, hotelsTodo,
+    booked: 0, nights,
+    candidates: Array.isArray(trip.candidates) ? trip.candidates.length : 0,
+    files: Array.isArray(trip.files) ? trip.files.length : 0
+  };
+}
+
 function digest(trip){
+  if(Array.isArray(trip.segments) && trip.segments.length) return digestSegments(trip);
   const rows = Array.isArray(trip.rows) ? trip.rows : [];
   let transport = 0, hotels = 0, todo = 0, booked = 0, nights = 0;
   const cities = [], legs = [];
@@ -160,6 +203,7 @@ function tripCard(trip){
 
   const period = (d.dateFrom && d.dateTo) ? (d.dateFrom+' — '+d.dateTo) : (trip.dates||'даты не заданы');
   const dayWord = n => (n%10===1 && n%100!==11) ? 'день' : ((n%10>=2 && n%10<=4 && (n%100<10||n%100>=20)) ? 'дня' : 'дней');
+  const nightWord = n => (n%10===1 && n%100!==11) ? 'ночь' : ((n%10>=2 && n%10<=4 && (n%100<10||n%100>=20)) ? 'ночи' : 'ночей');
 
   el.innerHTML = `
     <div class="head">
@@ -171,7 +215,7 @@ function tripCard(trip){
     </div>
     <div class="body">
       <div class="line"><span class="k">✈️ Транспорт</span><span class="v">${fmt(d.transport)} ${CUR}</span></div>
-      <div class="line"><span class="k">🏨 Отели${d.nights?` <span style="color:var(--faint)">· ${d.nights} ноч.</span>`:''}</span><span class="v">${fmt(d.hotels)} ${CUR}</span></div>
+      <div class="line"><span class="k">🏨 Отели${d.nights?` <span style="color:var(--faint)">· ${d.nights} ${nightWord(d.nights)}</span>`:''}</span><span class="v">${fmt(d.hotels)} ${CUR}</span></div>
       <div class="line total"><span class="k">Итого</span><span class="v big">${fmt(d.total)} ${CUR}</span></div>
       <div class="line"><span class="k">Переезды</span><span class="v">${d.legs}</span></div>
       <div class="line"><span class="k">Отели на просмотр</span><span class="v">${d.candidates}</span></div>
@@ -180,7 +224,11 @@ function tripCard(trip){
     ${d.cities.length ? `<div class="cities">${d.cities.map(c=>`<span class="city">${esc(c)}</span>`).join('')}</div>` : ''}
     <div class="foot">
       <a class="btn primary" href="${esc(trip.id)}.html">Открыть план</a>
-      ${d.todo ? `<span class="badge todo">${d.todo} к брони</span>` : `<span class="badge ok">всё куплено</span>`}
+      ${d.todo
+        ? `<span class="badge todo" title="${d.ticketsTodo!=null?`билетов: ${d.ticketsTodo}, отелей: ${d.hotelsTodo}`:''}">${
+            d.ticketsTodo!=null ? `🎫 ${d.ticketsTodo} · 🏨 ${d.hotelsTodo}` : `${d.todo} к брони`
+          }</span>`
+        : `<span class="badge ok">всё забронировано</span>`}
     </div>`;
   return el;
 }
