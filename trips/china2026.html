@@ -8,8 +8,9 @@
 <style>
   .wrap{max-width:1180px;margin:0 auto;padding:18px 20px 80px}
 
-  /* кнопка возврата — отдельной строкой слева, над заголовком */
-  .backrow{margin:0 0 12px}
+  /* верхняя строка: «Поездки» слева, пользователь и «Выйти» справа */
+  .backrow{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    flex-wrap:wrap;margin:0 0 14px}
   .btn.back{text-decoration:none;display:inline-flex;align-items:center;gap:6px;
     padding:7px 13px;color:var(--muted)}
   .btn.back:hover{color:var(--ink)}
@@ -82,7 +83,11 @@
   .city{background:var(--card);border:1px solid var(--line);border-radius:11px;overflow:hidden}
   .city.open{border-color:#3a4453}
   .chead{display:grid;grid-template-columns:22px minmax(230px,1fr) minmax(230px,1.35fr) 122px 156px;
-    gap:11px;align-items:center;padding:13px 15px;cursor:pointer}
+    gap:11px;align-items:center;padding:10px 15px 13px;cursor:pointer}
+  /* одна высота у всех полей строки — иначе они «пляшут» */
+  .chead input,.chead select,.chead .openlink{height:36px}
+  .chead .lk,.chead .price,.chead .st{display:flex;align-items:center}
+  .chead .price{position:relative}
   @media(max-width:1080px) and (min-width:821px){
     .chead{grid-template-columns:22px minmax(200px,1fr) 122px 156px}
     .chead .lk{grid-column:2/-1;grid-row:2}
@@ -91,17 +96,25 @@
     .chead .lk,.chead .price,.chead .st{grid-column:2}
     .stop{padding:12px 0}}
   .chead:hover{background:#1e242d}
-  .chead .caret{color:var(--faint);font-size:11px;transition:transform .15s;text-align:center}
+  .chead .caret{color:var(--faint);font-size:11px;transition:transform .15s;text-align:center;
+    display:flex;align-items:center;justify-content:center;height:36px;border-radius:7px;cursor:pointer}
+  .chead .caret:hover{background:#242c37;color:var(--ink)}
   .city.open .chead .caret{transform:rotate(90deg)}
-  .cname{min-width:0}
-  .cname .n{font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;flex-wrap:nowrap;min-width:0}
+  .cname{min-width:0;display:flex;align-items:center}
+  .cname .n{font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;flex-wrap:nowrap;min-width:0;width:100%}
   .cname .n input{min-width:0;flex:1 1 auto}
-  .cname .meta{font-size:11.5px;color:var(--faint);margin-top:2px}
+
+  /* даты и заметки — своей строкой сверху, вне сетки полей */
+  .cmetarow{padding:10px 15px 0;cursor:pointer}
+  .cmetarow:hover .cmeta{color:var(--muted)}
+  .cmeta{font-size:11.5px;color:var(--faint);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
   .nights{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;
     background:#1d2733;border:1px solid #2f4356;color:#8fc4e4;white-space:nowrap}
   .chead .lk{display:flex;gap:6px;align-items:center;min-width:0}
   .chead .price{position:relative}
-  .pernight{position:absolute;right:2px;top:100%;margin-top:2px;font-size:10.5px;color:var(--faint);white-space:nowrap}
+  .chead .price input{width:100%}
+  .pernight{position:absolute;right:2px;top:calc(100% + 1px);font-size:10.5px;color:var(--faint);
+    white-space:nowrap;pointer-events:none}
 
   /* дни внутри города */
   .days{display:none;border-top:1px solid var(--line);background:#151a21;padding:4px 14px 10px}
@@ -191,14 +204,14 @@
 
   <div class="backrow">
     <a href="index.html" class="btn back">← Поездки</a>
-  </div>
-
-  <div class="titlerow">
-    <h1>🇨🇳 Китай · план и бюджет</h1>
     <span class="who" id="userBox" style="display:none">
       <span class="chip admin" id="userTag"></span>
       <button class="btn" id="signOutBtn" type="button">Выйти</button>
     </span>
+  </div>
+
+  <div class="titlerow">
+    <h1>🇨🇳 Китай · план и бюджет</h1>
   </div>
 
   <p class="subtitle">
@@ -577,6 +590,7 @@ function cityEl(seg, idx){
   el.className='city'+(openCities[seg.id]?' open':'');
 
   var head=document.createElement('div'); head.className='chead';
+  var metaHolder=document.createElement('div'); metaHolder.className='cmetarow';
 
   var caret=document.createElement('div'); caret.className='caret'; caret.textContent='▶';
   head.appendChild(caret);
@@ -595,13 +609,20 @@ function cityEl(seg, idx){
   nRow.appendChild(ci); nRow.appendChild(nb);
   nameBox.appendChild(nRow);
 
-  var meta=document.createElement('div'); meta.className='meta';
+  head.appendChild(nameBox);
+
+  // Даты и счётчик заметок — отдельной строкой над полями,
+  // чтобы все инпуты стояли на одной вертикальной линии.
+  var meta=document.createElement('div'); meta.className='cmeta';
   var first=seg.nights[0], last=seg.nights[seg.nights.length-1];
   var span=(first&&last)?(first.date+(cnt>1?(' — '+last.date):'')):'';
   var withNotes=seg.nights.filter(function(n){ return (n.note||'').trim(); }).length;
-  meta.textContent=span+(withNotes?(' · заметок: '+withNotes):'');
-  nameBox.appendChild(meta);
-  head.appendChild(nameBox);
+  function metaText(){
+    var w=seg.nights.filter(function(x){ return (x.note||'').trim(); }).length;
+    return '📅 '+(span||'даты не заданы')+(w?(' · 📝 заметок: '+w):'');
+  }
+  meta.textContent=metaText();
+  metaHolder.appendChild(meta);
 
   if(isHome(seg)){
     head.appendChild(document.createElement('div'));   // пустая клетка вместо ссылки
@@ -638,11 +659,22 @@ function cityEl(seg, idx){
   }
   head.appendChild(stWrap);
 
-  // раскрытие по клику на заголовок (кроме полей)
-  head.addEventListener('click',function(){
+  el.appendChild(metaHolder);
+
+  /* Раскрытие: клик по стрелке, по строке с датами или по свободному месту
+     заголовка. Поля ввода клик не пропускают (stopPropagation выше),
+     поэтому правка полей город не сворачивает. */
+  function toggle(){
     var open=!el.classList.contains('open');
     el.classList.toggle('open', open);
     openCities[seg.id]=open;
+  }
+  caret.addEventListener('click',function(e){ e.stopPropagation(); toggle(); });
+  metaHolder.addEventListener('click',toggle);
+  head.addEventListener('click',function(e){
+    // клик прошёл мимо полей — считаем его за раскрытие
+    if(e.target.closest('input,select,textarea,a,button')) return;
+    toggle();
   });
   el.appendChild(head);
 
@@ -654,10 +686,7 @@ function cityEl(seg, idx){
     var ta=document.createElement('textarea'); ta.value=n.note||''; ta.placeholder='что в этот день…'; ta.rows=1;
     ta.addEventListener('input',function(){
       n.note=ta.value; autoGrow(ta);
-      meta.textContent=span+(function(){
-        var w=seg.nights.filter(function(x){return (x.note||'').trim();}).length;
-        return w?(' · заметок: '+w):'';
-      })();
+      meta.textContent=metaText();
       scheduleSave();
     });
     row.appendChild(dd); row.appendChild(ta);
