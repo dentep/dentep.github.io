@@ -320,6 +320,8 @@ function fileIcon(name,type){
 
 /* ---------- индикатор состояния ---------- */
 function setSync(state, text){
+  // читателю нечего "сохранять" — показываем режим, а не статус записи
+  if(READONLY && (state==='online'||state==='saving')){ state='online'; text='только просмотр'; }
   var tag=$('syncTag'); tag.setAttribute('data-state',state); $('syncText').textContent=text;
 }
 var flashTimer=null;
@@ -907,6 +909,16 @@ function applyReadonly(){
 
   var badge=document.getElementById('roBadge');
   if(badge) badge.style.display='';
+
+  // подзаголовок и подсказка не должны обещать редактирование
+  var sub=document.querySelector('.subtitle');
+  if(sub && sub.firstChild && sub.firstChild.nodeType===3){
+    sub.firstChild.nodeValue=sub.firstChild.nodeValue.replace('· редактируй прямо в таблице','');
+  }
+  var mh=document.getElementById('mainHint');
+  if(mh) mh.style.display='none';
+  var saved=document.getElementById('savedTag');
+  if(saved) saved.style.display='none';
 }
 
 function renderAll(){
