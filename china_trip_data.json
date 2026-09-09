@@ -1,0 +1,23 @@
+{
+  "rows": [
+    {"date":"10.10.2026","transport":"Дананг — Гонконг — Ханчжоу","tcost":42000,"stay":"Ханчжоу","hcost":0,"link":"","note":"Гонконг: прилёт 13:05, вылет 16:00","status":"booked"},
+    {"date":"11.10.2026","transport":"","tcost":0,"stay":"Ханчжоу","hcost":0,"link":"","note":"","status":""},
+    {"date":"12.10.2026","transport":"Ханчжоу — Шанхай","tcost":3000,"stay":"Шанхай","hcost":0,"link":"","note":"скоростной поезд ~1 ч","status":""},
+    {"date":"13.10.2026","transport":"","tcost":0,"stay":"Шанхай","hcost":0,"link":"","note":"","status":""},
+    {"date":"14.10.2026","transport":"","tcost":0,"stay":"Шанхай","hcost":0,"link":"","note":"🎾 теннис, день 1","status":""},
+    {"date":"15.10.2026","transport":"","tcost":0,"stay":"Шанхай","hcost":0,"link":"","note":"🎾 теннис, день 2","status":""},
+    {"date":"16.10.2026","transport":"Шанхай — Нинбо","tcost":4000,"stay":"Нинбо","hcost":0,"link":"","note":"поезд ~2–2.5 ч","status":""},
+    {"date":"17.10.2026","transport":"","tcost":0,"stay":"Нинбо","hcost":0,"link":"","note":"","status":""},
+    {"date":"18.10.2026","transport":"Нинбо — Сиань","tcost":19400,"stay":"Сиань","hcost":0,"link":"","note":"прямой рейс ~2.5 ч","status":"booked"},
+    {"date":"19.10.2026","transport":"","tcost":0,"stay":"Сиань","hcost":0,"link":"","note":"Терракотовая армия","status":""},
+    {"date":"20.10.2026","transport":"Сиань — Чжанцзяцзе","tcost":23200,"stay":"Улинъюань","hcost":0,"link":"","note":"прямой рейс ~2 ч","status":"booked"},
+    {"date":"21.10.2026","transport":"","tcost":0,"stay":"Улинъюань","hcost":0,"link":"","note":"лесопарк — горы Аватара","status":""},
+    {"date":"22.10.2026","transport":"","tcost":0,"stay":"Чжанцзяцзе (город)","hcost":0,"link":"","note":"гора Тяньмэнь","status":""},
+    {"date":"23.10.2026","transport":"Чжанцзяцзе — Чунцин","tcost":6000,"stay":"Чунцин","hcost":0,"link":"","note":"брать на утро","status":"todo"},
+    {"date":"24.10.2026","transport":"","tcost":0,"stay":"Чунцин","hcost":0,"link":"","note":"","status":""},
+    {"date":"25.10.2026","transport":"Чунцин — Хошимин","tcost":32000,"stay":"Хошимин","hcost":0,"link":"","note":"куплен, вечерний рейс","status":"booked"},
+    {"date":"26.10.2026","transport":"Хошимин — Дананг","tcost":6000,"stay":"Дома (Дананг)","hcost":0,"link":"","note":"","status":"booked"}
+  ],
+  "candidates": [],
+  "files": []
+}

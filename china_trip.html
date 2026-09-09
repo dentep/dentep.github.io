@@ -22,6 +22,16 @@
   .saved{font-size:12px;color:var(--ok);opacity:0;transition:opacity .3s}
   .saved.show{opacity:1}
 
+  /* индикатор синхронизации */
+  .sync{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:3px 9px;border-radius:20px;
+    border:1px solid var(--line);background:var(--card);white-space:nowrap}
+  .sync .dot{width:7px;height:7px;border-radius:50%;background:var(--faint);flex:none}
+  .sync[data-state=online] .dot{background:var(--ok)}
+  .sync[data-state=saving] .dot{background:var(--todo)}
+  .sync[data-state=error] .dot{background:var(--danger)}
+  .sync[data-state=local] .dot{background:var(--todo)}
+  .sync[data-state=error]{border-color:#6b2f2c;color:#f0a9a5}
+
   .summary{position:sticky;top:0;z-index:20;display:grid;gap:10px;
     grid-template-columns:1.3fr 1fr 1fr 1fr;padding:12px 0;margin-bottom:6px;
     background:linear-gradient(180deg,var(--bg) 72%,transparent)}
@@ -41,6 +51,18 @@
   input[type=number]{text-align:right;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
   input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
   textarea{resize:none;line-height:1.4;min-height:36px;overflow:hidden}
+
+  .btn{font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;border-radius:7px;padding:8px 14px;
+    border:1px solid var(--line);background:#11151b;color:var(--ink);width:auto;transition:border-color .15s,background .15s}
+  .btn:hover{border-color:var(--accent)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#1a1206}
+  .btn.primary:hover{background:#eb8b52}
+  .btn.danger{background:#241618;border-color:#6b2f2c;color:#f0a9a5}
+  .btn.danger:hover{background:#31191b;border-color:var(--danger)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .iconbtn{flex:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
+    font-size:14px;width:34px;height:34px;border:1px solid var(--line);border-radius:7px;background:#11151b;color:var(--muted)}
+  .iconbtn:hover{border-color:var(--danger);color:#f0a9a5}
 
   .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card)}
   table{width:100%;border-collapse:collapse;min-width:1320px}
@@ -73,28 +95,78 @@
   .panels{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   @media(max-width:720px){.panels{grid-template-columns:1fr}}
   .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
-  .panel .phead{display:flex;justify-content:space-between;align-items:baseline;padding:13px 15px;border-bottom:1px solid var(--line)}
+  .panel .phead{display:flex;justify-content:space-between;align-items:baseline;padding:13px 15px;border-bottom:1px solid var(--line);gap:10px}
   .panel .phead .pt{font-weight:700;font-size:14.5px;display:flex;align-items:center;gap:8px}
   .panel .phead .psum{font-weight:800;font-variant-numeric:tabular-nums}
   .panel.fly .psum{color:var(--fly)} .panel.hotel .psum{color:var(--hotel)}
   .prow{display:flex;justify-content:space-between;gap:10px;padding:10px 15px;border-bottom:1px solid #232a33;font-size:13.5px}
   .prow:last-child{border-bottom:none}
-  .prow .pl{color:#dbe1e8} .prow .pl small{color:var(--faint);font-size:11.5px}
+  .prow .pl{color:#dbe1e8;min-width:0} .prow .pl small{color:var(--faint);font-size:11.5px}
   .prow .pr{font-variant-numeric:tabular-nums;white-space:nowrap;color:#fff}
   .prow.empty{color:var(--faint);justify-content:center}
   .note{font-size:12px;color:var(--faint);margin:14px 4px 0;line-height:1.6}
   .hint{background:#1a2027;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:10px 13px;font-size:12.5px;color:var(--muted);margin-bottom:14px}
   .hint b{color:var(--ink)}
+  .hint.warn{border-left-color:var(--danger)}
+
+  /* формы новых секций */
+  .addform{display:grid;gap:9px;padding:13px 15px;border-bottom:1px solid var(--line);
+    grid-template-columns:1.1fr 2fr .8fr auto;align-items:center}
+  .addform.files{grid-template-columns:1.4fr 2fr auto}
+  @media(max-width:900px){.addform,.addform.files{grid-template-columns:1fr}}
+  .addform .btn{width:100%}
+  .filepick{display:flex;align-items:center;gap:9px;min-width:0}
+  .filepick .name{font-size:12.5px;color:var(--faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+  .filepick .btn{width:auto;flex:none}
+  input[type=file]{display:none}
+  .progress{height:3px;background:#232a33;border-radius:3px;overflow:hidden;margin-top:2px;display:none}
+  .progress.on{display:block}
+  .progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+
+  .citytag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.3px;padding:2px 8px;border-radius:20px;
+    background:#1d2733;border:1px solid #2f4356;color:#8fc4e4;margin-right:7px;white-space:nowrap}
+  .cand{display:flex;align-items:center;gap:10px;padding:11px 15px;border-bottom:1px solid #232a33;font-size:13.5px}
+  .cand:last-child{border-bottom:none}
+  .cand .body{flex:1;min-width:0}
+  .cand .ttl{display:flex;align-items:center;gap:2px;flex-wrap:wrap}
+  .cand .ttl a{color:var(--ink);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+  .cand .ttl a:hover{color:var(--hotel);text-decoration:underline}
+  .cand .meta{font-size:11.5px;color:var(--faint);margin-top:2px}
+  .cand .price{font-variant-numeric:tabular-nums;white-space:nowrap;color:#fff;font-weight:600}
+
+  .fileitem{display:flex;align-items:center;gap:11px;padding:11px 15px;border-bottom:1px solid #232a33;font-size:13.5px}
+  .fileitem:last-child{border-bottom:none}
+  .fileitem .ic{font-size:19px;flex:none;width:26px;text-align:center}
+  .fileitem .body{flex:1;min-width:0}
+  .fileitem a.fname{color:var(--ink);text-decoration:none;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .fileitem a.fname:hover{color:var(--hotel);text-decoration:underline}
+  .fileitem .meta{font-size:11.5px;color:var(--faint);margin-top:2px}
+
+  /* модалка подтверждения */
+  .modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px;
+    background:rgba(5,8,11,.72)}
+  .modal.on{display:flex}
+  .modal .box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;max-width:420px;width:100%;
+    box-shadow:0 18px 50px rgba(0,0,0,.55)}
+  .modal h3{margin:0 0 8px;font-size:16.5px}
+  .modal p{margin:0 0 18px;font-size:13.5px;color:var(--muted);line-height:1.5;word-break:break-word}
+  .modal .acts{display:flex;gap:9px;justify-content:flex-end}
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <h1>🇨🇳 Китай · план и бюджет</h1>
-  <p class="subtitle">10–26 октября 2026 · редактируй прямо в таблице <span class="saved" id="savedTag">✓ сохранено</span></p>
+  <p class="subtitle">
+    10–26 октября 2026 · редактируй прямо в таблице
+    <span class="sync" id="syncTag" data-state="init"><span class="dot"></span><span id="syncText">подключение…</span></span>
+    <span class="saved" id="savedTag">✓ сохранено</span>
+  </p>
 
-  <div class="hint">
-    Меняй цены, отели, ссылки, заметки и статусы — всё автоматически сохраняется в этом браузере (localStorage) и подтянется при следующем открытии. <b>Транспорт</b> и <b>отели</b> считаются отдельно и суммируются внизу и наверху.
+  <div class="hint" id="setupHint" style="display:none"></div>
+
+  <div class="hint" id="mainHint">
+    Все правки сохраняются в общей базе и подтягиваются на любом устройстве — открывай эту же ссылку с телефона или ноутбука. <b>Транспорт</b> и <b>отели</b> считаются отдельно и суммируются внизу и наверху.
   </div>
 
   <div class="summary">
@@ -132,164 +204,748 @@
     </div>
   </div>
 
+  <h2 class="sec">Отели на просмотр</h2>
+  <div class="panel">
+    <div class="phead">
+      <div class="pt">🔎 Кандидаты</div>
+      <div class="psum" id="candCount" style="color:var(--muted);font-size:12.5px;font-weight:600">—</div>
+    </div>
+    <div class="addform">
+      <select id="candCity"><option value="">— город —</option></select>
+      <input type="url" id="candLink" placeholder="ссылка на отель">
+      <input type="number" id="candPrice" min="0" step="100" placeholder="₽ / ночь (необяз.)">
+      <button class="btn primary" id="candAdd" type="button">Подтвердить</button>
+    </div>
+    <div id="candList"></div>
+  </div>
+
+  <h2 class="sec">Полезные файлы</h2>
+  <div class="panel">
+    <div class="phead">
+      <div class="pt">📎 Файлы для отпуска</div>
+      <div class="psum" id="fileCount" style="color:var(--muted);font-size:12.5px;font-weight:600">—</div>
+    </div>
+    <div class="addform files">
+      <input type="text" id="fileTitle" placeholder="название файла">
+      <div>
+        <div class="filepick">
+          <input type="file" id="filePick">
+          <button class="btn" id="filePickBtn" type="button">Выбрать файл</button>
+          <span class="name" id="filePickName">файл не выбран</span>
+        </div>
+        <div class="progress" id="fileProg"><i></i></div>
+      </div>
+      <button class="btn primary" id="fileAdd" type="button">Загрузить</button>
+    </div>
+    <div id="fileList"></div>
+  </div>
+
   <p class="note">
-    Чжанцзяцзе: горы «Аватара» (лесопарк) — у посёлка <b>Улинъюань</b>, ~40 мин от города и аэропорта; отель на 20–21.10 бери там, на 22.10 (гора Тяньмэнь) — в городе. Ничего не уходит в интернет: всё хранится локально в браузере.
+    Чжанцзяцзе: горы «Аватара» (лесопарк) — у посёлка <b>Улинъюань</b>, ~40 мин от города и аэропорта; отель на 20–21.10 бери там, на 22.10 (гора Тяньмэнь) — в городе.
   </p>
 
 </div>
 
-<script>
-(function(){
-  "use strict";
-  var KEY = "chinaTrip_v1";
-  var CUR = "₽";
+<div class="modal" id="modal">
+  <div class="box">
+    <h3 id="modalTitle">Удалить?</h3>
+    <p id="modalText"></p>
+    <div class="acts">
+      <button class="btn" id="modalCancel" type="button">Отмена</button>
+      <button class="btn danger" id="modalOk" type="button">Удалить</button>
+    </div>
+  </div>
+</div>
 
-  var DEFAULT = {
-    rows: [
-      {date:"10.10.2026", transport:"Дананг — Гонконг — Ханчжоу", tcost:42000, stay:"Ханчжоу", hcost:0, link:"", note:"Гонконг: прилёт 13:05, вылет 16:00", status:"booked"},
-      {date:"11.10.2026", transport:"", tcost:0, stay:"Ханчжоу", hcost:0, link:"", note:"", status:""},
-      {date:"12.10.2026", transport:"Ханчжоу — Шанхай", tcost:3000, stay:"Шанхай", hcost:0, link:"", note:"скоростной поезд ~1 ч", status:""},
-      {date:"13.10.2026", transport:"", tcost:0, stay:"Шанхай", hcost:0, link:"", note:"", status:""},
-      {date:"14.10.2026", transport:"", tcost:0, stay:"Шанхай", hcost:0, link:"", note:"🎾 теннис, день 1", status:""},
-      {date:"15.10.2026", transport:"", tcost:0, stay:"Шанхай", hcost:0, link:"", note:"🎾 теннис, день 2", status:""},
-      {date:"16.10.2026", transport:"Шанхай — Нинбо", tcost:4000, stay:"Нинбо", hcost:0, link:"", note:"поезд ~2–2.5 ч", status:""},
-      {date:"17.10.2026", transport:"", tcost:0, stay:"Нинбо", hcost:0, link:"", note:"", status:""},
-      {date:"18.10.2026", transport:"Нинбо — Сиань", tcost:19400, stay:"Сиань", hcost:0, link:"", note:"прямой рейс ~2.5 ч", status:"booked"},
-      {date:"19.10.2026", transport:"", tcost:0, stay:"Сиань", hcost:0, link:"", note:"Терракотовая армия", status:""},
-      {date:"20.10.2026", transport:"Сиань — Чжанцзяцзе", tcost:23200, stay:"Улинъюань", hcost:0, link:"", note:"прямой рейс ~2 ч", status:"booked"},
-      {date:"21.10.2026", transport:"", tcost:0, stay:"Улинъюань", hcost:0, link:"", note:"лесопарк — горы Аватара", status:""},
-      {date:"22.10.2026", transport:"", tcost:0, stay:"Чжанцзяцзе (город)", hcost:0, link:"", note:"гора Тяньмэнь", status:""},
-      {date:"23.10.2026", transport:"Чжанцзяцзе — Чунцин", tcost:6000, stay:"Чунцин", hcost:0, link:"", note:"брать на утро", status:"todo"},
-      {date:"24.10.2026", transport:"", tcost:0, stay:"Чунцин", hcost:0, link:"", note:"", status:""},
-      {date:"25.10.2026", transport:"Чунцин — Хошимин", tcost:32000, stay:"Хошимин", hcost:0, link:"", note:"куплен, вечерний рейс", status:"booked"},
-      {date:"26.10.2026", transport:"Хошимин — Дананг", tcost:6000, stay:"Дома (Дананг)", hcost:0, link:"", note:"", status:"booked"}
-    ]
-  };
+<script src="china_trip_config.js"></script>
+<script type="module">
+"use strict";
 
-  var STATE = load();
+/* ============================================================
+   ХРАНИЛИЩЕ
+   Данные лежат в Firestore (документ trips/china2026) и видны
+   на всех устройствах. Файлы тоже: хранятся прямо в базе как
+   base64 (Storage не нужен, карту привязывать не надо).
+   Картинки сжимаются в браузере перед загрузкой.
+   Пока конфиг не заполнен (china_trip_config.js), страница
+   работает на локальной копии: читает china_trip_data.json
+   и держит правки в localStorage этого браузера.
+   ============================================================ */
 
-  function load(){
-    try{ var raw=localStorage.getItem(KEY); if(raw){ var d=JSON.parse(raw); if(d&&d.rows){ d.rows.forEach(function(r){ if(r.link===undefined)r.link=""; }); return d; } } }catch(e){}
-    return JSON.parse(JSON.stringify(DEFAULT));
+var CUR = "₽";
+var SEED_URL = "china_trip_data.json";
+var LOCAL_KEY = "chinaTrip_v2";
+var DOC_PATH = ["trips", "china2026"];
+
+var STATE = { rows: [], candidates: [], files: [] };
+var remote = null;          // { db, ref, setDoc, getDoc, onSnapshot }
+var applyingRemote = false; // подавляет пере-сохранение при входящем снапшоте
+var pendingLocalWrite = false;
+
+/* ---------- утилиты ---------- */
+function fmt(n){ return Math.round(n||0).toLocaleString('ru-RU'); }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+function normUrl(u){ u=String(u||'').trim(); if(!u)return ''; if(!/^https?:\/\//i.test(u)) u='https://'+u; return u; }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+function $(id){ return document.getElementById(id); }
+
+function humanSize(b){
+  b=Number(b)||0;
+  if(b<1024) return b+' Б';
+  if(b<1024*1024) return (b/1024).toFixed(0)+' КБ';
+  return (b/1048576).toFixed(1)+' МБ';
+}
+function fileIcon(name,type){
+  var t=(type||'')+' '+(name||'').toLowerCase();
+  if(/image|\.(png|jpe?g|gif|webp|heic|svg)$/.test(t)) return '🖼️';
+  if(/pdf/.test(t)) return '📄';
+  if(/word|\.docx?$/.test(t)) return '📝';
+  if(/sheet|excel|\.xlsx?$|\.csv$/.test(t)) return '📊';
+  if(/zip|rar|7z|archive/.test(t)) return '🗜️';
+  return '📎';
+}
+
+/* ---------- индикатор состояния ---------- */
+function setSync(state, text){
+  var tag=$('syncTag'); tag.setAttribute('data-state',state); $('syncText').textContent=text;
+}
+var flashTimer=null;
+function flashSaved(){
+  var t=$('savedTag'); t.classList.add('show');
+  clearTimeout(flashTimer); flashTimer=setTimeout(function(){t.classList.remove('show');},1100);
+}
+
+/* ---------- сохранение ---------- */
+var saveTimer=null;
+function scheduleSave(){ clearTimeout(saveTimer); saveTimer=setTimeout(save,400); }
+
+function saveLocal(){
+  try{ localStorage.setItem(LOCAL_KEY, JSON.stringify(STATE)); }catch(e){}
+}
+
+async function save(){
+  if(applyingRemote) return;
+  saveLocal();
+  if(!remote){ flashSaved(); return; }
+  try{
+    setSync('saving','сохранение…');
+    await remote.setDoc(remote.ref, JSON.parse(JSON.stringify(STATE)));
+    setSync('online','синхронизировано');
+    flashSaved();
+  }catch(e){
+    console.error('save failed', e);
+    setSync('error','ошибка сохранения — правки только на этом устройстве');
   }
-  var saveTimer=null;
-  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(STATE)); flashSaved(); }catch(e){} }
-  function scheduleSave(){ clearTimeout(saveTimer); saveTimer=setTimeout(save,350); }
-  function flashSaved(){ var t=document.getElementById('savedTag'); t.classList.add('show'); clearTimeout(flashSaved._t); flashSaved._t=setTimeout(function(){t.classList.remove('show');},1100); }
-  function fmt(n){ return Math.round(n||0).toLocaleString('ru-RU'); }
-  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-  function normUrl(u){ u=String(u||'').trim(); if(!u)return ''; if(!/^https?:\/\//i.test(u)) u='https://'+u; return u; }
+}
 
-  var tbody=document.getElementById('tbody');
-  function autoGrow(ta){ ta.style.height='auto'; ta.style.height=(ta.scrollHeight+2)+'px'; }
+/* ---------- загрузка начальных данных ---------- */
+function normalize(d){
+  var out={ rows:[], candidates:[], files:[] };
+  if(d && Array.isArray(d.rows)) out.rows=d.rows.map(function(r){
+    return {
+      date:r.date||'', transport:r.transport||'', tcost:Number(r.tcost)||0,
+      stay:r.stay||'', hcost:Number(r.hcost)||0, link:r.link||'',
+      note:r.note||'', status:r.status||''
+    };
+  });
+  if(d && Array.isArray(d.candidates)) out.candidates=d.candidates.map(function(c){
+    return { id:c.id||uid(), city:c.city||'', link:c.link||'', price:(c.price===''||c.price==null)?null:(Number(c.price)||0) };
+  });
+  if(d && Array.isArray(d.files)) out.files=d.files.map(function(f){
+    return { id:f.id||uid(), title:f.title||'', data:f.data||f.url||'',
+             type:f.type||'', size:Number(f.size)||0, orig:Number(f.orig)||0,
+             added:f.added||'' };
+  });
+  return out;
+}
 
-  function makeRow(row){
-    var isLeg=(row.transport||"").trim()!=="";
-    var tr=document.createElement('tr');
-    tr.setAttribute('data-status', row.status||"");
-    if(isLeg) tr.className='hasfly';
+async function fetchSeed(){
+  var res=await fetch(SEED_URL, {cache:'no-store'});
+  if(!res.ok) throw new Error('seed '+res.status);
+  return normalize(await res.json());
+}
 
-    function cell(cls){ var td=document.createElement('td'); if(cls)td.className=cls; tr.appendChild(td); return td; }
-    function bindNum(i,f){ i.addEventListener('input',function(){ row[f]=parseFloat(i.value)||0; recompute(); scheduleSave(); }); }
-    function bindTxt(i,f){ i.addEventListener('input',function(){ row[f]=i.value; recompute(); scheduleSave(); }); }
+function readLocal(){
+  try{ var raw=localStorage.getItem(LOCAL_KEY); if(raw) return normalize(JSON.parse(raw)); }catch(e){}
+  return null;
+}
 
-    var d=cell('c-date'); var dw=document.createElement('div'); dw.className='datecell';
-    var badge=document.createElement('span'); badge.className='leg-badge'; dw.appendChild(badge);
-    var di=document.createElement('input'); di.type='text'; di.value=row.date; di.placeholder='дата'; bindTxt(di,'date'); dw.appendChild(di);
-    d.appendChild(dw);
+/* ============================================================
+   ТАБЛИЦА
+   ============================================================ */
+var tbody=$('tbody');
+function autoGrow(ta){ ta.style.height='auto'; ta.style.height=(ta.scrollHeight+2)+'px'; }
 
-    var restSpan=null;
-    var t=cell('c-move');
-    if(isLeg){ var ti=document.createElement('input'); ti.type='text'; ti.value=row.transport; bindTxt(ti,'transport'); t.appendChild(ti); }
-    else { restSpan=document.createElement('span'); restSpan.className='restday'; restSpan.textContent='📍 '+(((row.stay||'').trim())||'—'); t.appendChild(restSpan); }
+function makeRow(row){
+  var isLeg=(row.transport||"").trim()!=="";
+  var tr=document.createElement('tr');
+  tr.setAttribute('data-status', row.status||"");
+  if(isLeg) tr.className='hasfly';
 
-    var tc=cell('c-fly'); var tci=document.createElement('input'); tci.type='number'; tci.min='0'; tci.step='100';
-    tci.value=row.tcost?row.tcost:''; tci.placeholder='0'; if(!isLeg) tci.disabled=true; bindNum(tci,'tcost'); tc.appendChild(tci);
+  function cell(cls){ var td=document.createElement('td'); if(cls)td.className=cls; tr.appendChild(td); return td; }
+  function bindNum(i,f){ i.addEventListener('input',function(){ row[f]=parseFloat(i.value)||0; recompute(); scheduleSave(); }); }
+  function bindTxt(i,f){ i.addEventListener('input',function(){ row[f]=i.value; recompute(); scheduleSave(); }); }
 
-    var st=cell('c-stay'); var si=document.createElement('input'); si.type='text'; si.value=row.stay; si.placeholder='город';
-    si.addEventListener('input',function(){ row.stay=si.value; if(restSpan) restSpan.textContent='📍 '+(((row.stay||'').trim())||'—'); recompute(); scheduleSave(); });
-    st.appendChild(si);
+  var d=cell('c-date'); var dw=document.createElement('div'); dw.className='datecell';
+  var badge=document.createElement('span'); badge.className='leg-badge'; dw.appendChild(badge);
+  var di=document.createElement('input'); di.type='text'; di.value=row.date; di.placeholder='дата'; bindTxt(di,'date'); dw.appendChild(di);
+  d.appendChild(dw);
 
-    // Ссылка на отель: компактная кликабельная иконка + скрытое поле URL
-    var lk=cell('c-link'); var lw=document.createElement('div'); lw.className='linkcell';
-    var li=document.createElement('input'); li.type='url'; li.value=row.link||''; li.placeholder='вставь ссылку';
-    var la=document.createElement('a'); la.className='openlink'; la.target='_blank'; la.rel='noopener'; la.title='Открыть ссылку на отель'; la.textContent='🔗';
-    function syncLink(){ var u=normUrl(row.link); if(u){ la.href=u; la.setAttribute('aria-disabled','false'); } else { la.removeAttribute('href'); la.setAttribute('aria-disabled','true'); } }
-    li.addEventListener('input',function(){ row.link=li.value; syncLink(); recompute(); scheduleSave(); });
-    syncLink(); lw.appendChild(li); lw.appendChild(la); lk.appendChild(lw);
+  var restSpan=null;
+  var t=cell('c-move');
+  if(isLeg){ var ti=document.createElement('input'); ti.type='text'; ti.value=row.transport; bindTxt(ti,'transport'); t.appendChild(ti); }
+  else { restSpan=document.createElement('span'); restSpan.className='restday'; restSpan.textContent='📍 '+(((row.stay||'').trim())||'—'); t.appendChild(restSpan); }
 
-    var hc=cell('c-hotel'); var hci=document.createElement('input'); hci.type='number'; hci.min='0'; hci.step='100';
-    hci.value=row.hcost?row.hcost:''; hci.placeholder='0'; bindNum(hci,'hcost'); hc.appendChild(hci);
+  var tc=cell('c-fly'); var tci=document.createElement('input'); tci.type='number'; tci.min='0'; tci.step='100';
+  tci.value=row.tcost?row.tcost:''; tci.placeholder='0'; if(!isLeg) tci.disabled=true; bindNum(tci,'tcost'); tc.appendChild(tci);
 
-    var nt=cell('c-note'); var ta=document.createElement('textarea'); ta.value=row.note; ta.placeholder='заметка…'; ta.rows=1;
-    ta.addEventListener('input',function(){ row.note=ta.value; autoGrow(ta); scheduleSave(); }); nt.appendChild(ta);
+  var st=cell('c-stay'); var si=document.createElement('input'); si.type='text'; si.value=row.stay; si.placeholder='город';
+  si.addEventListener('input',function(){
+    row.stay=si.value;
+    if(restSpan) restSpan.textContent='📍 '+(((row.stay||'').trim())||'—');
+    recompute(); renderCityOptions(); scheduleSave();
+  });
+  st.appendChild(si);
 
-    var stt=cell('c-status'); var sel=document.createElement('select'); sel.className='status';
-    [['','—'],['booked','Забронировано'],['todo','Купить']].forEach(function(o){
-      var op=document.createElement('option'); op.value=o[0]; op.textContent=o[1]; if((row.status||"")===o[0])op.selected=true; sel.appendChild(op);
-    });
-    sel.addEventListener('change',function(){ row.status=sel.value; tr.setAttribute('data-status',sel.value); recompute(); scheduleSave(); });
-    stt.appendChild(sel);
+  var lk=cell('c-link'); var lw=document.createElement('div'); lw.className='linkcell';
+  var li=document.createElement('input'); li.type='url'; li.value=row.link||''; li.placeholder='вставь ссылку';
+  var la=document.createElement('a'); la.className='openlink'; la.target='_blank'; la.rel='noopener'; la.title='Открыть ссылку на отель'; la.textContent='🔗';
+  function syncLink(){ var u=normUrl(row.link); if(u){ la.href=u; la.setAttribute('aria-disabled','false'); } else { la.removeAttribute('href'); la.setAttribute('aria-disabled','true'); } }
+  li.addEventListener('input',function(){ row.link=li.value; syncLink(); recompute(); scheduleSave(); });
+  syncLink(); lw.appendChild(li); lw.appendChild(la); lk.appendChild(lw);
 
-    return tr;
-  }
+  var hc=cell('c-hotel'); var hci=document.createElement('input'); hci.type='number'; hci.min='0'; hci.step='100';
+  hci.value=row.hcost?row.hcost:''; hci.placeholder='0'; bindNum(hci,'hcost'); hc.appendChild(hci);
 
-  function renderTable(){
-    tbody.innerHTML='';
-    STATE.rows.forEach(function(r){ tbody.appendChild(makeRow(r)); });
-    Array.prototype.forEach.call(tbody.querySelectorAll('textarea'), autoGrow);
-  }
+  var nt=cell('c-note'); var ta=document.createElement('textarea'); ta.value=row.note; ta.placeholder='заметка…'; ta.rows=1;
+  ta.addEventListener('input',function(){ row.note=ta.value; autoGrow(ta); scheduleSave(); }); nt.appendChild(ta);
 
-  function recompute(){
-    var flyTotal=0, hotelTotal=0, todo=0, legs=[], hotels={};
-    STATE.rows.forEach(function(r){
-      var tc=parseFloat(r.tcost)||0, hc=parseFloat(r.hcost)||0;
-      flyTotal+=tc; hotelTotal+=hc;
-      if(r.status==='todo') todo++;
-      if((r.transport||"").trim()) legs.push({name:r.transport,date:r.date,cost:tc,status:r.status});
-      if((r.stay||"").trim()){
-        var key=r.stay;
-        if((hc>0)||((r.link||"").trim())){
-          if(!hotels[key]) hotels[key]={nights:0,cost:0,link:""};
-          if(hc>0) hotels[key].nights++;
-          hotels[key].cost+=hc;
-          if(!hotels[key].link && (r.link||"").trim()) hotels[key].link=r.link;
-        }
+  var stt=cell('c-status'); var sel=document.createElement('select'); sel.className='status';
+  [['','—'],['booked','Забронировано'],['todo','Купить']].forEach(function(o){
+    var op=document.createElement('option'); op.value=o[0]; op.textContent=o[1]; if((row.status||"")===o[0])op.selected=true; sel.appendChild(op);
+  });
+  sel.addEventListener('change',function(){ row.status=sel.value; tr.setAttribute('data-status',sel.value); recompute(); scheduleSave(); });
+  stt.appendChild(sel);
+
+  return tr;
+}
+
+function renderTable(){
+  tbody.innerHTML='';
+  STATE.rows.forEach(function(r){ tbody.appendChild(makeRow(r)); });
+  Array.prototype.forEach.call(tbody.querySelectorAll('textarea'), autoGrow);
+}
+
+function recompute(){
+  var flyTotal=0, hotelTotal=0, todo=0, legs=[], hotels={};
+  STATE.rows.forEach(function(r){
+    var tc=parseFloat(r.tcost)||0, hc=parseFloat(r.hcost)||0;
+    flyTotal+=tc; hotelTotal+=hc;
+    if(r.status==='todo') todo++;
+    if((r.transport||"").trim()) legs.push({name:r.transport,date:r.date,cost:tc,status:r.status});
+    if((r.stay||"").trim()){
+      var key=r.stay;
+      if((hc>0)||((r.link||"").trim())){
+        if(!hotels[key]) hotels[key]={nights:0,cost:0,link:""};
+        if(hc>0) hotels[key].nights++;
+        hotels[key].cost+=hc;
+        if(!hotels[key].link && (r.link||"").trim()) hotels[key].link=r.link;
       }
-    });
-    document.getElementById('s-total').textContent=fmt(flyTotal+hotelTotal)+' '+CUR;
-    document.getElementById('s-fly').textContent=fmt(flyTotal)+' '+CUR;
-    document.getElementById('s-fly-sub').textContent=legs.length+' переездов';
-    document.getElementById('s-hotel').textContent=fmt(hotelTotal)+' '+CUR;
-    var hc2=Object.keys(hotels).length; document.getElementById('s-hotel-sub').textContent=hc2?hc2+' городов':'заполни цены отелей';
-    document.getElementById('s-todo').textContent=todo;
+    }
+  });
+  $('s-total').textContent=fmt(flyTotal+hotelTotal)+' '+CUR;
+  $('s-fly').textContent=fmt(flyTotal)+' '+CUR;
+  $('s-fly-sub').textContent=legs.length+' переездов';
+  $('s-hotel').textContent=fmt(hotelTotal)+' '+CUR;
+  var hc2=Object.keys(hotels).length; $('s-hotel-sub').textContent=hc2?hc2+' городов':'заполни цены отелей';
+  $('s-todo').textContent=todo;
 
-    var fl=document.getElementById('flyList'); fl.innerHTML='';
-    if(!legs.length){ fl.innerHTML='<div class="prow empty">нет переездов</div>'; }
-    else legs.forEach(function(l){
-      var tag=l.status==='booked'?' · <small style="color:var(--ok)">забронировано</small>':(l.status==='todo'?' · <small style="color:var(--todo)">купить</small>':'');
-      var d=document.createElement('div'); d.className='prow';
-      d.innerHTML='<span class="pl">'+esc(l.name)+' <small>'+esc(l.date)+'</small>'+tag+'</span><span class="pr">'+fmt(l.cost)+' '+CUR+'</span>';
-      fl.appendChild(d);
-    });
-    document.getElementById('flySum').textContent=fmt(flyTotal)+' '+CUR;
+  var fl=$('flyList'); fl.innerHTML='';
+  if(!legs.length){ fl.innerHTML='<div class="prow empty">нет переездов</div>'; }
+  else legs.forEach(function(l){
+    var tag=l.status==='booked'?' · <small style="color:var(--ok)">забронировано</small>':(l.status==='todo'?' · <small style="color:var(--todo)">купить</small>':'');
+    var d=document.createElement('div'); d.className='prow';
+    d.innerHTML='<span class="pl">'+esc(l.name)+' <small>'+esc(l.date)+'</small>'+tag+'</span><span class="pr">'+fmt(l.cost)+' '+CUR+'</span>';
+    fl.appendChild(d);
+  });
+  $('flySum').textContent=fmt(flyTotal)+' '+CUR;
 
-    var hl=document.getElementById('hotelList'); hl.innerHTML='';
-    var keys=Object.keys(hotels);
-    if(!keys.length){ hl.innerHTML='<div class="prow empty">впиши цены или ссылки на отели</div>'; }
-    else keys.forEach(function(k){
-      var h=hotels[k]; var d=document.createElement('div'); d.className='prow';
-      var link=h.link?' <a class="plink" href="'+esc(normUrl(h.link))+'" target="_blank" rel="noopener" title="Открыть отель">🔗</a>':'';
-      var nights=h.nights?' <small>'+h.nights+' ноч.</small>':'';
-      d.innerHTML='<span class="pl">'+esc(k)+nights+link+'</span><span class="pr">'+fmt(h.cost)+' '+CUR+'</span>';
-      hl.appendChild(d);
+  var hl=$('hotelList'); hl.innerHTML='';
+  var keys=Object.keys(hotels);
+  if(!keys.length){ hl.innerHTML='<div class="prow empty">впиши цены или ссылки на отели</div>'; }
+  else keys.forEach(function(k){
+    var h=hotels[k]; var d=document.createElement('div'); d.className='prow';
+    var link=h.link?' <a class="plink" href="'+esc(normUrl(h.link))+'" target="_blank" rel="noopener" title="Открыть отель">🔗</a>':'';
+    var nights=h.nights?' <small>'+h.nights+' ноч.</small>':'';
+    d.innerHTML='<span class="pl">'+esc(k)+nights+link+'</span><span class="pr">'+fmt(h.cost)+' '+CUR+'</span>';
+    hl.appendChild(d);
+  });
+  $('hotelSum').textContent=fmt(hotelTotal)+' '+CUR;
+}
+
+/* ============================================================
+   МОДАЛКА ПОДТВЕРЖДЕНИЯ
+   ============================================================ */
+var modalResolve=null;
+function confirmDialog(title, text, okLabel){
+  $('modalTitle').textContent=title;
+  $('modalText').textContent=text;
+  $('modalOk').textContent=okLabel||'Удалить';
+  $('modal').classList.add('on');
+  return new Promise(function(res){ modalResolve=res; });
+}
+function closeModal(v){
+  $('modal').classList.remove('on');
+  if(modalResolve){ var r=modalResolve; modalResolve=null; r(v); }
+}
+$('modalCancel').addEventListener('click',function(){ closeModal(false); });
+$('modalOk').addEventListener('click',function(){ closeModal(true); });
+$('modal').addEventListener('click',function(e){ if(e.target===$('modal')) closeModal(false); });
+document.addEventListener('keydown',function(e){ if(e.key==='Escape' && $('modal').classList.contains('on')) closeModal(false); });
+
+/* ============================================================
+   СЕКЦИЯ 1 — ОТЕЛИ НА ПРОСМОТР
+   Города берутся из колонки «Ночь в (город)», кроме Дананга.
+   «Подтвердить» проставляет ссылку и цену во все даты города.
+   ============================================================ */
+function isDaNang(city){ return /дананг/i.test(city||''); }
+
+function cityList(){
+  var seen=[], out=[];
+  STATE.rows.forEach(function(r){
+    var c=(r.stay||'').trim();
+    if(!c || isDaNang(c)) return;
+    if(seen.indexOf(c)===-1){ seen.push(c); out.push(c); }
+  });
+  return out;
+}
+
+function renderCityOptions(){
+  var sel=$('candCity'), cur=sel.value, cities=cityList();
+  sel.innerHTML='<option value="">— город —</option>';
+  cities.forEach(function(c){
+    var op=document.createElement('option'); op.value=c; op.textContent=c; sel.appendChild(op);
+  });
+  if(cities.indexOf(cur)!==-1) sel.value=cur;
+}
+
+function applyCandidateToCity(cand){
+  var n=0;
+  STATE.rows.forEach(function(r){
+    if((r.stay||'').trim()===cand.city){
+      r.link=cand.link;
+      if(cand.price!=null && cand.price>0) r.hcost=cand.price;
+      n++;
+    }
+  });
+  return n;
+}
+
+function renderCandidates(){
+  var wrap=$('candList'); wrap.innerHTML='';
+  $('candCount').textContent = STATE.candidates.length ? STATE.candidates.length+' шт.' : '';
+  if(!STATE.candidates.length){
+    wrap.innerHTML='<div class="prow empty">пока пусто — добавь ссылку на отель сверху</div>';
+    return;
+  }
+  STATE.candidates.forEach(function(c){
+    var row=document.createElement('div'); row.className='cand';
+
+    var body=document.createElement('div'); body.className='body';
+    var ttl=document.createElement('div'); ttl.className='ttl';
+    var tag=document.createElement('span'); tag.className='citytag'; tag.textContent=c.city||'—';
+    var a=document.createElement('a'); a.href=normUrl(c.link); a.target='_blank'; a.rel='noopener';
+    a.textContent=c.link.replace(/^https?:\/\//i,'');
+    a.title=c.link;
+    ttl.appendChild(tag); ttl.appendChild(a);
+    body.appendChild(ttl);
+
+    var nights=STATE.rows.filter(function(r){ return (r.stay||'').trim()===c.city; }).length;
+    var meta=document.createElement('div'); meta.className='meta';
+    meta.textContent = nights ? ('применяется к '+nights+' ноч. в «'+c.city+'»') : ('в плане нет ночей в «'+c.city+'»');
+    body.appendChild(meta);
+    row.appendChild(body);
+
+    var price=document.createElement('span'); price.className='price';
+    price.textContent = (c.price!=null && c.price>0) ? (fmt(c.price)+' '+CUR+' / ночь') : '—';
+    row.appendChild(price);
+
+    var applyBtn=document.createElement('button');
+    applyBtn.className='iconbtn'; applyBtn.type='button'; applyBtn.textContent='✓';
+    applyBtn.title='Проставить этот отель во все даты города';
+    applyBtn.style.color='var(--ok)';
+    applyBtn.addEventListener('click',function(){
+      var n=applyCandidateToCity(c);
+      renderTable(); recompute(); renderCandidates(); save();
+      if(!n) alert('В плане нет ночей в городе «'+c.city+'».');
     });
-    document.getElementById('hotelSum').textContent=fmt(hotelTotal)+' '+CUR;
+    row.appendChild(applyBtn);
+
+    var del=document.createElement('button');
+    del.className='iconbtn'; del.type='button'; del.textContent='🗑'; del.title='Удалить';
+    del.addEventListener('click',async function(){
+      var ok=await confirmDialog('Удалить отель из списка?',
+        c.city+' · '+c.link, 'Удалить');
+      if(!ok) return;
+      STATE.candidates=STATE.candidates.filter(function(x){ return x.id!==c.id; });
+      renderCandidates(); save();
+    });
+    row.appendChild(del);
+
+    wrap.appendChild(row);
+  });
+}
+
+$('candAdd').addEventListener('click',function(){
+  var city=$('candCity').value.trim();
+  var link=$('candLink').value.trim();
+  var priceRaw=$('candPrice').value.trim();
+  if(!city){ alert('Выбери город.'); return; }
+  if(!link){ alert('Вставь ссылку на отель.'); return; }
+  var price = priceRaw==='' ? null : (parseFloat(priceRaw)||0);
+
+  var cand={ id:uid(), city:city, link:normUrl(link), price:price };
+  STATE.candidates.push(cand);
+  var n=applyCandidateToCity(cand);
+
+  $('candLink').value=''; $('candPrice').value='';
+  renderTable(); recompute(); renderCandidates(); save();
+  if(!n) alert('Отель добавлен, но в плане нет ночей в городе «'+city+'».');
+});
+
+/* ============================================================
+   СЕКЦИЯ 2 — ПОЛЕЗНЫЕ ФАЙЛЫ
+   ============================================================ */
+var pickedFile=null;
+
+$('filePickBtn').addEventListener('click',function(){ $('filePick').click(); });
+$('filePick').addEventListener('change',function(){
+  pickedFile=$('filePick').files[0]||null;
+  $('filePickName').textContent = pickedFile ? (pickedFile.name+' · '+humanSize(pickedFile.size)) : 'файл не выбран';
+  if(pickedFile && !$('fileTitle').value.trim()){
+    $('fileTitle').value = pickedFile.name.replace(/\.[^.]+$/,'');
+  }
+});
+
+/* base64 -> Blob, чтобы файл открывался во вкладке и в Safari тоже */
+function base64Bytes(dataUrl){
+  var i=String(dataUrl||'').indexOf(',');
+  if(i<0) return 0;
+  var b64=dataUrl.slice(i+1);
+  var pad=(b64.match(/=+$/)||[''])[0].length;
+  return Math.max(0, Math.floor(b64.length*3/4)-pad);
+}
+
+function openAsBlob(f){
+  try{
+    var i=f.data.indexOf(',');
+    var bin=atob(f.data.slice(i+1));
+    var buf=new Uint8Array(bin.length);
+    for(var k=0;k<bin.length;k++) buf[k]=bin.charCodeAt(k);
+    var blob=new Blob([buf],{type:f.type||'application/octet-stream'});
+    var url=URL.createObjectURL(blob);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 60000);
+    return url;
+  }catch(e){
+    console.error('open failed',e);
+    alert('Не удалось открыть файл.');
+    return null;
+  }
+}
+
+function renderFiles(){
+  var wrap=$('fileList'); wrap.innerHTML='';
+  var used=JSON.stringify(STATE).length;
+  $('fileCount').textContent = STATE.files.length
+    ? STATE.files.length+' шт. · '+humanSize(used)+' из 1 МБ'
+    : '';
+  $('fileCount').style.color = used>800*1024 ? 'var(--todo)' : 'var(--muted)';
+  if(!STATE.files.length){
+    wrap.innerHTML='<div class="prow empty">пока пусто — загрузи билеты, брони, карты</div>';
+    return;
+  }
+  STATE.files.forEach(function(f){
+    var row=document.createElement('div'); row.className='fileitem';
+
+    var ic=document.createElement('span'); ic.className='ic'; ic.textContent=fileIcon(f.title,f.type);
+    row.appendChild(ic);
+
+    var body=document.createElement('div'); body.className='body';
+    var a=document.createElement('a'); a.className='fname'; a.href='#';
+    a.textContent=f.title||'без названия';
+    // base64 открываем как blob: длинный data:-URL Safari режет
+    a.addEventListener('click',function(ev){
+      ev.preventDefault();
+      var u=openAsBlob(f);
+      if(u) window.open(u,'_blank','noopener');
+    });
+    body.appendChild(a);
+    var meta=document.createElement('div'); meta.className='meta';
+    var parts=[humanSize(base64Bytes(f.data))];
+    if(f.orig && f.orig>base64Bytes(f.data)*1.15) parts.push('было '+humanSize(f.orig));
+    if(f.added) parts.push(f.added);
+    meta.textContent=parts.join(' · ');
+    body.appendChild(meta);
+    row.appendChild(body);
+
+    var del=document.createElement('button');
+    del.className='iconbtn'; del.type='button'; del.textContent='🗑'; del.title='Удалить';
+    del.addEventListener('click',async function(){
+      var ok=await confirmDialog('Удалить файл?', (f.title||'без названия')+' — файл будет удалён навсегда.', 'Удалить');
+      if(!ok) return;
+      STATE.files=STATE.files.filter(function(x){ return x.id!==f.id; });
+      renderFiles(); save();
+    });
+    row.appendChild(del);
+
+    wrap.appendChild(row);
+  });
+}
+
+/* ---------- сжатие и упаковка в base64 ----------
+   Firestore держит до 1 МБ на документ, и в нём же лежит вся таблица.
+   Поэтому на файл выделяем 700 КБ уже в виде base64 (это ~512 КБ бинаря).
+   Картинки жмём в canvas: сначала ресайз, потом подбор качества JPEG.
+   Остальное (PDF, docx) сжать нельзя — только проверяем размер. */
+var B64_LIMIT = 700*1024;      // предел на один файл в base64
+var IMG_MAX_SIDE = 1600;       // максимальная сторона картинки
+
+function readAsDataURL(file){
+  return new Promise(function(res,rej){
+    var r=new FileReader();
+    r.onload=function(){ res(r.result); };
+    r.onerror=function(){ rej(new Error('не удалось прочитать файл')); };
+    r.readAsDataURL(file);
+  });
+}
+
+function loadImage(dataUrl){
+  return new Promise(function(res,rej){
+    var im=new Image();
+    im.onload=function(){ res(im); };
+    im.onerror=function(){ rej(new Error('не удалось открыть картинку')); };
+    im.src=dataUrl;
+  });
+}
+
+function isImage(file){ return /^image\//i.test(file.type) && !/svg/i.test(file.type); }
+
+/* Жмём картинку до B64_LIMIT: уменьшаем сторону, затем качество. */
+async function compressImage(file, onStep){
+  var src=await readAsDataURL(file);
+  var img=await loadImage(src);
+  var side=IMG_MAX_SIDE;
+
+  for(var attempt=0; attempt<4; attempt++){
+    var scale=Math.min(1, side/Math.max(img.width,img.height));
+    var w=Math.max(1,Math.round(img.width*scale)), h=Math.max(1,Math.round(img.height*scale));
+    var cv=document.createElement('canvas'); cv.width=w; cv.height=h;
+    var cx=cv.getContext('2d');
+    cx.fillStyle='#fff'; cx.fillRect(0,0,w,h);   // под прозрачный PNG
+    cx.drawImage(img,0,0,w,h);
+
+    var quals=[0.82,0.7,0.6,0.5,0.4];
+    for(var qi=0; qi<quals.length; qi++){
+      if(onStep) onStep(attempt,qi);
+      var out=cv.toDataURL('image/jpeg', quals[qi]);
+      if(out.length<=B64_LIMIT){
+        return {dataUrl:out, type:'image/jpeg', w:w, h:h, quality:quals[qi]};
+      }
+      await new Promise(function(r){ setTimeout(r,0); }); // не морозим UI
+    }
+    side=Math.round(side*0.7);   // всё ещё много — режем размер сильнее
+  }
+  throw new Error('картинка слишком тяжёлая даже после сжатия');
+}
+
+$('fileAdd').addEventListener('click',async function(){
+  var title=$('fileTitle').value.trim();
+  if(!pickedFile){ alert('Сначала выбери файл.'); return; }
+  if(!title) title=pickedFile.name;
+
+  var btn=$('fileAdd'); btn.disabled=true; btn.textContent='Обработка…';
+  var prog=$('fileProg'), bar=prog.querySelector('i');
+  prog.classList.add('on'); bar.style.width='15%';
+
+  try{
+    var packed, note='';
+    if(isImage(pickedFile)){
+      packed=await compressImage(pickedFile,function(a,q){
+        bar.style.width=(20+a*18+q*3)+'%';
+      });
+      note='сжато до '+packed.w+'×'+packed.h;
+    }else{
+      var dataUrl=await readAsDataURL(pickedFile);
+      if(dataUrl.length>B64_LIMIT){
+        throw new Error('файл '+humanSize(pickedFile.size)+' — слишком большой.\n'+
+          'Без Firebase Storage лимит примерно 500 КБ на файл.\n'+
+          'Сожми PDF (например ilovepdf.com) или добавь его ссылкой.');
+      }
+      packed={dataUrl:dataUrl, type:pickedFile.type||'application/octet-stream'};
+    }
+    bar.style.width='85%';
+
+    // проверим, что вся база вместе с новым файлом влезает в документ Firestore
+    var candidate={
+      id:uid(), title:title, data:packed.dataUrl, type:packed.type,
+      size:packed.dataUrl.length, orig:pickedFile.size,
+      added:new Date().toLocaleDateString('ru-RU')
+    };
+    var projected=JSON.stringify({rows:STATE.rows,candidates:STATE.candidates,
+      files:STATE.files.concat([candidate])}).length;
+    if(projected > 1000*1024){
+      throw new Error('в базе больше нет места ('+humanSize(projected)+' из 1 МБ).\n'+
+        'Удали пару старых файлов и попробуй снова.');
+    }
+
+    STATE.files.push(candidate);
+    bar.style.width='100%';
+
+    pickedFile=null; $('filePick').value=''; $('fileTitle').value='';
+    $('filePickName').textContent='файл не выбран';
+    renderFiles();
+    await save();
+    if(note) setSync(remote?'online':'local', note);
+  }catch(e){
+    console.error('upload failed', e);
+    alert('Не удалось добавить файл:\n'+(e && e.message ? e.message : e));
+  }finally{
+    btn.disabled=false; btn.textContent='Загрузить';
+    prog.classList.remove('on'); bar.style.width='0%';
+  }
+});
+
+/* ============================================================
+   ЗАПУСК
+   ============================================================ */
+var deferred=null;
+
+function isEditing(){
+  var a=document.activeElement;
+  return !!(a && /INPUT|TEXTAREA|SELECT/.test(a.tagName));
+}
+
+function applyRemote(incoming){
+  applyingRemote=true;
+  STATE=incoming;
+  renderAll();
+  applyingRemote=false;
+  saveLocal();
+  setSync('online','обновлено с другого устройства');
+  setTimeout(function(){ setSync('online','синхронизировано'); }, 2500);
+}
+
+// как только поле теряет фокус — доливаем отложенное обновление
+document.addEventListener('focusout', function(){
+  setTimeout(function(){
+    if(!deferred || isEditing()) return;
+    var d=deferred; deferred=null;
+    if(JSON.stringify(d)!==JSON.stringify(STATE)) applyRemote(d);
+    else setSync('online','синхронизировано');
+  }, 120);
+});
+
+function renderAll(){
+  renderTable();
+  renderCityOptions();
+  renderCandidates();
+  renderFiles();
+  recompute();
+}
+
+function showSetupHint(){
+  var h=$('setupHint');
+  h.className='hint warn';
+  h.style.display='';
+  h.innerHTML='<b>Синхронизация не настроена.</b> Правки и файлы сейчас сохраняются только в этом браузере. '+
+    'Чтобы данные ходили между устройствами — заполни <b>china_trip_config.js</b> ключами Firebase. '+
+    'Пошаговая инструкция лежит рядом: <b>china_trip_SETUP.md</b>.';
+  var mh=$('mainHint'); if(mh) mh.style.display='none';
+}
+
+function configured(){
+  var c=window.CHINA_TRIP_FIREBASE;
+  return !!(c && c.apiKey && c.projectId);
+}
+
+async function connectFirebase(){
+  var cfg=window.CHINA_TRIP_FIREBASE;
+  var V='https://www.gstatic.com/firebasejs/10.12.2/';
+  var appMod=await import(V+'firebase-app.js');
+  var fsMod=await import(V+'firebase-firestore.js');
+
+  var app=appMod.initializeApp(cfg);
+  var db=fsMod.getFirestore(app);
+
+  remote={
+    db:db,
+    ref:fsMod.doc(db, DOC_PATH[0], DOC_PATH[1]),
+    setDoc:fsMod.setDoc, getDoc:fsMod.getDoc, onSnapshot:fsMod.onSnapshot
+  };
+  return fsMod;
+}
+
+async function boot(){
+  // 1. быстрый старт: локальная копия или seed-файл, чтобы страница не была пустой
+  var local=readLocal();
+  if(local && local.rows.length){
+    STATE=local;
+  }else{
+    try{ STATE=await fetchSeed(); }
+    catch(e){ console.error('seed load failed', e); STATE={rows:[],candidates:[],files:[]}; }
+  }
+  renderAll();
+
+  // 2. подключаем общее хранилище
+  if(!configured()){
+    setSync('local','только этот браузер');
+    showSetupHint();
+    return;
   }
 
-  renderTable();
-  recompute();
-})();
+  setSync('init','подключение…');
+  try{
+    var fsMod=await connectFirebase();
+
+    // первый снимок решает: есть ли данные в облаке
+    var snap=await remote.getDoc(remote.ref);
+    if(snap.exists()){
+      applyingRemote=true;
+      STATE=normalize(snap.data());
+      applyingRemote=false;
+      renderAll();
+      saveLocal();
+    }else{
+      // документа ещё нет — заливаем то, что показано сейчас
+      await remote.setDoc(remote.ref, JSON.parse(JSON.stringify(STATE)));
+    }
+    setSync('online','синхронизировано');
+
+    // живые обновления с других устройств
+    remote.onSnapshot(remote.ref, function(s){
+      if(!s.exists()) return;
+      if(s.metadata.hasPendingWrites) return; // это наша же запись
+      var incoming=normalize(s.data());
+      if(JSON.stringify(incoming)===JSON.stringify(STATE)) return;
+      if(isEditing()){
+        // не выдёргиваем поле из-под рук: запомним и применим, когда отпустишь
+        deferred=incoming;
+        setSync('online','есть обновление — применится, как закончишь');
+        return;
+      }
+      applyRemote(incoming);
+    }, function(err){
+      console.error('snapshot error', err);
+      setSync('error','нет связи с базой');
+    });
+
+  }catch(e){
+    console.error('firebase init failed', e);
+    setSync('error','не удалось подключиться — правки только здесь');
+  }
+}
+
+boot();
 </script>
 </body>
 </html>
