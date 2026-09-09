@@ -84,11 +84,13 @@ export function authErrorText(e){
 }
 
 /* ---------- профиль и права ----------
-   Профиль читается из users/{uid}. Нет документа — прав нет. */
+   Профиль читается из users/{uid}. Нет документа — прав нет.
+   Роли: isAdmin — смотрит и правит; canView — только смотрит. */
 export async function loadProfile(user){
   if(!user) return null;
   const { db, fsMod } = await initFirebase();
-  const base = { uid:user.uid, email:user.email||'', name:emailToName(user.email), isAdmin:false };
+  const base = { uid:user.uid, email:user.email||'', name:emailToName(user.email),
+                 isAdmin:false, canView:false };
   try{
     const snap = await fsMod.getDoc(fsMod.doc(db, 'users', user.uid));
     if(!snap.exists()){
@@ -96,11 +98,14 @@ export async function loadProfile(user){
       return Object.assign(base, { noProfile:true });
     }
     const data = snap.data();
+    const isAdmin = data.isAdmin === true;
     return {
       uid: user.uid,
       email: user.email || '',
       name: data.name || emailToName(user.email),
-      isAdmin: data.isAdmin === true
+      isAdmin: isAdmin,
+      // админ тоже читатель; отдельный canView даёт доступ только на просмотр
+      canView: isAdmin || data.canView === true
     };
   }catch(e){
     console.warn('profile read failed', e);

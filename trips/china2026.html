@@ -170,6 +170,9 @@
   </p>
 
   <div class="hint" id="setupHint" style="display:none"></div>
+  <div class="hint" id="roBadge" style="display:none">
+    👁️ <b>Только просмотр.</b> Данные видны, но менять их может лишь администратор.
+  </div>
 
   <div class="hint" id="mainHint">
     Все правки сохраняются в общей базе и подтягиваются на любом устройстве — открывай эту же ссылку с телефона или ноутбука. <b>Транспорт</b> и <b>отели</b> считаются отдельно и суммируются внизу и наверху.
@@ -285,6 +288,7 @@ var SEED_URL = "china2026_seed.json";
 var LOCAL_KEY = "chinaTrip_v2";
 var DOC_PATH = ["trips", "china2026"];
 
+var READONLY = false;   // true = вошёл читатель, правки запрещены
 var TRIP_META = { title:"Китай", emoji:"🇨🇳", dates:"10–26 октября 2026" };
 var STATE = { rows: [], candidates: [], files: [] };
 var remote = null;          // { db, ref, setDoc, getDoc, onSnapshot }
@@ -343,6 +347,7 @@ function payload(){
 
 async function save(){
   if(applyingRemote) return;
+  if(READONLY) return;   // читатель ничего не сохраняет
   saveLocal();
   if(!remote){ flashSaved(); return; }
   try{
@@ -623,6 +628,7 @@ function renderCandidates(){
 
     wrap.appendChild(row);
   });
+  applyReadonly();
 }
 
 $('candAdd').addEventListener('click',function(){
@@ -730,6 +736,7 @@ function renderFiles(){
 
     wrap.appendChild(row);
   });
+  applyReadonly();
 }
 
 /* ---------- сжатие и упаковка в base64 ----------
@@ -875,12 +882,40 @@ document.addEventListener('focusout', function(){
   }, 120);
 });
 
+/* Режим «только просмотр»: гасим все поля и убираем всё, что меняет данные.
+   Настоящий запрет — в правилах Firestore; здесь просто честный интерфейс. */
+function applyReadonly(){
+  if(!READONLY) return;
+  var root=document.getElementById('wrap');
+  if(!root) return;
+
+  // поля таблицы и форм — только чтение
+  root.querySelectorAll('input, textarea').forEach(function(el){
+    if(el.type==='file'){ el.disabled=true; return; }
+    el.readOnly=true;
+    el.tabIndex=-1;
+  });
+  root.querySelectorAll('select').forEach(function(el){ el.disabled=true; });
+
+  // кнопки, которые что-то меняют
+  ['candAdd','fileAdd','filePickBtn'].forEach(function(id){
+    var b=document.getElementById(id);
+    if(b){ b.disabled=true; b.title='Доступно только администратору'; }
+  });
+  // удаление и «применить к городу»
+  root.querySelectorAll('.cand .iconbtn, .fileitem .iconbtn').forEach(function(b){ b.remove(); });
+
+  var badge=document.getElementById('roBadge');
+  if(badge) badge.style.display='';
+}
+
 function renderAll(){
   renderTable();
   renderCityOptions();
   renderCandidates();
   renderFiles();
   recompute();
+  applyReadonly();
 }
 
 function showSetupHint(){
@@ -949,9 +984,14 @@ async function boot(){
   catch(e){ console.error('auth failed', e); }
 
   if(!profile){ showGate('login'); return; }
-  if(!profile.isAdmin){ showGate('denied','Ты вошёл как '+profile.name+', но прав администратора нет.'); return; }
+  if(!profile.canView){ showGate('denied','Ты вошёл как '+profile.name+', но доступа к поездкам нет.'); return; }
 
-  document.getElementById('userTag').textContent=profile.name;
+  // читатель без прав на правку — включаем режим «только просмотр»
+  READONLY = !profile.isAdmin;
+
+  var tagEl=document.getElementById('userTag');
+  tagEl.textContent=profile.name;
+  if(READONLY){ tagEl.className='chip'; tagEl.title='только просмотр'; }
   document.getElementById('userBox').style.display='';
   document.getElementById('wrap').style.display='';
 

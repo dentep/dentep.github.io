@@ -1256,7 +1256,7 @@
       })();
     </script>
   
-<!-- Кнопка Trips: показывается только вошедшему админу.
+<!-- Кнопка Trips: показывается вошедшему пользователю с доступом (админ или просмотр).
      Реальная защита данных — в правилах Firestore, здесь только видимость. -->
 <script src="trips/firebase_config.js"></script>
 <script type="module">
@@ -1265,7 +1265,7 @@
       const A = await import('./trips/auth.js');
       if(!A.isConfigured()) return;
       A.onUser(profile => {
-        const show = !!(profile && profile.isAdmin);
+        const show = !!(profile && profile.canView);   // админ или читатель
         ['tripsLink','tripsLinkSmall'].forEach(id => {
           const el = document.getElementById(id);
           if(el) el.style.display = show ? '' : 'none';

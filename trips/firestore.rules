@@ -3,30 +3,42 @@ rules_version = '2';
 /* Правила доступа для сайта dentep.github.io/trips
    Скопировать целиком в Firebase Console → Firestore → Rules → Publish.
 
-   Суть: поездки видны и правятся ТОЛЬКО пользователям с isAdmin: true
-   в их документе users/{uid}. Всё остальное запрещено.
-   Это серверная проверка — обойти её из браузера нельзя. */
+   Роли задаются полями в документе users/{uid}:
+     isAdmin: true   — видит поездки и может их менять
+     canView: true   — только смотрит, изменить ничего не может
+   Нет ни того, ни другого — доступа нет вообще.
+
+   Это серверная проверка: обойти её из браузера или консоли нельзя. */
 
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // админ ли тот, кто сейчас пришёл
-    function isAdmin() {
+    function profile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+    function hasProfile() {
       return request.auth != null
-        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
-        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+    function isAdmin() {
+      return hasProfile() && profile().isAdmin == true;
+    }
+    // читатель: явный canView, либо админ (у админа доступ шире)
+    function canRead() {
+      return hasProfile() && (profile().isAdmin == true || profile().canView == true);
     }
 
-    // Профили: свой можно читать (чтобы узнать про isAdmin), править нельзя.
-    // Так обычный пользователь не сможет выдать себе админа.
+    // Профили: свой можно читать (чтобы узнать роль), править нельзя никому.
+    // Так пользователь не выдаст себе isAdmin.
     match /users/{uid} {
       allow read: if request.auth != null && request.auth.uid == uid;
       allow write: if false;
     }
 
-    // Поездки: и чтение, и запись — только админам.
+    // Поездки: смотреть — читателям и админам, менять — только админам.
     match /trips/{tripId} {
-      allow read, write: if isAdmin();
+      allow read:  if canRead();
+      allow write: if isAdmin();
     }
 
     // Всё прочее закрыто.

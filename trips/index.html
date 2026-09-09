@@ -58,11 +58,11 @@
     <form id="loginForm">
       <div class="field">
         <label for="lname">Логин</label>
-        <input type="text" id="lname" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="denis">
+        <input type="text" id="lname" autocomplete="username" autocapitalize="none" spellcheck="false">
       </div>
       <div class="field">
         <label for="lpass">Пароль</label>
-        <input type="password" id="lpass" autocomplete="current-password" placeholder="••••">
+        <input type="password" id="lpass" autocomplete="current-password" placeholder="••••••••">
       </div>
       <button class="btn primary" type="submit" id="loginBtn">Войти</button>
     </form>
@@ -261,7 +261,7 @@ if(!isConfigured()){
 }else{
   onUser(profile => {
     if(!profile){ show('gate'); return; }
-    if(!profile.isAdmin){
+    if(!profile.canView){
       $('deniedWho').textContent = `Ты вошёл как ${profile.name}.`;
       const hint = document.querySelector('#denied .hint');
       if(profile.noProfile){
@@ -278,6 +278,14 @@ if(!isConfigured()){
       show('denied'); return;
     }
     $('uname').textContent = profile.name;
+    var role = $('urole');
+    if(profile.isAdmin){
+      role.textContent = 'админ';
+      role.className = 'chip admin';
+    }else{
+      role.textContent = 'только просмотр';
+      role.className = 'chip';
+    }
     show('app');
     renderTrips();
   });
