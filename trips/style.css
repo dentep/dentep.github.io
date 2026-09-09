@@ -1,0 +1,64 @@
+/* Общие стили для страниц trips */
+:root{
+  --bg:#0f1216; --card:#1a1f27; --card2:#20262f; --line:#2c333d;
+  --ink:#eef1f5; --muted:#9aa5b1; --faint:#6b7684;
+  --fly:#9b6fd4; --hotel:#3f9fd0; --ok:#4faf7d; --todo:#e0b13f; --danger:#e0554f;
+  --accent:#e07a3f;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.45;font-size:15px}
+
+input,select,textarea{font:inherit;background:#11151b;color:var(--ink);border:1px solid var(--line);
+  border-radius:7px;padding:8px 9px;font-size:13.5px;width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);background-color:#141922}
+
+/* Родная стрелка селекта прижимается к краю — рисуем свою и даём ей место справа */
+select{
+  -webkit-appearance:none;-moz-appearance:none;appearance:none;
+  padding-right:34px;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1.5 6 6.5l5-5' fill='none' stroke='%239aa5b1' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat:no-repeat;
+  background-position:right 12px center;
+}
+select::-ms-expand{display:none}
+
+.btn{font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;border-radius:7px;padding:8px 14px;
+  border:1px solid var(--line);background:#11151b;color:var(--ink);width:auto;
+  transition:border-color .15s,background .15s}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#1a1206}
+.btn.primary:hover{background:#eb8b52}
+.btn.danger{background:#241618;border-color:#6b2f2c;color:#f0a9a5}
+.btn.danger:hover{background:#31191b;border-color:var(--danger)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+/* шапка с пользователем */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:14px 20px;border-bottom:1px solid var(--line);background:var(--card);flex-wrap:wrap}
+.topbar .brand{font-weight:800;font-size:15.5px;display:flex;align-items:center;gap:9px}
+.topbar .brand a{color:var(--ink);text-decoration:none}
+.topbar .brand a:hover{color:var(--accent)}
+.topbar .who{display:flex;align-items:center;gap:11px;font-size:13px;color:var(--muted)}
+.chip{font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+  padding:3px 9px;border-radius:20px;border:1px solid #2f4356;background:#1d2733;color:#8fc4e4}
+.chip.admin{border-color:#2f6b45;background:#16261c;color:var(--ok)}
+
+.gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.gatebox{width:100%;max-width:360px;background:var(--card);border:1px solid var(--line);
+  border-radius:16px;padding:26px 24px}
+.gatebox h1{font-size:20px;margin:0 0 6px}
+.gatebox p.sub{margin:0 0 20px;font-size:13px;color:var(--muted)}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;
+  color:var(--muted);margin-bottom:6px}
+.gatebox .btn{width:100%;padding:11px}
+.err{display:none;margin:0 0 14px;padding:9px 12px;border-radius:8px;font-size:13px;
+  background:#241618;border:1px solid #6b2f2c;color:#f0a9a5}
+.err.on{display:block}
+.hint{background:#1a2027;border:1px solid var(--line);border-left:3px solid var(--accent);
+  border-radius:10px;padding:10px 13px;font-size:12.5px;color:var(--muted)}
+.hint b{color:var(--ink)}
+.hint.warn{border-left-color:var(--danger)}

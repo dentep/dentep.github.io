@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Китай · план и бюджет</title>
+<link rel="stylesheet" href="style.css">
 <style>
   :root{
     --bg:#0f1216; --card:#1a1f27; --card2:#20262f; --line:#2c333d;
@@ -45,9 +46,6 @@
   .scard .sub{font-size:11.5px;color:var(--faint);margin-top:3px}
   .dotm{width:9px;height:9px;border-radius:50%;display:inline-block}
 
-  input,select,textarea{font:inherit;background:#11151b;color:var(--ink);border:1px solid var(--line);
-    border-radius:7px;padding:8px 9px;font-size:13.5px;width:100%}
-  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);background:#141922}
   input[type=number]{text-align:right;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
   input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
   textarea{resize:none;line-height:1.4;min-height:36px;overflow:hidden}
@@ -79,9 +77,9 @@
   .leg-badge{width:5px;align-self:stretch;min-height:34px;border-radius:3px;background:#2b333d}
   tr.hasfly .leg-badge{background:var(--fly)}
   .restday{display:block;padding:8px 9px;font-size:13px;color:var(--muted);border:1px solid #232a33;border-radius:7px;background:#0e1218;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  select.status{font-size:13px;font-weight:700;padding:9px}
-  tr[data-status=booked] td.c-status select{background:#16261c;border-color:#2f6b45;color:var(--ok)}
-  tr[data-status=todo] td.c-status select{background:#2a2413;border-color:#7a6320;color:var(--todo)}
+  select.status{font-size:13px;font-weight:700;padding:9px 34px 9px 9px}
+  tr[data-status=booked] td.c-status select{background-color:#16261c;border-color:#2f6b45;color:var(--ok)}
+  tr[data-status=todo] td.c-status select{background-color:#2a2413;border-color:#7a6320;color:var(--todo)}
 
   .linkcell{display:flex;gap:6px;align-items:center}
   .linkcell input{min-width:0}
@@ -111,7 +109,7 @@
 
   /* формы новых секций */
   .addform{display:grid;gap:9px;padding:13px 15px;border-bottom:1px solid var(--line);
-    grid-template-columns:1.1fr 2fr .8fr auto;align-items:center}
+    grid-template-columns:1fr 1.7fr .8fr 1.3fr auto;align-items:center}
   .addform.files{grid-template-columns:1.4fr 2fr auto}
   @media(max-width:900px){.addform,.addform.files{grid-template-columns:1fr}}
   .addform .btn{width:100%}
@@ -132,6 +130,7 @@
   .cand .ttl a{color:var(--ink);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
   .cand .ttl a:hover{color:var(--hotel);text-decoration:underline}
   .cand .meta{font-size:11.5px;color:var(--faint);margin-top:2px}
+  .cand .cmt{font-size:12.5px;color:#c9d2db;margin-top:4px;line-height:1.4;word-break:break-word}
   .cand .price{font-variant-numeric:tabular-nums;white-space:nowrap;color:#fff;font-weight:600}
 
   .fileitem{display:flex;align-items:center;gap:11px;padding:11px 15px;border-bottom:1px solid #232a33;font-size:13.5px}
@@ -154,13 +153,20 @@
 </style>
 </head>
 <body>
-<div class="wrap">
+<div id="authGate" class="gate" style="display:none"></div>
+
+<div class="wrap" id="wrap" style="display:none">
 
   <h1>🇨🇳 Китай · план и бюджет</h1>
   <p class="subtitle">
     10–26 октября 2026 · редактируй прямо в таблице
     <span class="sync" id="syncTag" data-state="init"><span class="dot"></span><span id="syncText">подключение…</span></span>
     <span class="saved" id="savedTag">✓ сохранено</span>
+    <span class="who" id="userBox" style="display:none;margin-left:auto">
+      <a href="index.html" class="btn" style="text-decoration:none">← Поездки</a>
+      <span class="chip admin" id="userTag"></span>
+      <button class="btn" id="signOutBtn" type="button">Выйти</button>
+    </span>
   </p>
 
   <div class="hint" id="setupHint" style="display:none"></div>
@@ -214,6 +220,7 @@
       <select id="candCity"><option value="">— город —</option></select>
       <input type="url" id="candLink" placeholder="ссылка на отель">
       <input type="number" id="candPrice" min="0" step="100" placeholder="₽ / ночь (необяз.)">
+      <input type="text" id="candComment" placeholder="комментарий (необяз.)">
       <button class="btn primary" id="candAdd" type="button">Подтвердить</button>
     </div>
     <div id="candList"></div>
@@ -257,9 +264,10 @@
   </div>
 </div>
 
-<script src="china_trip_config.js"></script>
+<script src="firebase_config.js"></script>
 <script type="module">
 "use strict";
+import * as AUTH from './auth.js';
 
 /* ============================================================
    ХРАНИЛИЩЕ
@@ -267,16 +275,17 @@
    на всех устройствах. Файлы тоже: хранятся прямо в базе как
    base64 (Storage не нужен, карту привязывать не надо).
    Картинки сжимаются в браузере перед загрузкой.
-   Пока конфиг не заполнен (china_trip_config.js), страница
+   Пока конфиг не заполнен (firebase_config.js), страница
    работает на локальной копии: читает china_trip_data.json
    и держит правки в localStorage этого браузера.
    ============================================================ */
 
 var CUR = "₽";
-var SEED_URL = "china_trip_data.json";
+var SEED_URL = "china2026_seed.json";
 var LOCAL_KEY = "chinaTrip_v2";
 var DOC_PATH = ["trips", "china2026"];
 
+var TRIP_META = { title:"Китай", emoji:"🇨🇳", dates:"10–26 октября 2026" };
 var STATE = { rows: [], candidates: [], files: [] };
 var remote = null;          // { db, ref, setDoc, getDoc, onSnapshot }
 var applyingRemote = false; // подавляет пере-сохранение при входящем снапшоте
@@ -323,13 +332,22 @@ function saveLocal(){
   try{ localStorage.setItem(LOCAL_KEY, JSON.stringify(STATE)); }catch(e){}
 }
 
+/* Что уходит в базу: данные + мета поездки (её читает страница списка). */
+function payload(){
+  var d=JSON.parse(JSON.stringify(STATE));
+  d.title = STATE.title || TRIP_META.title;
+  d.emoji = STATE.emoji || TRIP_META.emoji;
+  d.dates = STATE.dates || TRIP_META.dates;
+  return d;
+}
+
 async function save(){
   if(applyingRemote) return;
   saveLocal();
   if(!remote){ flashSaved(); return; }
   try{
     setSync('saving','сохранение…');
-    await remote.setDoc(remote.ref, JSON.parse(JSON.stringify(STATE)));
+    await remote.setDoc(remote.ref, payload());
     setSync('online','синхронизировано');
     flashSaved();
   }catch(e){
@@ -341,6 +359,10 @@ async function save(){
 /* ---------- загрузка начальных данных ---------- */
 function normalize(d){
   var out={ rows:[], candidates:[], files:[] };
+  // мета поездки нужна странице со списком поездок
+  out.title = (d&&d.title) || TRIP_META.title;
+  out.emoji = (d&&d.emoji) || TRIP_META.emoji;
+  out.dates = (d&&d.dates) || TRIP_META.dates;
   if(d && Array.isArray(d.rows)) out.rows=d.rows.map(function(r){
     return {
       date:r.date||'', transport:r.transport||'', tcost:Number(r.tcost)||0,
@@ -349,7 +371,9 @@ function normalize(d){
     };
   });
   if(d && Array.isArray(d.candidates)) out.candidates=d.candidates.map(function(c){
-    return { id:c.id||uid(), city:c.city||'', link:c.link||'', price:(c.price===''||c.price==null)?null:(Number(c.price)||0) };
+    return { id:c.id||uid(), city:c.city||'', link:c.link||'',
+             price:(c.price===''||c.price==null)?null:(Number(c.price)||0),
+             comment:c.comment||'' };
   });
   if(d && Array.isArray(d.files)) out.files=d.files.map(function(f){
     return { id:f.id||uid(), title:f.title||'', data:f.data||f.url||'',
@@ -560,6 +584,11 @@ function renderCandidates(){
     ttl.appendChild(tag); ttl.appendChild(a);
     body.appendChild(ttl);
 
+    if((c.comment||'').trim()){
+      var cm=document.createElement('div'); cm.className='cmt'; cm.textContent='💬 '+c.comment;
+      body.appendChild(cm);
+    }
+
     var nights=STATE.rows.filter(function(r){ return (r.stay||'').trim()===c.city; }).length;
     var meta=document.createElement('div'); meta.className='meta';
     meta.textContent = nights ? ('применяется к '+nights+' ноч. в «'+c.city+'»') : ('в плане нет ночей в «'+c.city+'»');
@@ -600,15 +629,16 @@ $('candAdd').addEventListener('click',function(){
   var city=$('candCity').value.trim();
   var link=$('candLink').value.trim();
   var priceRaw=$('candPrice').value.trim();
+  var comment=$('candComment').value.trim();
   if(!city){ alert('Выбери город.'); return; }
   if(!link){ alert('Вставь ссылку на отель.'); return; }
   var price = priceRaw==='' ? null : (parseFloat(priceRaw)||0);
 
-  var cand={ id:uid(), city:city, link:normUrl(link), price:price };
+  var cand={ id:uid(), city:city, link:normUrl(link), price:price, comment:comment };
   STATE.candidates.push(cand);
   var n=applyCandidateToCity(cand);
 
-  $('candLink').value=''; $('candPrice').value='';
+  $('candLink').value=''; $('candPrice').value=''; $('candComment').value='';
   renderTable(); recompute(); renderCandidates(); save();
   if(!n) alert('Отель добавлен, но в плане нет ночей в городе «'+city+'».');
 });
@@ -858,8 +888,8 @@ function showSetupHint(){
   h.className='hint warn';
   h.style.display='';
   h.innerHTML='<b>Синхронизация не настроена.</b> Правки и файлы сейчас сохраняются только в этом браузере. '+
-    'Чтобы данные ходили между устройствами — заполни <b>china_trip_config.js</b> ключами Firebase. '+
-    'Пошаговая инструкция лежит рядом: <b>china_trip_SETUP.md</b>.';
+    'Чтобы данные ходили между устройствами — заполни <b>trips/firebase_config.js</b> ключами Firebase. '+
+    'Пошаговая инструкция лежит рядом: <b>trips/SETUP.md</b>.';
   var mh=$('mainHint'); if(mh) mh.style.display='none';
 }
 
@@ -869,24 +899,63 @@ function configured(){
 }
 
 async function connectFirebase(){
-  var cfg=window.CHINA_TRIP_FIREBASE;
-  var V='https://www.gstatic.com/firebasejs/10.12.2/';
-  var appMod=await import(V+'firebase-app.js');
-  var fsMod=await import(V+'firebase-firestore.js');
-
-  var app=appMod.initializeApp(cfg);
-  var db=fsMod.getFirestore(app);
-
+  var m=await AUTH.initFirebase();
+  var fsMod=m.fsMod;
   remote={
-    db:db,
-    ref:fsMod.doc(db, DOC_PATH[0], DOC_PATH[1]),
+    db:m.db,
+    ref:fsMod.doc(m.db, DOC_PATH[0], DOC_PATH[1]),
     setDoc:fsMod.setDoc, getDoc:fsMod.getDoc, onSnapshot:fsMod.onSnapshot
   };
   return fsMod;
 }
 
+/* Гейт: без админских прав страница не показывает ничего.
+   Настоящая проверка — в правилах Firestore, здесь только UI. */
+function showGate(kind, who){
+  document.getElementById('wrap').style.display='none';
+  var g=document.getElementById('authGate');
+  g.style.display='';
+  if(kind==='denied'){
+    g.innerHTML='<div class="gatebox"><h1>⛔️ Нет доступа</h1>'+
+      '<p class="sub">'+esc(who||'')+'</p>'+
+      '<div class="hint warn">План поездки открыт только пользователям с правами администратора.</div>'+
+      '<div style="margin-top:16px;display:flex;gap:9px">'+
+      '<button class="btn" id="gOut" style="flex:1">Выйти</button>'+
+      '<a class="btn" href="index.html" style="flex:1;text-align:center;text-decoration:none">К поездкам</a></div></div>';
+    document.getElementById('gOut').addEventListener('click',function(){ AUTH.signOut(); });
+  }else{
+    g.innerHTML='<div class="gatebox"><h1>🔒 Нужен вход</h1>'+
+      '<p class="sub">План поездки доступен только по логину.</p>'+
+      '<a class="btn primary" href="index.html" style="display:block;text-align:center;text-decoration:none;padding:11px">Войти</a></div>';
+  }
+}
+
 async function boot(){
-  // 1. быстрый старт: локальная копия или seed-файл, чтобы страница не была пустой
+  // без конфига — совсем локальный режим (демо), данных из облака нет
+  if(!configured()){
+    document.getElementById('wrap').style.display='';
+    var local0=readLocal();
+    STATE = (local0 && local0.rows.length) ? local0 : await fetchSeed().catch(function(){ return {rows:[],candidates:[],files:[]}; });
+    renderAll();
+    setSync('local','только этот браузер');
+    showSetupHint();
+    return;
+  }
+
+  // 1. проверяем вход и права ДО показа данных
+  setSync('init','проверка доступа…');
+  var profile=null;
+  try{ profile=await AUTH.waitForUser(); }
+  catch(e){ console.error('auth failed', e); }
+
+  if(!profile){ showGate('login'); return; }
+  if(!profile.isAdmin){ showGate('denied','Ты вошёл как '+profile.name+', но прав администратора нет.'); return; }
+
+  document.getElementById('userTag').textContent=profile.name;
+  document.getElementById('userBox').style.display='';
+  document.getElementById('wrap').style.display='';
+
+  // 2. стартовые данные, чтобы страница не была пустой
   var local=readLocal();
   if(local && local.rows.length){
     STATE=local;
@@ -895,13 +964,6 @@ async function boot(){
     catch(e){ console.error('seed load failed', e); STATE={rows:[],candidates:[],files:[]}; }
   }
   renderAll();
-
-  // 2. подключаем общее хранилище
-  if(!configured()){
-    setSync('local','только этот браузер');
-    showSetupHint();
-    return;
-  }
 
   setSync('init','подключение…');
   try{
@@ -917,7 +979,7 @@ async function boot(){
       saveLocal();
     }else{
       // документа ещё нет — заливаем то, что показано сейчас
-      await remote.setDoc(remote.ref, JSON.parse(JSON.stringify(STATE)));
+      await remote.setDoc(remote.ref, payload());
     }
     setSync('online','синхронизировано');
 
@@ -944,6 +1006,9 @@ async function boot(){
     setSync('error','не удалось подключиться — правки только здесь');
   }
 }
+
+var soBtn=document.getElementById('signOutBtn');
+if(soBtn) soBtn.addEventListener('click',function(){ AUTH.signOut().then(function(){ location.reload(); }); });
 
 boot();
 </script>

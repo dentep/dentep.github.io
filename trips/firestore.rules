@@ -1,0 +1,37 @@
+rules_version = '2';
+
+/* Правила доступа для сайта dentep.github.io/trips
+   Скопировать целиком в Firebase Console → Firestore → Rules → Publish.
+
+   Суть: поездки видны и правятся ТОЛЬКО пользователям с isAdmin: true
+   в их документе users/{uid}. Всё остальное запрещено.
+   Это серверная проверка — обойти её из браузера нельзя. */
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // админ ли тот, кто сейчас пришёл
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+
+    // Профили: свой можно читать (чтобы узнать про isAdmin), править нельзя.
+    // Так обычный пользователь не сможет выдать себе админа.
+    match /users/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // Поездки: и чтение, и запись — только админам.
+    match /trips/{tripId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Всё прочее закрыто.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

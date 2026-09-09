@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Поездки</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .wrap{max-width:1100px;margin:0 auto;padding:22px 20px 70px}
+  h1.page{font-size:23px;margin:0 0 3px}
+  p.pagesub{color:var(--muted);font-size:13px;margin:0 0 22px}
+
+  .totals{display:grid;gap:11px;grid-template-columns:repeat(4,1fr);margin-bottom:22px}
+  @media(max-width:760px){.totals{grid-template-columns:1fr 1fr}}
+  .tcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 15px}
+  .tcard .lbl{font-size:11.5px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted)}
+  .tcard .val{font-size:22px;font-weight:800;margin-top:4px;font-variant-numeric:tabular-nums}
+  .tcard.sum{border-color:#e07a3f55;background:linear-gradient(135deg,#241c17,var(--card))}
+
+  .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(330px,1fr))}
+  .trip{background:var(--card);border:1px solid var(--line);border-radius:15px;overflow:hidden;
+    display:flex;flex-direction:column;transition:border-color .15s,transform .15s}
+  .trip:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .trip .head{padding:15px 17px 13px;border-bottom:1px solid var(--line)}
+  .trip .title{font-size:17px;font-weight:800;display:flex;align-items:center;gap:9px;margin-bottom:4px}
+  .trip .title a{color:var(--ink);text-decoration:none}
+  .trip .title a:hover{color:var(--accent)}
+  .trip .when{font-size:12.5px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .trip .when .sep{color:var(--faint)}
+  .trip .body{padding:4px 17px 8px;flex:1}
+  .line{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #232a33;font-size:13.5px}
+  .line:last-child{border-bottom:none}
+  .line .k{color:var(--muted)}
+  .line .v{font-variant-numeric:tabular-nums;white-space:nowrap}
+  .line .v.big{font-weight:800}
+  .line.total .k{color:var(--ink);font-weight:700}
+  .line.total .v{color:#fff;font-weight:800}
+  .cities{padding:11px 17px 0;display:flex;flex-wrap:wrap;gap:6px}
+  .city{font-size:11.5px;padding:3px 9px;border-radius:20px;background:#1d2733;
+    border:1px solid #2f4356;color:#8fc4e4;white-space:nowrap}
+  .trip .foot{padding:13px 17px;display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+  .trip .foot .btn{flex:1;text-align:center;text-decoration:none;display:inline-block}
+  .badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap}
+  .badge.todo{background:#2a2413;border:1px solid #7a6320;color:var(--todo)}
+  .badge.ok{background:#16261c;border:1px solid #2f6b45;color:var(--ok)}
+
+  .state{padding:40px 20px;text-align:center;color:var(--muted);font-size:14px}
+  .state b{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<div id="gate" class="gate" style="display:none">
+  <div class="gatebox">
+    <h1>🔒 Вход</h1>
+    <p class="sub">Раздел поездок доступен только по логину.</p>
+    <div class="err" id="gateErr"></div>
+    <form id="loginForm">
+      <div class="field">
+        <label for="lname">Логин</label>
+        <input type="text" id="lname" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="denis">
+      </div>
+      <div class="field">
+        <label for="lpass">Пароль</label>
+        <input type="password" id="lpass" autocomplete="current-password" placeholder="••••">
+      </div>
+      <button class="btn primary" type="submit" id="loginBtn">Войти</button>
+    </form>
+    <p style="margin:16px 0 0;font-size:12px;color:var(--faint);text-align:center">
+      <a href="../index.html" style="color:var(--faint)">← на главную</a>
+    </p>
+  </div>
+</div>
+
+<div id="denied" class="gate" style="display:none">
+  <div class="gatebox">
+    <h1>⛔️ Нет доступа</h1>
+    <p class="sub" id="deniedWho"></p>
+    <div class="hint warn">
+      Этот раздел открыт только пользователям с правами администратора.
+      Данные поездок тебе не видны.
+    </div>
+    <div style="margin-top:16px;display:flex;gap:9px">
+      <button class="btn" id="denyOut" type="button" style="flex:1">Выйти</button>
+      <a class="btn" href="../index.html" style="flex:1;text-align:center;text-decoration:none">На главную</a>
+    </div>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+  <div class="topbar">
+    <div class="brand">🧭 <a href="../index.html">dentep</a> <span style="color:var(--faint)">/ поездки</span></div>
+    <div class="who">
+      <span id="uname"></span>
+      <span class="chip admin" id="urole">админ</span>
+      <button class="btn" id="outBtn" type="button">Выйти</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <h1 class="page">Поездки</h1>
+    <p class="pagesub" id="pagesub">—</p>
+
+    <div class="totals" id="totals"></div>
+    <div class="grid" id="grid"></div>
+    <div class="state" id="state" style="display:none"></div>
+  </div>
+</div>
+
+<script src="firebase_config.js"></script>
+<script type="module">
+import { isConfigured, signIn, signOut, onUser, authErrorText, listTrips } from './auth.js';
+
+const $ = id => document.getElementById(id);
+const CUR = '₽';
+const fmt = n => Math.round(n||0).toLocaleString('ru-RU');
+const esc = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function show(which){
+  ['gate','denied','app'].forEach(k => $(k).style.display = (k===which?'':'none'));
+}
+
+/* ---------- считаем сводку поездки из её же строк ----------
+   Ничего не хардкодим: все числа выводятся из rows/candidates/files. */
+function digest(trip){
+  const rows = Array.isArray(trip.rows) ? trip.rows : [];
+  let transport = 0, hotels = 0, todo = 0, booked = 0, nights = 0;
+  const cities = [], legs = [];
+
+  rows.forEach(r => {
+    const tc = parseFloat(r.tcost)||0, hc = parseFloat(r.hcost)||0;
+    transport += tc; hotels += hc;
+    if(r.status === 'todo') todo++;
+    if(r.status === 'booked') booked++;
+    if(hc > 0) nights++;
+    const move = (r.transport||'').trim();
+    if(move) legs.push(move);
+    const c = (r.stay||'').trim();
+    if(c && !cities.includes(c)) cities.push(c);
+  });
+
+  // длительность — по числу строк-дней (одна строка = один день)
+  const days = rows.length;
+  const dateFrom = rows.length ? (rows[0].date||'') : '';
+  const dateTo   = rows.length ? (rows[rows.length-1].date||'') : '';
+
+  return {
+    days, dateFrom, dateTo, cities, legs: legs.length,
+    transport, hotels, total: transport+hotels,
+    todo, booked, nights,
+    candidates: Array.isArray(trip.candidates) ? trip.candidates.length : 0,
+    files: Array.isArray(trip.files) ? trip.files.length : 0
+  };
+}
+
+function tripCard(trip){
+  const d = digest(trip);
+  const el = document.createElement('div');
+  el.className = 'trip';
+
+  const period = (d.dateFrom && d.dateTo) ? (d.dateFrom+' — '+d.dateTo) : (trip.dates||'даты не заданы');
+  const dayWord = n => (n%10===1 && n%100!==11) ? 'день' : ((n%10>=2 && n%10<=4 && (n%100<10||n%100>=20)) ? 'дня' : 'дней');
+
+  el.innerHTML = `
+    <div class="head">
+      <div class="title">${esc(trip.emoji||'🧳')} <a href="${esc(trip.id)}.html">${esc(trip.title||trip.id)}</a></div>
+      <div class="when">
+        <span>${esc(period)}</span>
+        ${d.days ? `<span class="sep">·</span><span>${d.days} ${dayWord(d.days)}</span>` : ''}
+      </div>
+    </div>
+    <div class="body">
+      <div class="line"><span class="k">✈️ Транспорт</span><span class="v">${fmt(d.transport)} ${CUR}</span></div>
+      <div class="line"><span class="k">🏨 Отели${d.nights?` <span style="color:var(--faint)">· ${d.nights} ноч.</span>`:''}</span><span class="v">${fmt(d.hotels)} ${CUR}</span></div>
+      <div class="line total"><span class="k">Итого</span><span class="v big">${fmt(d.total)} ${CUR}</span></div>
+      <div class="line"><span class="k">Переезды</span><span class="v">${d.legs}</span></div>
+      <div class="line"><span class="k">Отели на просмотр</span><span class="v">${d.candidates}</span></div>
+      <div class="line"><span class="k">Файлы</span><span class="v">${d.files}</span></div>
+    </div>
+    ${d.cities.length ? `<div class="cities">${d.cities.map(c=>`<span class="city">${esc(c)}</span>`).join('')}</div>` : ''}
+    <div class="foot">
+      <a class="btn primary" href="${esc(trip.id)}.html">Открыть план</a>
+      ${d.todo ? `<span class="badge todo">${d.todo} к брони</span>` : `<span class="badge ok">всё куплено</span>`}
+    </div>`;
+  return el;
+}
+
+function renderTotals(trips){
+  const agg = trips.reduce((a,t)=>{
+    const d = digest(t);
+    a.transport += d.transport; a.hotels += d.hotels; a.todo += d.todo; a.days += d.days;
+    return a;
+  }, {transport:0,hotels:0,todo:0,days:0});
+
+  $('totals').innerHTML = `
+    <div class="tcard sum"><div class="lbl">💰 Всего по поездкам</div><div class="val">${fmt(agg.transport+agg.hotels)} ${CUR}</div></div>
+    <div class="tcard"><div class="lbl">✈️ Транспорт</div><div class="val" style="color:var(--fly)">${fmt(agg.transport)} ${CUR}</div></div>
+    <div class="tcard"><div class="lbl">🏨 Отели</div><div class="val" style="color:var(--hotel)">${fmt(agg.hotels)} ${CUR}</div></div>
+    <div class="tcard"><div class="lbl">📋 К брони</div><div class="val" style="color:var(--todo)">${agg.todo}</div></div>`;
+  return agg;
+}
+
+async function renderTrips(){
+  const grid = $('grid'), state = $('state');
+  grid.innerHTML = ''; state.style.display='none';
+  try{
+    const trips = await listTrips();
+    if(!trips.length){
+      $('totals').innerHTML = '';
+      state.style.display=''; state.innerHTML = '<b>Пока нет ни одной поездки.</b><br>Открой план поездки — он создастся сам.';
+      $('pagesub').textContent = 'нет поездок';
+      return;
+    }
+    // свежие сверху: сортируем по первой дате (дд.мм.гггг)
+    const key = t => {
+      const r = (t.rows&&t.rows[0]&&t.rows[0].date) || '';
+      const m = r.match(/(\d{2})\.(\d{2})\.(\d{4})/);
+      return m ? (m[3]+m[2]+m[1]) : '0';
+    };
+    trips.sort((a,b)=> key(b).localeCompare(key(a)));
+
+    const agg = renderTotals(trips);
+    trips.forEach(t => grid.appendChild(tripCard(t)));
+    $('pagesub').textContent = `${trips.length} ${trips.length===1?'поездка':'поездки'} · ${agg.days} дней в сумме`;
+  }catch(e){
+    console.error(e);
+    $('totals').innerHTML = '';
+    state.style.display='';
+    state.innerHTML = '<b>Не удалось загрузить поездки.</b><br>'+esc(e.message||e);
+    $('pagesub').textContent = 'ошибка';
+  }
+}
+
+/* ---------- вход ---------- */
+$('loginForm').addEventListener('submit', async (ev)=>{
+  ev.preventDefault();
+  const err = $('gateErr'), btn = $('loginBtn');
+  err.classList.remove('on');
+  const name = $('lname').value.trim(), pass = $('lpass').value;
+  if(!name || !pass){ err.textContent='Заполни логин и пароль.'; err.classList.add('on'); return; }
+  btn.disabled = true; btn.textContent = 'Вход…';
+  try{
+    await signIn(name, pass);
+    $('lpass').value = '';
+  }catch(e){
+    err.textContent = authErrorText(e); err.classList.add('on');
+  }finally{
+    btn.disabled = false; btn.textContent = 'Войти';
+  }
+});
+
+$('outBtn').addEventListener('click', ()=> signOut());
+$('denyOut').addEventListener('click', ()=> signOut());
+
+/* ---------- старт ---------- */
+if(!isConfigured()){
+  show('gate');
+  $('gateErr').textContent = 'Firebase не настроен: заполни trips/firebase_config.js';
+  $('gateErr').classList.add('on');
+  $('loginForm').style.display = 'none';
+}else{
+  onUser(profile => {
+    if(!profile){ show('gate'); return; }
+    if(!profile.isAdmin){
+      $('deniedWho').textContent = `Ты вошёл как ${profile.name}, но прав администратора нет.`;
+      show('denied'); return;
+    }
+    $('uname').textContent = profile.name;
+    show('app');
+    renderTrips();
+  });
+}
+</script>
+</body>
+</html>
