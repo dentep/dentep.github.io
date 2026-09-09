@@ -276,7 +276,7 @@ import * as AUTH from './auth.js';
    base64 (Storage не нужен, карту привязывать не надо).
    Картинки сжимаются в браузере перед загрузкой.
    Пока конфиг не заполнен (firebase_config.js), страница
-   работает на локальной копии: читает china_trip_data.json
+   работает на локальной копии: читает china2026_seed.json
    и держит правки в localStorage этого браузера.
    ============================================================ */
 
@@ -894,7 +894,7 @@ function showSetupHint(){
 }
 
 function configured(){
-  var c=window.CHINA_TRIP_FIREBASE;
+  var c=window.TRIPS_FIREBASE;
   return !!(c && c.apiKey && c.projectId);
 }
 

@@ -16,7 +16,7 @@ const V = 'https://www.gstatic.com/firebasejs/10.12.2/';
 let _app = null, _auth = null, _db = null, _mods = null;
 
 export function isConfigured(){
-  const c = window.CHINA_TRIP_FIREBASE;
+  const c = window.TRIPS_FIREBASE;
   return !!(c && c.apiKey && c.projectId);
 }
 
@@ -31,7 +31,7 @@ export async function initFirebase(){
     import(V+'firebase-firestore.js')
   ]);
 
-  _app  = appMod.initializeApp(window.CHINA_TRIP_FIREBASE);
+  _app  = appMod.initializeApp(window.TRIPS_FIREBASE);
   _auth = authMod.getAuth(_app);
   _db   = fsMod.getFirestore(_app);
   // сессия переживает перезагрузку и закрытие вкладки
@@ -72,6 +72,8 @@ export function authErrorText(e){
   const c = (e && e.code) || '';
   if(/invalid-credential|wrong-password|user-not-found|invalid-email/.test(c))
     return 'Неверный логин или пароль.';
+  if(/weak-password/.test(c))
+    return 'Firebase требует пароль минимум из 6 символов.';
   if(/too-many-requests/.test(c))
     return 'Слишком много попыток. Подожди немного и попробуй снова.';
   if(/network-request-failed/.test(c))
@@ -86,9 +88,14 @@ export function authErrorText(e){
 export async function loadProfile(user){
   if(!user) return null;
   const { db, fsMod } = await initFirebase();
+  const base = { uid:user.uid, email:user.email||'', name:emailToName(user.email), isAdmin:false };
   try{
     const snap = await fsMod.getDoc(fsMod.doc(db, 'users', user.uid));
-    const data = snap.exists() ? snap.data() : {};
+    if(!snap.exists()){
+      // аккаунт есть, а профиля нет — прав не будет, пока не создан users/{uid}
+      return Object.assign(base, { noProfile:true });
+    }
+    const data = snap.data();
     return {
       uid: user.uid,
       email: user.email || '',
@@ -96,9 +103,8 @@ export async function loadProfile(user){
       isAdmin: data.isAdmin === true
     };
   }catch(e){
-    // правила могли запретить чтение — считаем, что прав нет
     console.warn('profile read failed', e);
-    return { uid:user.uid, email:user.email||'', name:emailToName(user.email), isAdmin:false };
+    return Object.assign(base, { readFailed:true });
   }
 }
 

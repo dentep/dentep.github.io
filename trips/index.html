@@ -262,7 +262,19 @@ if(!isConfigured()){
   onUser(profile => {
     if(!profile){ show('gate'); return; }
     if(!profile.isAdmin){
-      $('deniedWho').textContent = `Ты вошёл как ${profile.name}, но прав администратора нет.`;
+      $('deniedWho').textContent = `Ты вошёл как ${profile.name}.`;
+      const hint = document.querySelector('#denied .hint');
+      if(profile.noProfile){
+        // самая частая причина: аккаунт создан, а профиля с isAdmin нет
+        hint.innerHTML = 'Вход выполнен, но в базе нет профиля этого пользователя, '+
+          'поэтому прав нет.<br><br>Создай в Firestore документ '+
+          '<b>users/'+esc(profile.uid)+'</b> с полями <b>name</b> (string) и '+
+          '<b>isAdmin</b> (boolean = true).<br><br>'+
+          '<span style="color:var(--faint)">uid можно скопировать отсюда:</span><br>'+
+          '<code style="display:block;margin-top:6px;padding:7px 9px;background:#11151b;'+
+          'border:1px solid var(--line);border-radius:6px;font-size:12px;word-break:break-all">'+
+          esc(profile.uid)+'</code>';
+      }
       show('denied'); return;
     }
     $('uname').textContent = profile.name;

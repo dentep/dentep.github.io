@@ -1,7 +1,7 @@
-/* Firebase-конфиг для страницы china_trip.html.
-   Проект: trips (trips-b3602). Инструкция — в china_trip_SETUP.md
+/* Firebase-конфиг для раздела trips.
+   Проект: trips (trips-b3602). Инструкция — в SETUP.md
    apiKey в вебе не секрет: доступ ограничивается правилами Firestore. */
-window.CHINA_TRIP_FIREBASE = {
+window.TRIPS_FIREBASE = {
   apiKey: "AIzaSyCP1X23yuF4MKz_BT-eauOvuakdK1W7W-M",
   authDomain: "trips-b3602.firebaseapp.com",
   projectId: "trips-b3602",
