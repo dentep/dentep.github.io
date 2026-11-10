@@ -5,13 +5,13 @@
 >
   <head>
     <meta charset="utf-8" />
-    <title>Denis Stepanov - React Native Engineer</title>
+    <title>Denis Stepanov — Mobile Team Lead · React Native</title>
     <meta
-      content="Denis Stepanov - React Native Engineer"
+      content="Denis Stepanov — Mobile Team Lead · React Native"
       property="og:title"
     />
     <meta
-      content="Denis Stepanov - React Native Engineer"
+      content="Denis Stepanov — Mobile Team Lead · React Native"
       property="twitter:title"
     />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
@@ -54,8 +54,7 @@
             (n.className += t + 'touch');
       })(window, document);
     </script>
-    <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon" />
-    <link href="images/webclip.png" rel="apple-touch-icon" />
+    <link href="images/ui/favicon.png" rel="shortcut icon" type="image/x-icon" />
     <!--  Please keep this css code to improve the font quality -->
     <style>
       * {
@@ -89,6 +88,8 @@
          project (B-Pay) the section fades to opacity 0 + scales down, which
          looks like the page is tinting/disappearing. We force the section to
          stay fully visible regardless of scroll progress. */
+      /* Client logos: uniform sizing inside the 3-column grid */
+      .client-logo { width: auto; max-width: 100%; object-fit: contain; align-self: center; }
       .section-home-services {
         opacity: 1 !important;
         transform: none !important;
@@ -114,38 +115,6 @@
               </a>
             </div>
             <nav class="navbar-menu">
-              <a
-                data-w-id="6e15c14e-1146-0b20-61d1-6721f0646d5a"
-                href="work.html"
-                class="navbar-menu-item w-inline-block"
-              >
-                <div class="navbar-menu-item-text" data-i18n="nav.work">Work</div>
-                <div class="navbar-item-line"></div>
-              </a>
-              <a
-                data-w-id="6e15c14e-1146-0b20-61d1-6721f0646d5a"
-                href="service.html"
-                class="navbar-menu-item w-inline-block"
-              >
-                <div class="navbar-menu-item-text" data-i18n="nav.service">Service</div>
-                <div class="navbar-item-line"></div>
-              </a>
-              <a
-                data-w-id="6e15c14e-1146-0b20-61d1-6721f0646d5a"
-                href="about.html"
-                class="navbar-menu-item w-inline-block"
-              >
-                <div class="navbar-menu-item-text" data-i18n="nav.about">About</div>
-                <div class="navbar-item-line"></div>
-              </a>
-              <a
-                data-w-id="6e15c14e-1146-0b20-61d1-6721f0646d5a"
-                href="blog.html"
-                class="navbar-menu-item w-inline-block"
-              >
-                <div class="navbar-menu-item-text" data-i18n="nav.blog">Blog</div>
-                <div class="navbar-item-line"></div>
-              </a>
             </nav>
             <div
               id="w-node-eb0427c1-bb1c-e076-5734-e12e7079063b-70790586"
@@ -267,14 +236,14 @@
         >
           <div class="home-hero-grid">
             <img
-              src="images/Free-iPhone-15-Mockup.png"
+              src="images/hero/iphone-mockup.png"
               loading="lazy"
               sizes="(max-width: 1600px) 100vw, 1600px"
               srcset="
-                images/Free-iPhone-15-Mockup-p-500.png   500w,
-                images/Free-iPhone-15-Mockup-p-800.png   800w,
-                images/Free-iPhone-15-Mockup-p-1080.png 1080w,
-                images/Free-iPhone-15-Mockup.png        1600w
+                images/hero/iphone-mockup-500.png   500w,
+                images/hero/iphone-mockup-800.png   800w,
+                images/hero/iphone-mockup-1080.png 1080w,
+                images/hero/iphone-mockup.png        1600w
               "
               alt=""
               class="home-hero-image"
@@ -362,7 +331,7 @@
                       "
                       class="heading-alt-h2"
                     >
-                      <span data-i18n="hero.lead">Turning ideas into engaging mobile development products delivered at scale</span>
+                      <span data-i18n="hero.lead">Leading mobile teams that ship React Native products at scale — from first commit to 1M+ users</span>
                     </p>
                   </div>
                 </div>
@@ -496,7 +465,7 @@
                       "
                       class="text-color-muted"
                     >
-                      <span data-i18n-html="about.long">I build mobile experiences that scale — from sleek MVPs to apps serving over a million users. I started coding when I was 14, driven by curiosity and a love for turning ideas into something real. Over the years, I evolved from native Android development to mastering React Native, publishing 20+ apps on both the App Store and Google Play. Whether solo or leading a team of eight, I take products from concept to production with attention to detail and a passion for performance.<br /><br />With a global perspective shaped by traveling to over 80 countries, I bring adaptability, clarity, and empathy to every project. My work has been featured in IEEE publications, and I approach every app not just as a piece of software, but as a user experience that should feel intuitive, delightful, and reliable. If you&#x27;re looking for someone who can think like a developer, a product owner, and a user — let’s build something together.</span>
+                      <span data-i18n-html="about.long">I'm a mobile team lead with 7+ years in software and 6 in React Native. I build the app and the delivery system around it — release cadence, CI/CD, code review, QA gates — and the engineers who run them. I've led teams of up to six, taken a B2C app to 1M+ downloads, raised crash-free sessions from 85% to 97% and shipped 100+ production releases on a weekly train. My teams are AI-first: Cursor and Claude Code are part of how we implement and review, which cut delivery time by about 30%.<br><br>I started coding at 14 and still work hands-on in the codebase. I've studied in Canada and China, worked with teams in Japan and Norway, and traveled to 80+ countries — so remote, cross-timezone work comes naturally. My research has been published by IEEE. If you need someone who thinks like an engineer, a product owner and a user at once — let's talk.</span>
                     </p>
                   </div>
                 </div>
@@ -537,134 +506,12 @@
                     "
                     class="home-hero-logos light"
                   >
-                    <img
-                      src="images/svgviewer-png-output-4.png"
-                      loading="lazy"
-                      width="127"
-                      height="40"
-                      alt=""
-                      id="w-node-_01cc26bd-16e4-da7b-915e-1bcf43ab9983-e3bb5747"
-                      class="image-3"
-                    /><img
-                      src="images/peovb6xtoyaempdx18q5.png"
-                      loading="lazy"
-                      id="w-node-_7e5ebfc4-70d2-d4c0-aaf8-581f7aeef840-e3bb5747"
-                      height="35"
-                      alt=""
-                      srcset="
-                        images/peovb6xtoyaempdx18q5-p-500.png 500w,
-                        images/peovb6xtoyaempdx18q5.png       777w
-                      "
-                      sizes="132.65625px"
-                      class="image"
-                    /><img
-                      class="image-2"
-                      src="images/Russian_Railways_Logo.svg.png"
-                      width="300"
-                      height="40"
-                      alt=""
-                      sizes="(max-width: 479px) 100vw, 300px"
-                      id="w-node-a640d232-9462-3db2-bbdb-2205e801a7c5-e3bb5747"
-                      loading="lazy"
-                      srcset="
-                        images/Russian_Railways_Logo.svg-p-500.png   500w,
-                        images/Russian_Railways_Logo.svg-p-800.png   800w,
-                        images/Russian_Railways_Logo.svg-p-1080.png 1080w,
-                        images/Russian_Railways_Logo.svg-p-1600.png 1600w,
-                        images/Russian_Railways_Logo.svg-p-2000.png 2000w,
-                        images/Russian_Railways_Logo.svg.png        2560w
-                      "
-                    /><img
-                      src="images/svgviewer-png-output-8.png"
-                      loading="lazy"
-                      id="w-node-_22714430-9b84-cda1-32c2-8e58dff3e57e-e3bb5747"
-                      height="35"
-                      alt=""
-                      srcset="
-                        images/svgviewer-png-output-8-p-500.png 500w,
-                        images/svgviewer-png-output-8-p-800.png 800w,
-                        images/svgviewer-png-output-8.png       942w
-                      "
-                      sizes="171.71875px"
-                      class="image-4"
-                    /><img
-                      src="images/logo_black.png"
-                      loading="lazy"
-                      id="w-node-_7a0f3957-7b9c-a6aa-7f12-83854ae7f016-e3bb5747"
-                      height="20"
-                      alt=""
-                      srcset="
-                        images/logo_black-p-500.png   500w,
-                        images/logo_black-p-800.png   800w,
-                        images/logo_black-p-1080.png 1080w,
-                        images/logo_black-p-1600.png 1600w,
-                        images/logo_black.png        2520w
-                      "
-                      sizes="163.1015625px"
-                    /><img
-                      src="images/svgviewer-png-output-3.png"
-                      loading="lazy"
-                      width="124"
-                      height="35"
-                      alt=""
-                      id="w-node-_396a61f9-e171-d225-01ae-7fd0f235aa08-e3bb5747"
-                    />
-                  </div>
-                </div>
-                <div class="dark-mode">
-                  <div
-                    data-w-id="1fe6c776-ca77-a207-d206-368f1da32698"
-                    style="
-                      -webkit-transform: translate3d(0, 20px, 0)
-                        scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0)
-                        skew(0, 0);
-                      -moz-transform: translate3d(0, 20px, 0) scale3d(1, 1, 1)
-                        rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
-                      -ms-transform: translate3d(0, 20px, 0) scale3d(1, 1, 1)
-                        rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
-                      transform: translate3d(0, 20px, 0) scale3d(1, 1, 1)
-                        rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
-                      opacity: 0;
-                    "
-                    class="home-hero-logos"
-                  >
-                    <img
-                      src="images/logo-01-inverse.svg"
-                      loading="lazy"
-                      id="w-node-_1fe6c776-ca77-a207-d206-368f1da32699-e3bb5747"
-                      height="35"
-                      alt="Logo"
-                    /><img
-                      src="images/logo-02-inverse.svg"
-                      loading="lazy"
-                      id="w-node-_1fe6c776-ca77-a207-d206-368f1da3269a-e3bb5747"
-                      height="35"
-                      alt="Logo"
-                    /><img
-                      src="images/logo-03-inverse.svg"
-                      loading="lazy"
-                      id="w-node-_1fe6c776-ca77-a207-d206-368f1da3269b-e3bb5747"
-                      height="35"
-                      alt="Logo"
-                    /><img
-                      src="images/logo-04-inverse.svg"
-                      loading="lazy"
-                      id="w-node-_1fe6c776-ca77-a207-d206-368f1da3269c-e3bb5747"
-                      height="35"
-                      alt="Logo"
-                    /><img
-                      src="images/logo-05-inverse.svg"
-                      loading="lazy"
-                      id="w-node-_1fe6c776-ca77-a207-d206-368f1da3269d-e3bb5747"
-                      height="35"
-                      alt="Logo"
-                    /><img
-                      src="images/logo-06-inverse.svg"
-                      loading="lazy"
-                      id="w-node-_1fe6c776-ca77-a207-d206-368f1da3269e-e3bb5747"
-                      height="35"
-                      alt="Logo"
-                    />
+                    <img src="images/logos/softline.png" alt="Softline" loading="lazy" class="client-logo" style="height:54px" />
+                    <img src="images/logos/foodspace.png" alt="Foodspace" loading="lazy" class="client-logo" style="height:30px" />
+                    <img src="images/logos/foxford.png" alt="Foxford" loading="lazy" class="client-logo" style="height:34px" />
+                    <img src="images/logos/workcircle.png" alt="WorkCircle" loading="lazy" class="client-logo" style="height:24px" />
+                    <img src="images/logos/briskly.png" alt="Briskly" loading="lazy" class="client-logo" style="height:36px" />
+                    <img src="images/logos/rzd.png" alt="RZD" loading="lazy" class="client-logo" style="height:36px" />
                   </div>
                 </div>
               </div>
@@ -724,19 +571,120 @@
             </div>
           </div>
           <div
+            data-w-id="129d2d70-aedc-b113-dee9-cdbc7f13abc6"
+            class="home-services-item odd"
+          >
+            <div class="home-services-item-content">
+              <div class="margin-bottom margin-large">
+                <div class="margin-bottom margin-tiny">
+                  <div class="overflow-hidden">
+                    <h3
+                      data-w-id="129d2d70-aedc-b113-dee9-cdbc7f13abcc"
+                      style="
+                        -webkit-transform: translate3d(0, 105%, 0)
+                          scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0)
+                          skew(0, 0);
+                        -moz-transform: translate3d(0, 105%, 0) scale3d(1, 1, 1)
+                          rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                        -ms-transform: translate3d(0, 105%, 0) scale3d(1, 1, 1)
+                          rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                        transform: translate3d(0, 105%, 0) scale3d(1, 1, 1)
+                          rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                      "
+                      class="heading-style-small"
+                    >
+                      Foodspace
+                    </h3>
+                  </div>
+                </div>
+                <div class="max-width-large">
+                  <p
+                    data-w-id="129d2d70-aedc-b113-dee9-cdbc7f13abd3"
+                    style="
+                      -webkit-transform: translate3d(0, 20px, 0)
+                        scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0)
+                        skew(0, 0);
+                      -moz-transform: translate3d(0, 20px, 0) scale3d(1, 1, 1)
+                        rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                      -ms-transform: translate3d(0, 20px, 0) scale3d(1, 1, 1)
+                        rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                      transform: translate3d(0, 20px, 0) scale3d(1, 1, 1)
+                        rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                      opacity: 0;
+                    "
+                    class="heading-alt-h3"
+                  >
+                    <span data-i18n="proj.foodspace.desc">Ordering platform for Norwegian bakeries and caterers — a production app built from scratch in six months, at full parity with the web.</span>
+                  </p>
+                </div>
+                <div class="text-meta text-color-muted" data-i18n="tech.label">(Tech Stack)</div>
+                <p class="heading-alt-h5">
+                  React Native, TypeScript, Zustand, MMKV, Reanimated,
+                  Firebase Messaging, Sentry
+                </p>
+                <div
+                  data-w-id="129d2d70-aedc-b113-dee9-cdbc7f13abd5"
+                  style="
+                    -webkit-transform: translate3d(0, 20px, 0) scale3d(1, 1, 1)
+                      rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                    -moz-transform: translate3d(0, 20px, 0) scale3d(1, 1, 1)
+                      rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                    -ms-transform: translate3d(0, 20px, 0) scale3d(1, 1, 1)
+                      rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                    transform: translate3d(0, 20px, 0) scale3d(1, 1, 1)
+                      rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                    opacity: 0;
+                  "
+                >
+                  <div class="margin-bottom margin-medium">
+                    <div class="text-meta text-color-muted" data-i18n="notices.label">(Notices)</div>
+                  </div>
+                  <div class="max-width-large"></div>
+                  <div class="home-services-list">
+                    <p class="heading-alt-h5" data-i18n="proj.foodspace.n1">600+ bakery locations</p>
+                    <p class="heading-alt-h5" data-i18n="proj.foodspace.n2">Up to 300 orders/day</p>
+                    <p class="heading-alt-h5" data-i18n="proj.foodspace.n3">Web parity in 6 months</p>
+                    <p class="heading-alt-h5" data-i18n="proj.foodspace.n4">Biweekly releases</p>
+                  </div>
+                </div>
+              </div>
+              <a
+                href="https://www.foodspace.no"
+                class="button primary w-inline-block"
+              >
+                <div class="button-inner-text" data-i18n="btn.visit">Visit product page</div>
+              </a>
+            </div>
+            <div class="home-services-item-image">
+              <img
+                src="images/projects/foodspace.jpg"
+                loading="lazy"
+                sizes="(max-width: 1600px) 100vw, 1600px"
+                srcset="
+                  images/projects/foodspace-500.jpg   500w,
+                  images/projects/foodspace-800.jpg   800w,
+                  images/projects/foodspace-1080.jpg 1080w,
+                  images/projects/foodspace.jpg        1600w
+                "
+                alt="Foodspace app"
+                class="image-cover-parallax"
+              />
+            </div>
+          </div>
+          <div
             data-w-id="0b44b8c2-53ae-ce4a-7d0e-2440c6b3b257"
             class="home-services-item"
           >
             <div class="home-services-item-image">
               <img
-                src="images/1.png"
+                src="images/projects/workcircle.png"
                 loading="lazy"
                 sizes="(max-width: 1600px) 100vw, 1600px"
                 srcset="
-                  images/1-p-500.png   500w,
-                  images/1-p-800.png   800w,
-                  images/1-p-1080.png 1080w,
-                  images/1.png        1600w
+                  images/projects/workcircle-500.png   500w,
+                  images/projects/workcircle-800.png   800w,
+                  images/projects/workcircle-1080.png 1080w,
+                  images/projects/workcircle.png        1600w
                 "
                 alt=""
                 class="image-cover-parallax"
@@ -809,10 +757,10 @@
                     </div>
                     <div class="max-width-large"></div>
                     <div class="home-services-list">
-                      <p class="heading-alt-h5" data-i18n="proj.workcircle.n1">Fast growing MAU</p>
-                      <p class="heading-alt-h5" data-i18n="proj.workcircle.n2">Anonymity</p>
-                      <p class="heading-alt-h5" data-i18n="proj.workcircle.n3">100% Stritcly typed</p>
-                      <p class="heading-alt-h5" data-i18n="proj.workcircle.n4">Multilingual support</p>
+                      <p class="heading-alt-h5" data-i18n="proj.workcircle.n1">8K MAU in 12 months</p>
+                      <p class="heading-alt-h5" data-i18n="proj.workcircle.n2">Japanese-first UX</p>
+                      <p class="heading-alt-h5" data-i18n="proj.workcircle.n3">100% Strictly typed</p>
+                      <p class="heading-alt-h5" data-i18n="proj.workcircle.n4">Reanimated + SVG</p>
                     </div>
                   </div>
                 </div>
@@ -896,10 +844,10 @@
                   </div>
                   <div class="max-width-large"></div>
                   <div class="home-services-list">
-                    <p class="heading-alt-h5" data-i18n="proj.foxford.n1">High MAU (1M+)</p>
-                    <p class="heading-alt-h5" data-i18n="proj.foxford.n2">Smooth Animations</p>
-                    <p class="heading-alt-h5" data-i18n="proj.foxford.n3">All Age Friendly UI</p>
-                    <p class="heading-alt-h5" data-i18n="proj.foxford.n4">Adaptive Layout</p>
+                    <p class="heading-alt-h5" data-i18n="proj.foxford.n1">1M+ users</p>
+                    <p class="heading-alt-h5" data-i18n="proj.foxford.n2">96% crash-free</p>
+                    <p class="heading-alt-h5" data-i18n="proj.foxford.n3">4 app stores</p>
+                    <p class="heading-alt-h5" data-i18n="proj.foxford.n4">Phone + tablet layout</p>
                   </div>
                 </div>
               </div>
@@ -912,14 +860,14 @@
             </div>
             <div class="home-services-item-image">
               <img
-                src="images/002.png"
+                src="images/projects/foxford.png"
                 loading="lazy"
                 sizes="(max-width: 1600px) 100vw, 1600px"
                 srcset="
-                  images/002-p-500.png   500w,
-                  images/002-p-800.png   800w,
-                  images/002-p-1080.png 1080w,
-                  images/002.png        1600w
+                  images/projects/foxford-500.png   500w,
+                  images/projects/foxford-800.png   800w,
+                  images/projects/foxford-1080.png 1080w,
+                  images/projects/foxford.png        1600w
                 "
                 alt=""
                 class="image-cover-parallax"
@@ -929,14 +877,14 @@
           <div class="home-services-item">
             <div class="home-services-item-image">
               <img
-                src="images/004.png"
+                src="images/projects/urace.png"
                 loading="lazy"
                 sizes="(max-width: 1600px) 100vw, 1600px"
                 srcset="
-                  images/004-p-500.png   500w,
-                  images/004-p-800.png   800w,
-                  images/004-p-1080.png 1080w,
-                  images/004.png        1600w
+                  images/projects/urace-500.png   500w,
+                  images/projects/urace-800.png   800w,
+                  images/projects/urace-1080.png 1080w,
+                  images/projects/urace.png        1600w
                 "
                 alt=""
                 class="image-cover-parallax"
@@ -982,7 +930,7 @@
                     "
                     class="heading-alt-h3"
                   >
-                    <span data-i18n="proj.urace.desc">Social racing platform that brings runners together through real-time challenges, leaderboards, and global events.</span>
+                    <span data-i18n="proj.urace.desc">Social racing platform that brings runners together through real-time challenges, leaderboards, and global events. 12K registered users.</span>
                   </p>
                   <div class="text-meta text-color-muted" data-i18n="tech.label">(Tech Stack)</div>
                   <p class="heading-alt-h5">
@@ -1081,10 +1029,10 @@
                   </div>
                   <div class="max-width-large"></div>
                   <div class="home-services-list">
-                    <p class="heading-alt-h5" data-i18n="proj.bpay.n1">High MAU</p>
-                    <p class="heading-alt-h5" data-i18n="proj.bpay.n2">Foodtech innovation</p>
-                    <p class="heading-alt-h5" data-i18n="proj.bpay.n3">Scanning Features</p>
-                    <p class="heading-alt-h5" data-i18n="proj.bpay.n4">Payment reliable</p>
+                    <p class="heading-alt-h5" data-i18n="proj.bpay.n1">1M+ downloads</p>
+                    <p class="heading-alt-h5" data-i18n="proj.bpay.n2">Led a team of 5</p>
+                    <p class="heading-alt-h5" data-i18n="proj.bpay.n3">QR scan & pay</p>
+                    <p class="heading-alt-h5" data-i18n="proj.bpay.n4">1.8s median checkout</p>
                   </div>
                 </div>
               </div>
@@ -1097,14 +1045,14 @@
             </div>
             <div class="home-services-item-image">
               <img
-                src="images/006.png"
+                src="images/projects/briskly.png"
                 loading="lazy"
                 sizes="(max-width: 1600px) 100vw, 1600px"
                 srcset="
-                  images/006-p-500.png   500w,
-                  images/006-p-800.png   800w,
-                  images/006-p-1080.png 1080w,
-                  images/006.png        1600w
+                  images/projects/briskly-500.png   500w,
+                  images/projects/briskly-800.png   800w,
+                  images/projects/briskly-1080.png 1080w,
+                  images/projects/briskly.png        1600w
                 "
                 alt=""
                 class="image-cover-parallax"
@@ -1145,35 +1093,40 @@
           "nav.cv_en": "View CV (EN)",
           "nav.cv_ru": "View CV (RU)",
           "hero.location": "(Based in Da Nang, Vietnam)",
-          "hero.lead": "Turning ideas into engaging mobile development products delivered at scale",
+          "hero.lead": "Leading mobile teams that ship React Native products at scale — from first commit to 1M+ users",
           "meta.about": "(About Me)",
           "about.h1": "Clean",
           "about.h2": "code.",
           "about.h3": "bold",
           "about.h4": "results.",
-          "about.long": "I build mobile experiences that scale — from sleek MVPs to apps serving over a million users. I started coding when I was 14, driven by curiosity and a love for turning ideas into something real. Over the years, I evolved from native Android development to mastering React Native, publishing 20+ apps on both the App Store and Google Play. Whether solo or leading a team of eight, I take products from concept to production with attention to detail and a passion for performance.<br><br>With a global perspective shaped by traveling to over 80 countries, I bring adaptability, clarity, and empathy to every project. My work has been featured in IEEE publications, and I approach every app not just as a piece of software, but as a user experience that should feel intuitive, delightful, and reliable. If you're looking for someone who can think like a developer, a product owner, and a user — let's build something together.",
+          "about.long": "I'm a mobile team lead with 7+ years in software and 6 in React Native. I build the app and the delivery system around it — release cadence, CI/CD, code review, QA gates — and the engineers who run them. I've led teams of up to six, taken a B2C app to 1M+ downloads, raised crash-free sessions from 85% to 97% and shipped 100+ production releases on a weekly train. My teams are AI-first: Cursor and Claude Code are part of how we implement and review, which cut delivery time by about 30%.<br><br>I started coding at 14 and still work hands-on in the codebase. I've studied in Canada and China, worked with teams in Japan and Norway, and traveled to 80+ countries — so remote, cross-timezone work comes naturally. My research has been published by IEEE. If you need someone who thinks like an engineer, a product owner and a user at once — let's talk.",
           "meta.companies": "(Project companies)",
           "meta.fresh": "(Fresh Apps)",
           "projects.title": "Projects",
           "projects.lead": "My focus is simple: clean code, fast delivery, and products that users actually enjoy.",
           "tech.label": "(Tech Stack)",
           "notices.label": "(Notices)",
+          "proj.foodspace.desc": "Ordering platform for Norwegian bakeries and caterers — a production app built from scratch in six months, at full parity with the web.",
+          "proj.foodspace.n1": "600+ bakery locations",
+          "proj.foodspace.n2": "Up to 300 orders/day",
+          "proj.foodspace.n3": "Web parity in 6 months",
+          "proj.foodspace.n4": "Biweekly releases",
           "proj.workcircle.desc": "WorkCircle.jp is a platform built to connect individuals with careers in Japan — fast, intuitive, and people-focused.",
-          "proj.workcircle.n1": "Fast growing MAU",
-          "proj.workcircle.n2": "Anonymity",
+          "proj.workcircle.n1": "8K MAU in 12 months",
+          "proj.workcircle.n2": "Japanese-first UX",
           "proj.workcircle.n3": "100% Strictly typed",
-          "proj.workcircle.n4": "Multilingual support",
+          "proj.workcircle.n4": "Reanimated + SVG",
           "proj.foxford.desc": "Online education platform helping students, parents, and teachers succeed through interactive courses and expert-led lessons.",
-          "proj.foxford.n1": "High MAU (1M+)",
-          "proj.foxford.n2": "Smooth Animations",
-          "proj.foxford.n3": "All Age Friendly UI",
-          "proj.foxford.n4": "Adaptive Layout",
-          "proj.urace.desc": "Social racing platform that brings runners together through real-time challenges, leaderboards, and global events.",
+          "proj.foxford.n1": "1M+ users",
+          "proj.foxford.n2": "96% crash-free",
+          "proj.foxford.n3": "4 app stores",
+          "proj.foxford.n4": "Phone + tablet layout",
+          "proj.urace.desc": "Social racing platform that brings runners together through real-time challenges, leaderboards, and global events. 12K registered users.",
           "proj.bpay.desc": "Briskly is a cashierless retail platform powering smart micromarkets and autonomous shopping through scan-and-go tech — no lines, no limits.",
-          "proj.bpay.n1": "High MAU",
-          "proj.bpay.n2": "Foodtech innovation",
-          "proj.bpay.n3": "Scanning Features",
-          "proj.bpay.n4": "Payment reliable",
+          "proj.bpay.n1": "1M+ downloads",
+          "proj.bpay.n2": "Led a team of 5",
+          "proj.bpay.n3": "QR scan & pay",
+          "proj.bpay.n4": "1.8s median checkout",
           "btn.visit": "Visit product page",
         },
         ru: {
@@ -1185,35 +1138,40 @@
           "nav.cv_en": "Открыть CV (EN)",
           "nav.cv_ru": "Открыть CV (RU)",
           "hero.location": "(Базируюсь в Дананге, Вьетнам)",
-          "hero.lead": "Превращаю идеи в увлекательные мобильные продукты, готовые к масштабированию",
+          "hero.lead": "Руковожу мобильными командами, которые выпускают React Native-продукты в масштабе — от первого коммита до 1M+ пользователей",
           "meta.about": "(Обо мне)",
           "about.h1": "Чистый",
           "about.h2": "код.",
           "about.h3": "Смелые",
           "about.h4": "результаты.",
-          "about.long": "Я создаю мобильные продукты, которые масштабируются — от изящных MVP до приложений с миллионной аудиторией. Я начал писать код в 14 лет: любопытство и желание превращать идеи во что-то реальное привели меня в разработку. За годы я прошёл путь от нативного Android до React Native, выпустив 20+ приложений в App Store и Google Play. И в одиночку, и руководя командой из восьми человек, я довожу продукты от концепта до продакшена — с вниманием к деталям и страстью к производительности.<br><br>Благодаря глобальному кругозору, сформированному путешествиями по более чем 80 странам, я подхожу к каждому проекту с гибкостью, ясностью мышления и эмпатией. Мои работы публиковались в изданиях IEEE, и я рассматриваю каждое приложение не просто как программное обеспечение, а как пользовательский опыт, который должен быть интуитивно понятным, приятным и надежным. Если вы ищете человека, который может мыслить как разработчик, владелец продукта и пользователь — давайте создадим что-то вместе.",
+          "about.long": "Я тимлид мобильной разработки: 7+ лет в разработке, из них 6 — в React Native. Я строю не только приложение, но и систему поставки вокруг него — релизный ритм, CI/CD, код-ревью, QA-гейты — и инженеров, которые всё это поддерживают. Руководил командами до шести человек, вывел B2C-приложение на 1M+ загрузок, поднял crash-free sessions с 85% до 97% и выпустил 100+ продакшен-релизов в еженедельном цикле. Мои команды работают в AI-first подходе: Cursor и Claude Code встроены в разработку и ревью, что сократило время поставки примерно на 30%.<br><br>Я начал писать код в 14 лет и до сих пор сам работаю в кодовой базе. Учился в Канаде и Китае, работал с командами из Японии и Норвегии, побывал в 80+ странах — поэтому удалённая работа в разных часовых поясах для меня естественна. Мои исследования публиковались в IEEE. Если вам нужен человек, который мыслит одновременно как инженер, владелец продукта и пользователь — давайте поговорим.",
           "meta.companies": "(Компании проектов)",
           "meta.fresh": "(Свежие приложения)",
           "projects.title": "Проекты",
           "projects.lead": "Мой фокус прост: чистый код, быстрая доставка и продукты, которыми реально пользуются.",
           "tech.label": "(Стек технологий)",
           "notices.label": "(Особенности)",
+          "proj.foodspace.desc": "Платформа заказов для норвежских кондитерских и кейтеринга — продакшен-приложение с нуля за шесть месяцев, с полным паритетом с вебом.",
+          "proj.foodspace.n1": "600+ кондитерских",
+          "proj.foodspace.n2": "До 300 заказов в день",
+          "proj.foodspace.n3": "Паритет с вебом за 6 мес.",
+          "proj.foodspace.n4": "Релизы раз в 2 недели",
           "proj.workcircle.desc": "WorkCircle.jp — платформа, связывающая людей с работой в Японии. Быстро, понятно, по-человечески.",
-          "proj.workcircle.n1": "Быстро растущий MAU",
-          "proj.workcircle.n2": "Анонимность",
+          "proj.workcircle.n1": "8K MAU за 12 месяцев",
+          "proj.workcircle.n2": "UX для японского рынка",
           "proj.workcircle.n3": "100% строгая типизация",
-          "proj.workcircle.n4": "Мультиязычность",
+          "proj.workcircle.n4": "Reanimated + SVG",
           "proj.foxford.desc": "Платформа онлайн-образования, помогающая ученикам, родителям и учителям через интерактивные курсы и уроки с экспертами.",
-          "proj.foxford.n1": "Высокий MAU (1M+)",
-          "proj.foxford.n2": "Плавные анимации",
-          "proj.foxford.n3": "UI для всех возрастов",
-          "proj.foxford.n4": "Адаптивный layout",
-          "proj.urace.desc": "Социальная платформа для спортсменов: соревнования в реальном времени, рейтинги и глобальные ивенты.",
+          "proj.foxford.n1": "1M+ пользователей",
+          "proj.foxford.n2": "96% crash-free",
+          "proj.foxford.n3": "4 магазина приложений",
+          "proj.foxford.n4": "Телефоны и планшеты",
+          "proj.urace.desc": "Социальная платформа для бегунов: соревнования в реальном времени, рейтинги и глобальные ивенты. 12K зарегистрированных пользователей.",
           "proj.bpay.desc": "Briskly — платформа автономной торговли: умные микромаркеты и покупки по сканированию без касс и очередей.",
-          "proj.bpay.n1": "Высокий MAU",
-          "proj.bpay.n2": "Foodtech-инновации",
-          "proj.bpay.n3": "Сканирование товаров",
-          "proj.bpay.n4": "Надёжная оплата",
+          "proj.bpay.n1": "1M+ загрузок",
+          "proj.bpay.n2": "Команда из 5 инженеров",
+          "proj.bpay.n3": "Сканирование QR и оплата",
+          "proj.bpay.n4": "Оплата за 1,8 с (медиана)",
           "btn.visit": "Открыть страницу продукта",
         },
       };

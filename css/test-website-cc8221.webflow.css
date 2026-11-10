@@ -1395,7 +1395,7 @@ figcaption {
 .text-rich-text blockquote {
   font-family: var(--quote--font-family);
   color: var(--quote--text-color);
-  background-image: url('../images/icon-quote.svg');
+  background-image: url('../images/ui/icon-quote.svg');
   background-position: 0 60px;
   background-repeat: no-repeat;
   background-size: 30px;
@@ -2429,7 +2429,7 @@ figcaption {
 .block-quote {
   font-family: var(--quote--font-family);
   color: var(--quote--text-color);
-  background-image: url('../images/icon-quote.svg');
+  background-image: url('../images/ui/icon-quote.svg');
   background-position: 0 60px;
   background-repeat: no-repeat;
   background-size: 30px;
