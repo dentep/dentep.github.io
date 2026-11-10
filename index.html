@@ -39,7 +39,8 @@
           families: [
             'Inconsolata:400,700',
             'Inter:regular,600',
-            'Anton SC:regular'
+            'Anton SC:regular',
+            'Oswald:700:cyrillic,cyrillic-ext'
           ]
         }
       });
@@ -88,6 +89,26 @@
          project (B-Pay) the section fades to opacity 0 + scales down, which
          looks like the page is tinting/disappearing. We force the section to
          stay fully visible regardless of scroll progress. */
+      /* Anton SC has no Cyrillic glyphs: fall back to Oswald Bold for RU headings */
+      :root { --global--heading-font-family: "Anton SC", "Oswald", sans-serif; }
+      /* Text must always fit: sections were fixed at 100vh, so long (e.g. RU)
+         copy overflowed into the next block on short / wide screens.
+         Use min-height instead so blocks grow with their content. */
+      @media screen and (min-width: 992px) {
+        .home-hero-right-top { height: auto; min-height: 100vh; }
+        .home-services-item-content { height: auto; min-height: 100vh; gap: 3rem; }
+        .home-services-item-image { height: auto; min-height: 100vh; }
+      }
+      .home-hero-right, .home-services-item-content { min-width: 0; }
+      /* Hero name: "STEPANOV" was ~5% wider than its column at 992–1440px and
+         got clipped by .overflow-hidden. Text width ≈ 3.67 × font-size. */
+      @media screen and (min-width: 992px) and (max-width: 1439px) {
+        .home-hero-right .heading-style-large { font-size: 11vw; }
+      }
+      @media screen and (min-width: 1440px) {
+        .home-hero-right .heading-style-large { font-size: min(12rem, calc((55.5vw - 12rem) / 3.8)); }
+      }
+      .home-hero-right p, .home-services-item-content p { overflow-wrap: break-word; }
       /* Client logos: uniform sizing inside the 3-column grid */
       .client-logo { width: auto; max-width: 100%; object-fit: contain; align-self: center; }
       .section-home-services {
@@ -465,7 +486,7 @@
                       "
                       class="text-color-muted"
                     >
-                      <span data-i18n-html="about.long">I'm a mobile team lead with 7+ years in software and 6 in React Native. I build the app and the delivery system around it — release cadence, CI/CD, code review, QA gates — and the engineers who run them. I've led teams of up to six, taken a B2C app to 1M+ downloads, raised crash-free sessions from 85% to 97% and shipped 100+ production releases on a weekly train. My teams are AI-first: Cursor and Claude Code are part of how we implement and review, which cut delivery time by about 30%.<br><br>I started coding at 14 and still work hands-on in the codebase. I've studied in Canada and China, worked with teams in Japan and Norway, and traveled to 80+ countries — so remote, cross-timezone work comes naturally. My research has been published by IEEE. If you need someone who thinks like an engineer, a product owner and a user at once — let's talk.</span>
+                      <span data-i18n-html="about.long">I'm a mobile team lead with 7+ years in software and 6 in React Native. I build the app and the delivery system around it — release cadence, CI/CD, code review, QA gates — and the engineers who run them. I've led teams of up to six, taken a B2C app to 1M+ downloads, raised crash-free sessions from 85% to 97% and shipped 100+ production releases on a weekly train. My teams are AI-first: Cursor and Claude Code are part of how we implement and review, which cut delivery time by about 30%.<br><br>I started coding at 14 and still work hands-on in the codebase. I've studied in Canada and China, worked with teams in Japan, Norway and the US, and traveled to 80+ countries — so remote, cross-timezone work comes naturally. My research has been published by IEEE. If you need someone who thinks like an engineer, a product owner and a user at once — let's talk.</span>
                     </p>
                   </div>
                 </div>
@@ -672,24 +693,110 @@
             </div>
           </div>
           <div
-            data-w-id="0b44b8c2-53ae-ce4a-7d0e-2440c6b3b257"
+            data-w-id="129d2d70-aedc-b113-dee9-cdbc7f13abc6"
             class="home-services-item"
           >
             <div class="home-services-item-image">
               <img
-                src="images/projects/workcircle.png"
+                src="images/projects/tempshield.png"
                 loading="lazy"
                 sizes="(max-width: 1600px) 100vw, 1600px"
                 srcset="
-                  images/projects/workcircle-500.png   500w,
-                  images/projects/workcircle-800.png   800w,
-                  images/projects/workcircle-1080.png 1080w,
-                  images/projects/workcircle.png        1600w
+                  images/projects/tempshield-500.png   500w,
+                  images/projects/tempshield-800.png   800w,
+                  images/projects/tempshield-1080.png 1080w,
+                  images/projects/tempshield.png        1600w
                 "
-                alt=""
+                alt="TempShield app"
                 class="image-cover-parallax"
               />
             </div>
+            <div class="home-services-item-content">
+              <div class="margin-bottom margin-large">
+                <div class="margin-bottom margin-tiny">
+                  <div class="overflow-hidden">
+                    <h3
+                      data-w-id="129d2d70-aedc-b113-dee9-cdbc7f13abcc"
+                      style="
+                        -webkit-transform: translate3d(0, 105%, 0)
+                          scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0)
+                          skew(0, 0);
+                        -moz-transform: translate3d(0, 105%, 0) scale3d(1, 1, 1)
+                          rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                        -ms-transform: translate3d(0, 105%, 0) scale3d(1, 1, 1)
+                          rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                        transform: translate3d(0, 105%, 0) scale3d(1, 1, 1)
+                          rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                      "
+                      class="heading-style-small"
+                    >
+                      TempShield
+                    </h3>
+                  </div>
+                </div>
+                <div class="max-width-large">
+                  <p
+                    data-w-id="129d2d70-aedc-b113-dee9-cdbc7f13abd3"
+                    style="
+                      -webkit-transform: translate3d(0, 20px, 0)
+                        scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0)
+                        skew(0, 0);
+                      -moz-transform: translate3d(0, 20px, 0) scale3d(1, 1, 1)
+                        rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                      -ms-transform: translate3d(0, 20px, 0) scale3d(1, 1, 1)
+                        rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                      transform: translate3d(0, 20px, 0) scale3d(1, 1, 1)
+                        rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                      opacity: 0;
+                    "
+                    class="heading-alt-h3"
+                  >
+                    <span data-i18n="proj.aion.desc">Patient app for AION TempShield — an FDA-cleared wearable that continuously streams body temperature to clinical care teams.</span>
+                  </p>
+                </div>
+                <div class="text-meta text-color-muted" data-i18n="tech.label">(Tech Stack)</div>
+                <p class="heading-alt-h5">
+                  React Native, TypeScript, Bluetooth Low Energy, MQTT,
+                  MOKO IoT gateways
+                </p>
+                <div
+                  data-w-id="129d2d70-aedc-b113-dee9-cdbc7f13abd5"
+                  style="
+                    -webkit-transform: translate3d(0, 20px, 0) scale3d(1, 1, 1)
+                      rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                    -moz-transform: translate3d(0, 20px, 0) scale3d(1, 1, 1)
+                      rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                    -ms-transform: translate3d(0, 20px, 0) scale3d(1, 1, 1)
+                      rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                    transform: translate3d(0, 20px, 0) scale3d(1, 1, 1)
+                      rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+                    opacity: 0;
+                  "
+                >
+                  <div class="margin-bottom margin-medium">
+                    <div class="text-meta text-color-muted" data-i18n="notices.label">(Notices)</div>
+                  </div>
+                  <div class="max-width-large"></div>
+                  <div class="home-services-list">
+                    <p class="heading-alt-h5" data-i18n="proj.aion.n1">FDA-cleared device</p>
+                    <p class="heading-alt-h5" data-i18n="proj.aion.n2">BLE pairing &amp; sync</p>
+                    <p class="heading-alt-h5" data-i18n="proj.aion.n3">MQTT gateway hubs</p>
+                    <p class="heading-alt-h5" data-i18n="proj.aion.n4">No data lost offline</p>
+                  </div>
+                </div>
+              </div>
+              <a
+                href="https://aionbiosystems.com"
+                class="button primary w-inline-block"
+              >
+                <div class="button-inner-text" data-i18n="btn.visit">Visit product page</div>
+              </a>
+            </div>
+          </div>
+          <div
+            data-w-id="0b44b8c2-53ae-ce4a-7d0e-2440c6b3b257"
+            class="home-services-item odd"
+          >
             <div class="home-services-item-content">
               <div class="margin-bottom margin-large">
                 <div class="margin-bottom margin-tiny">
@@ -772,11 +879,41 @@
                 <div class="button-inner-text" data-i18n="btn.visit">Visit product page</div>
               </a>
             </div>
+            <div class="home-services-item-image">
+              <img
+                src="images/projects/workcircle.png"
+                loading="lazy"
+                sizes="(max-width: 1600px) 100vw, 1600px"
+                srcset="
+                  images/projects/workcircle-500.png   500w,
+                  images/projects/workcircle-800.png   800w,
+                  images/projects/workcircle-1080.png 1080w,
+                  images/projects/workcircle.png        1600w
+                "
+                alt=""
+                class="image-cover-parallax"
+              />
+            </div>
           </div>
           <div
             data-w-id="129d2d70-aedc-b113-dee9-cdbc7f13abc6"
-            class="home-services-item odd"
+            class="home-services-item"
           >
+            <div class="home-services-item-image">
+              <img
+                src="images/projects/foxford.png"
+                loading="lazy"
+                sizes="(max-width: 1600px) 100vw, 1600px"
+                srcset="
+                  images/projects/foxford-500.png   500w,
+                  images/projects/foxford-800.png   800w,
+                  images/projects/foxford-1080.png 1080w,
+                  images/projects/foxford.png        1600w
+                "
+                alt=""
+                class="image-cover-parallax"
+              />
+            </div>
             <div class="home-services-item-content">
               <div class="margin-bottom margin-large">
                 <div class="margin-bottom margin-tiny">
@@ -858,38 +995,8 @@
                 <div class="button-inner-text" data-i18n="btn.visit">Visit product page</div>
               </a>
             </div>
-            <div class="home-services-item-image">
-              <img
-                src="images/projects/foxford.png"
-                loading="lazy"
-                sizes="(max-width: 1600px) 100vw, 1600px"
-                srcset="
-                  images/projects/foxford-500.png   500w,
-                  images/projects/foxford-800.png   800w,
-                  images/projects/foxford-1080.png 1080w,
-                  images/projects/foxford.png        1600w
-                "
-                alt=""
-                class="image-cover-parallax"
-              />
-            </div>
           </div>
-          <div class="home-services-item">
-            <div class="home-services-item-image">
-              <img
-                src="images/projects/urace.png"
-                loading="lazy"
-                sizes="(max-width: 1600px) 100vw, 1600px"
-                srcset="
-                  images/projects/urace-500.png   500w,
-                  images/projects/urace-800.png   800w,
-                  images/projects/urace-1080.png 1080w,
-                  images/projects/urace.png        1600w
-                "
-                alt=""
-                class="image-cover-parallax"
-              />
-            </div>
+          <div class="home-services-item odd">
             <div class="home-services-item-content">
               <div class="margin-bottom margin-large">
                 <div class="margin-bottom margin-tiny">
@@ -958,11 +1065,41 @@
                 <div class="button-inner-text" data-i18n="btn.visit">Visit product page</div>
               </a>
             </div>
+            <div class="home-services-item-image">
+              <img
+                src="images/projects/urace.png"
+                loading="lazy"
+                sizes="(max-width: 1600px) 100vw, 1600px"
+                srcset="
+                  images/projects/urace-500.png   500w,
+                  images/projects/urace-800.png   800w,
+                  images/projects/urace-1080.png 1080w,
+                  images/projects/urace.png        1600w
+                "
+                alt=""
+                class="image-cover-parallax"
+              />
+            </div>
           </div>
           <div
             data-w-id="ada64d68-a06b-84aa-e2e7-1e5d87595792"
-            class="home-services-item odd"
+            class="home-services-item"
           >
+            <div class="home-services-item-image">
+              <img
+                src="images/projects/briskly.png"
+                loading="lazy"
+                sizes="(max-width: 1600px) 100vw, 1600px"
+                srcset="
+                  images/projects/briskly-500.png   500w,
+                  images/projects/briskly-800.png   800w,
+                  images/projects/briskly-1080.png 1080w,
+                  images/projects/briskly.png        1600w
+                "
+                alt=""
+                class="image-cover-parallax"
+              />
+            </div>
             <div class="home-services-item-content">
               <div class="margin-bottom margin-large">
                 <div class="margin-bottom margin-tiny">
@@ -1043,21 +1180,6 @@
                 <div class="button-inner-text" data-i18n="btn.visit">Visit product page</div>
               </a>
             </div>
-            <div class="home-services-item-image">
-              <img
-                src="images/projects/briskly.png"
-                loading="lazy"
-                sizes="(max-width: 1600px) 100vw, 1600px"
-                srcset="
-                  images/projects/briskly-500.png   500w,
-                  images/projects/briskly-800.png   800w,
-                  images/projects/briskly-1080.png 1080w,
-                  images/projects/briskly.png        1600w
-                "
-                alt=""
-                class="image-cover-parallax"
-              />
-            </div>
           </div>
         </section>
       </main>
@@ -1099,7 +1221,7 @@
           "about.h2": "code.",
           "about.h3": "bold",
           "about.h4": "results.",
-          "about.long": "I'm a mobile team lead with 7+ years in software and 6 in React Native. I build the app and the delivery system around it — release cadence, CI/CD, code review, QA gates — and the engineers who run them. I've led teams of up to six, taken a B2C app to 1M+ downloads, raised crash-free sessions from 85% to 97% and shipped 100+ production releases on a weekly train. My teams are AI-first: Cursor and Claude Code are part of how we implement and review, which cut delivery time by about 30%.<br><br>I started coding at 14 and still work hands-on in the codebase. I've studied in Canada and China, worked with teams in Japan and Norway, and traveled to 80+ countries — so remote, cross-timezone work comes naturally. My research has been published by IEEE. If you need someone who thinks like an engineer, a product owner and a user at once — let's talk.",
+          "about.long": "I'm a mobile team lead with 7+ years in software and 6 in React Native. I build the app and the delivery system around it — release cadence, CI/CD, code review, QA gates — and the engineers who run them. I've led teams of up to six, taken a B2C app to 1M+ downloads, raised crash-free sessions from 85% to 97% and shipped 100+ production releases on a weekly train. My teams are AI-first: Cursor and Claude Code are part of how we implement and review, which cut delivery time by about 30%.<br><br>I started coding at 14 and still work hands-on in the codebase. I've studied in Canada and China, worked with teams in Japan, Norway and the US, and traveled to 80+ countries — so remote, cross-timezone work comes naturally. My research has been published by IEEE. If you need someone who thinks like an engineer, a product owner and a user at once — let's talk.",
           "meta.companies": "(Project companies)",
           "meta.fresh": "(Fresh Apps)",
           "projects.title": "Projects",
@@ -1111,6 +1233,11 @@
           "proj.foodspace.n2": "Up to 300 orders/day",
           "proj.foodspace.n3": "Web parity in 6 months",
           "proj.foodspace.n4": "Biweekly releases",
+          "proj.aion.desc": "Patient app for AION TempShield — an FDA-cleared wearable that continuously streams body temperature to clinical care teams.",
+          "proj.aion.n1": "FDA-cleared device",
+          "proj.aion.n2": "BLE pairing & sync",
+          "proj.aion.n3": "MQTT gateway hubs",
+          "proj.aion.n4": "No data lost offline",
           "proj.workcircle.desc": "WorkCircle.jp is a platform built to connect individuals with careers in Japan — fast, intuitive, and people-focused.",
           "proj.workcircle.n1": "8K MAU in 12 months",
           "proj.workcircle.n2": "Japanese-first UX",
@@ -1144,7 +1271,7 @@
           "about.h2": "код.",
           "about.h3": "Смелые",
           "about.h4": "результаты.",
-          "about.long": "Я тимлид мобильной разработки: 7+ лет в разработке, из них 6 — в React Native. Я строю не только приложение, но и систему поставки вокруг него — релизный ритм, CI/CD, код-ревью, QA-гейты — и инженеров, которые всё это поддерживают. Руководил командами до шести человек, вывел B2C-приложение на 1M+ загрузок, поднял crash-free sessions с 85% до 97% и выпустил 100+ продакшен-релизов в еженедельном цикле. Мои команды работают в AI-first подходе: Cursor и Claude Code встроены в разработку и ревью, что сократило время поставки примерно на 30%.<br><br>Я начал писать код в 14 лет и до сих пор сам работаю в кодовой базе. Учился в Канаде и Китае, работал с командами из Японии и Норвегии, побывал в 80+ странах — поэтому удалённая работа в разных часовых поясах для меня естественна. Мои исследования публиковались в IEEE. Если вам нужен человек, который мыслит одновременно как инженер, владелец продукта и пользователь — давайте поговорим.",
+          "about.long": "Я тимлид мобильной разработки: 7+ лет в разработке, из них 6 — в React Native. Я строю не только приложение, но и систему поставки вокруг него — релизный ритм, CI/CD, код-ревью, QA-гейты — и инженеров, которые всё это поддерживают. Руководил командами до шести человек, вывел B2C-приложение на 1M+ загрузок, поднял crash-free sessions с 85% до 97% и выпустил 100+ продакшен-релизов в еженедельном цикле. Мои команды работают в AI-first подходе: Cursor и Claude Code встроены в разработку и ревью, что сократило время поставки примерно на 30%.<br><br>Я начал писать код в 14 лет и до сих пор сам работаю в кодовой базе. Учился в Канаде и Китае, работал с командами из Японии, Норвегии и США, побывал в 80+ странах — поэтому удалённая работа в разных часовых поясах для меня естественна. Мои исследования публиковались в IEEE. Если вам нужен человек, который мыслит одновременно как инженер, владелец продукта и пользователь — давайте поговорим.",
           "meta.companies": "(Компании проектов)",
           "meta.fresh": "(Свежие приложения)",
           "projects.title": "Проекты",
@@ -1156,6 +1283,11 @@
           "proj.foodspace.n2": "До 300 заказов в день",
           "proj.foodspace.n3": "Паритет с вебом за 6 мес.",
           "proj.foodspace.n4": "Релизы раз в 2 недели",
+          "proj.aion.desc": "Пациентское приложение для AION TempShield — носимого датчика с одобрением FDA, который непрерывно передаёт температуру тела клиническим командам.",
+          "proj.aion.n1": "Устройство с одобрением FDA",
+          "proj.aion.n2": "BLE: сопряжение и синхронизация",
+          "proj.aion.n3": "MQTT-шлюзы",
+          "proj.aion.n4": "Данные не теряются офлайн",
           "proj.workcircle.desc": "WorkCircle.jp — платформа, связывающая людей с работой в Японии. Быстро, понятно, по-человечески.",
           "proj.workcircle.n1": "8K MAU за 12 месяцев",
           "proj.workcircle.n2": "UX для японского рынка",
